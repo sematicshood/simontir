@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h3>Login</h3>
+        <h3>Register</h3>
     </div>
 </template>
 
-<script>
+<script lang="ts">
     export default {
-        name: 'login'
+        
     }
 </script>
