@@ -9,42 +9,42 @@ export default new Router({
   routes: [
     {
       path: '*',
-      component: () => import('./views/404'),
+      component: () => import('@views/404'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('./views/Login'),
+      component: () => import('@views/Login'),
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('./views/Register'),
+      component: () => import('@views/Register'),
     },
     {
       path: '/final_check/:id',
       name: 'final_check',
-      component: () => import('./views/FinalCheck'),
+      component: () => import('@views/FinalCheck'),
     },
     {
       path: '/list_final_check',
       name: 'list_final_check',
-      component: () => import('./views/ListFinalCheck'),
+      component: () => import('@views/ListFinalCheck'),
     },
     {
       path: '/list_mekanik',
       name: 'list_mekanik',
-      component: () => import('./views/ListMekanik'),
+      component: () => import('@views/ListMekanik'),
     },
     {
       path: '/option_role',
       name: 'option_role',
-      component: () => import('./views/OptionRole'),
+      component: () => import('@views/OptionRole'),
     },
     {
       path: '/timesheet_mekanik/:id',
       name: 'timesheet_mekanik',
-      component: () => import('./views/TimesheetMekanik'),
+      component: () => import('@views/TimesheetMekanik'),
     },
   ],
 });
