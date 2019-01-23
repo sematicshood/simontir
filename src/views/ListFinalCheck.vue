@@ -5,7 +5,11 @@
 </template>
 
 <script lang="ts">
-    export default {
-        
-    }
+    import { Component, Vue } from 'vue-property-decorator';
+
+    @Component({
+        components: {},
+    })
+
+    export default class LastFinalCheck extends Vue {}
 </script>

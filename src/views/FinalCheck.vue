@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-    export default {
-        data() {
-            return {
-                id: this.$route.params.id
-            }
-        }
-    }
+    import { Component, Vue } from 'vue-property-decorator';
+
+    @Component({
+        components: {},
+    })
+
+    export default class FinalCheck extends Vue {}
 </script>
