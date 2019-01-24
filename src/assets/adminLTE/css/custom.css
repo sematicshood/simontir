@@ -13,7 +13,8 @@
     width: 100%;
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    padding: 8px 0px;
+    padding: 8px 5px;
+    background-color: #f3f3f3;
 }
 
 .box-sub-title {
@@ -21,4 +22,40 @@
     font-size: 18px;
     margin: 0;
     line-height: 1;
+}
+
+.control-label{
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: right;
+}
+
+.border-custom {
+    border: 1px solid #dd4b39;
+    border-top: 0px;
+    border-radius: 3px !important;
+    margin-bottom: 20px;
+}
+
+.custom-table  {
+    margin-top: -20px;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+.custom-table tr{
+    border-top: 1px solid #dd4b39;
+}
+.time-estimate {
+    height: 40px;
+}
+.validasi{
+    height: 60px;
+}
+
+.fade:not(.show){
+    opacity: 1;
+}
+.fade{
+    opacity: unset;
 }
