@@ -1,7 +1,8 @@
 import api from './api';
 
-const cekUser = async (payload) => {
-    return await api.get('https://api.myjson.com/bins/1fxjqs')
+const cekUser = (payload = null) => {
+    // return await api.get('https://api.myjson.com/bins/1fxjqs')
+    return JSON.parse(localStorage.getItem('users'))
 }
 
 export default {
