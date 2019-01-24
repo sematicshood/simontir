@@ -1,10 +1,12 @@
 [
     {
-        "name": "Johnny",
-        "nickname": "Hello"
+        "login": "admin",
+        "password": "admin",
+        "role": "mekanik"
     },
     {
-        "name": "Johnny",
-        "nickname": "Hello"
+        "login": "admin2",
+        "password": "admin2",
+        "role": "mekanik2"
     }
 ]
