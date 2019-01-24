@@ -2,8 +2,8 @@
     <div id="login">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
               <div class="card form-login">
                 <div class="card-body">
                     <form>
@@ -32,7 +32,7 @@
                 </div>
               </div>        
             </div>
-            <div class="col-lg-3"></div>
+            <div class="col-lg-4"></div>
           </div>
       </div>
     </div>
@@ -46,7 +46,14 @@
         components: {},
     })
 
-    export default class Login extends Vue {}
+    export default class Login extends Vue {
+      data(){
+        return{
+          username:"",
+          password:""
+        }
+      }
+    }
 </script>
 
 <style>
