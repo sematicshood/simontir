@@ -1,30 +1,35 @@
 <template>
   <div id="app">
-      <navbar></navbar>
-      <sidebar></sidebar>
-      <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
-          Dashboard
-          <small>it all starts here</small>
-        </h1>
-        <ol class="breadcrumb">
-          <li class="active">Dashboard</li>
-        </ol>
-      </section>
-      <!-- Main content -->
-      <section class="content">
+      <div v-if="path != 'login' && path != undefined">
+        <navbar></navbar>
+        <sidebar></sidebar>
+        <div class="content-wrapper">
+          <!-- Content Header (Page header) -->
+          <section class="content-header">
+            <h1>
+              Dashboard
+              <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+              <li class="active">Dashboard</li>
+            </ol>
+          </section>
+          <!-- Main content -->
+          <section class="content">
+            <router-view/>
+          </section>
+        </div>
+      </div>
+      <div v-else>
         <router-view/>
-      </section>
-    </div>
+      </div>
   </div>
 </template>
 
 <script lang="ts">
   import navbar from './components/Navbar.vue';
   import sidebar from './components/Sidebar.vue';
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Vue, Watch } from 'vue-property-decorator';
 
   @Component({
       components: {
@@ -32,7 +37,18 @@
       },
   })
 
-  export default class App extends Vue {}
+  export default class App extends Vue {
+    data() {
+      return {
+        path: ''
+      }
+    }
+
+    @Watch('$route', { immediate: true, deep: true })
+    onUrlChange(newVal: any) {
+      this.$data.path = this.$router.currentRoute.name
+    }
+  }
 </script>
 
 <style>
