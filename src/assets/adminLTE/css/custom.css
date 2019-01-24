@@ -59,3 +59,54 @@
 .fade{
     opacity: unset;
 }
+
+.a-group-red, .a-group-yellow, .a-group-green {
+    padding: 8px;
+    font-size: 18px;
+}
+.a-group-red{
+    background-color: #be4636;
+}
+.a-group-yellow{
+    background-color: #c58216;
+}
+.a-group-green{
+    background-color: #148351;
+}
+.number-task {
+    width: 50% !important;
+    color: white;
+}
+.no-border-top {
+    border-top: 1px solid #f4f4f4;
+}
+
+.title-timesheet {
+    padding: 5px;
+    background-color: #dd4b39;
+    color: white;
+}
+.timer {
+    padding-top: 10px;
+}
+
+.title-task{
+    position: relative;
+    margin-top: 5px;
+    top: 0;
+    right: 0;
+    float: none;
+    background: #d2d6de;
+    padding: 2px;
+}
+
+.white-background {
+    background-color: white;
+}
+
+.total-time {
+    margin-top: -14px;
+}
+.total-time tr td{
+    text-align: center;
+}

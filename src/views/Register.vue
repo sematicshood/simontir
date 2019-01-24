@@ -402,5 +402,5 @@
 </script>
 
 <style>
-@import '../assets/adminLTE/css/custom.css'
+@import '../assets/adminLTE/css/custom.css';
 </style>
