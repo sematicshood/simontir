@@ -6,7 +6,7 @@
                     <div class="box-header">
                         <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body" id="part1">
                         <dir class="row">
                             <div class="col-lg-6">
                                 <dir class="box-sub-header">
@@ -120,6 +120,68 @@
                                 </div>   
                             </div>
                         </dir>
+                    </div>
+
+                    <div class="box-body" id="part2">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="" placeholder="KM">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box box-danger col-lg-8">
+                            <div class="box-header with-border">
+                                <h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3>
+                                <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="box-body">
+                            <div class="form-group">
+                                    <table class="table table-hover">
+                                        <tbody><tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Pekerjaan</th>
+                                            <th>Qty</th>
+                                            <th>Harga</th>
+                                            <th style="width: 40px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>Lorem Ipsum Dolor Amet</td>
+                                            <td>1</td>
+                                            <td>Rp.125.000</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>                
+                                    </tbody></table>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="box box-danger col-lg-4">
+                            <div class="box-header with-border">
+                                <center><h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3></center>
+                            </div>
+                            <div class="box-body">
+                                <table class="table table-hover">
+                                    <tbody><tr>
+                                        <th>Periode Ganti (Km)</th>
+                                        <th>Sparepart</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-sm">8000</button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-sm">Busi</button>
+                                        </td>
+                                    </tr>                
+                                </tbody></table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
                     </div>
                     <div class="box-footer">
                         <button type="submit" class="btn btn-warning pull-right">Next</button>
