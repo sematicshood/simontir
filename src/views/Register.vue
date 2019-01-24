@@ -123,64 +123,252 @@
                     </div>
 
                     <div class="box-body" id="part2">
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="" class="col-sm-2 control-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control" id="" placeholder="KM">
+                        <div class="box box-danger col-lg-8">
+                            <div class="row" style="margin-top: 10px; border">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2 control-label">KM </label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control" id="" placeholder="KM">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="box box-danger col-lg-8">
-                            <div class="box-header with-border">
-                                <h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3>
-                                <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3>
+                                    <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="box-body">
+                                <div class="form-group">
+                                        <table class="table table-hover">
+                                            <tbody><tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Pekerjaan</th>
+                                                <th>Qty</th>
+                                                <th>Harga</th>
+                                                <th style="width: 40px">Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>1.</td>
+                                                <td>Lorem Ipsum Dolor Amet</td>
+                                                <td>1</td>
+                                                <td>Rp.125.000</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>                
+                                        </tbody></table>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
                             </div>
-                            <div class="box-body">
-                            <div class="form-group">
+
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <h3 class="box-sub-title"><strong>Suku Cadang</strong></h3>
+                                    <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="box-body">
+                                <div class="form-group">
+                                        <table class="table table-hover">
+                                            <tbody><tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Suku Cadang</th>
+                                                <th>Qty</th>
+                                                <th>Harga</th>
+                                                <th style="width: 40px">Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td>1.</td>
+                                                <td>Lorem Ipsum Dolor Amet</td>
+                                                <td>1</td>
+                                                <td>Rp.125.000</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>                
+                                        </tbody></table>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <th style="width: 70%;">Total</th>
+                                            <th>Rp.250.000</th>
+                                        </tr>
+                                    </table>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class=" col-lg-4 ">
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <center><h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3></center>
+                                </div>
+                                <div class="box-body">
                                     <table class="table table-hover">
                                         <tbody><tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Pekerjaan</th>
-                                            <th>Qty</th>
-                                            <th>Harga</th>
-                                            <th style="width: 40px">Action</th>
+                                            <th>Periode Ganti (Km)</th>
+                                            <th>Sparepart</th>
                                         </tr>
                                         <tr>
-                                            <td>1.</td>
-                                            <td>Lorem Ipsum Dolor Amet</td>
-                                            <td>1</td>
-                                            <td>Rp.125.000</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                <button type="button" class="btn btn-default btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-warning btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm" disabled>8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm" disabled>Busi</button>
+                                            </td>
+                                        </tr>               
+                                    </tbody></table>
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-sub-header">
+                                    <center><h3 class="box-sub-title"><strong>Paket Tambahan</strong></h3></center>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-hover">
+                                        <tbody><tr>
+                                            <th>Periode Ganti (Km)</th>
+                                            <th>Sparepart</th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-warning btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm">Busi</button>
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm" disabled>8000</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm" disabled>Busi</button>
                                             </td>
                                         </tr>                
                                     </tbody></table>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
                         </div>
-                        <div class="box box-danger col-lg-4">
-                            <div class="box-header with-border">
-                                <center><h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3></center>
+                        <div class="col-lg-4">
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <center><h3 class="box-sub-title"><strong>Estimasi Pekerjaan Selesai</strong></h3></center>
+                                </div>
+                                <div class="box-body" style="padding: 0px;">
+                                    <table class="custom-table">
+                                        <tr class="custom-th">
+                                            <td style="border-right: 1px solid #dd4b39; width:20%;" rowspan="2"><h5>2:30 Jam</h5></td>
+                                            <td style="border-right: 1px solid #dd4b39; width:40%;"><strong>Konsumen</strong></td>
+                                            <td style="width:40%;"><strong>Service Advisor</strong></td>
+                                        </tr>
+                                        <tr class="validasi">
+                                            <td style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td><input type="checkbox"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
                             </div>
-                            <div class="box-body">
-                                <table class="table table-hover">
-                                    <tbody><tr>
-                                        <th>Periode Ganti (Km)</th>
-                                        <th>Sparepart</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button type="button" class="btn btn-default btn-sm">8000</button>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-default btn-sm">Busi</button>
-                                        </td>
-                                    </tr>                
-                                </tbody></table>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <center><h3 class="box-sub-title"><strong>Tambahan Pekerjaan </strong></h3></center>
+                                </div>
+                                <div class="box-body" style="padding: 0px;">
+                                    <table class="custom-table">
+                                        <tr class="custom-th">
+                                            <td style="border-right: 1px solid #dd4b39; width:50%;"><strong>Konsumen</strong></td>
+                                            <td style="width:50%;"><strong>Service Advisor</strong></td>
+                                        </tr>
+                                        <tr class="validasi">
+                                            <td style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td><input type="checkbox"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="border-custom">
+                                <div class="box-sub-header">
+                                    <center><h3 class="box-sub-title"><strong>Penyerahan Motor Oleh SA </strong></h3></center>
+                                </div>
+                                <div class="box-body" style="padding: 0px;">
+                                    <table class="custom-table">
+                                        <tr class="custom-th">
+                                            <td><strong>Konsumen</strong></td>
+                                        </tr>
+                                        <tr class="validasi">
+                                            <td><input type="checkbox"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
                         </div>
                     </div>
                     <div class="box-footer">
