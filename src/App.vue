@@ -1,25 +1,23 @@
 <template>
   <div id="app">
-      <div class="wrapper">
-        <navbar></navbar>
-        <sidebar></sidebar>
-        <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            Dashboard
-            <small>it all starts here</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li class="active">Dashboard</li>
-          </ol>
-        </section>
-        <!-- Main content -->
-        <section class="content">
-          <router-view/>
-        </section>
-      </div> 
-      </div>
+      <navbar></navbar>
+      <sidebar></sidebar>
+      <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Dashboard
+          <small>it all starts here</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li class="active">Dashboard</li>
+        </ol>
+      </section>
+      <!-- Main content -->
+      <section class="content">
+        <router-view/>
+      </section>
+    </div>
   </div>
 </template>
 
