@@ -6,6 +6,7 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
+    import users from '../api/users';
 
     @Component({
         components: {},
