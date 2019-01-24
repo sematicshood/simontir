@@ -1,19 +1,21 @@
 const cekRoleUrl = (role) => {
-    if(role == 'mekanik') {
+    if(role.toUpperCase() == 'mekanik'.toUpperCase()) {
         return 'list_mekanik'
     }
 
-    if(role == 'kepala mekanik') {
+    if(role.toUpperCase() == 'kepala mekanik'.toUpperCase()) {
         return 'list_final_check'
     }
 
-    if(role == 'asisten mekanik') {
+    if(role.toUpperCase() == 'asisten mekanik'.toUpperCase()) {
         return 'list_final_check'
     }
 
-    if(role == 'front desk') {
+    if(role.toUpperCase() == 'front desk'.toUpperCase()) {
         return 'register'
     }
+
+    return 'register'
 }
 
 export default {

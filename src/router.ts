@@ -92,10 +92,17 @@ router.beforeEach((to, from, next) => {
 
   document.title = 'Simontir - ' + to.meta.title
 
+  if(to.name == 'login' && login) {
+    next({ name: auth.cekRoleUrl(login.role) })
+  }
+
   if(to.matched.some(record => record.meta.requiresAuth)) {
     if(login) {
-      if(login.role != 'manager') {
-        if(to.meta.role.includes(login.role) == false) next({ name: auth.cekRoleUrl(login.role) })
+      if(login.role.toUpperCase() != 'manager'.toUpperCase()) {
+        let role  = to.meta.role.map(function(x){ return x.toUpperCase() }),
+            lrole = login.role.toUpperCase()
+
+        if(role.includes(lrole) == false) next({ name: auth.cekRoleUrl(lrole) })
       }
     } else {
       next({ name: 'login' })

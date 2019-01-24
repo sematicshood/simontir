@@ -46,6 +46,7 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import users from '../api/users';
+    import auth from '../helpers/auth';
 
     @Component({
         components: {},
@@ -59,11 +60,31 @@
       cekLogin(): void {
         this.$data.error = []
 
+        let payload      = this.$data
+
         this.$validator.validateAll().then((result) => {
           if (result) {
-            users.cekUser(this.$data)
-                 .then((res) => this.$router.push(res))
-                 .catch((err) => alert(err))
+            users.cekUser(payload)
+                 .then((res) => {
+                    let user = res.data.filter(el => {
+                        return el.login == payload.login && el.password == payload.password
+                    })
+
+                    if(user.length > 0) {
+                        const role = user[0].job_id.name
+
+                        const data = {
+                            role: role
+                        }
+                    
+                        localStorage.setItem("login", JSON.stringify(data))
+
+                        this.$router.push({ name: auth.cekRoleUrl(role) })
+                    } else {
+                      alert('Username atau password salah')
+                    }
+                 })
+                 .catch((err) => alert('Username atau password salah'))
 
             return true
           }

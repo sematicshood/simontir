@@ -20,6 +20,9 @@
             <router-link v-for="route in routes" tag="li" :to="{ name: route.name }">
                 <a><i class="fa fa-book"></i> <span>{{ route.meta.title }}</span></a>
             </router-link>
+            <li>
+                <a href="#" @click="logout">Logout</a>
+            </li>
         </ul>
         </section>
         <!-- /.sidebar -->
@@ -31,6 +34,7 @@
 
 <script lang="ts">
   import { Component, Vue, Watch } from 'vue-property-decorator';
+  import auth from '../helpers/auth';
 
   @Component({})
 
@@ -41,6 +45,12 @@
       }
     }
 
+    logout(): void {
+        localStorage.clear()
+
+        this.$router.push({ name: 'login' })
+    }
+
     created() {
         this.$data.routes = this.$router.options.routes.filter(el => {
             return el.meta
@@ -49,10 +59,19 @@
         this.$data.routes = this.$data.routes.filter(el => {
             let login = JSON.parse(localStorage.getItem('login'))
             
-            if (login.role != 'manager')
-                return el.meta.show && el.meta.role.includes(login.role)
-            else
+            if (login.role.toUpperCase() != 'manager'.toUpperCase()) {
+                let role = ''
+
+                if(el.meta.role) {
+                    role  = el.meta.role.map(function(x){ return x.toUpperCase() })
+                } else {
+                    role  = el.meta.role
+                }
+                
+                return el.meta.show && role.includes(login.role.toUpperCase())
+            } else {
                 return el.meta.show
+            }
         })
     }
   }
