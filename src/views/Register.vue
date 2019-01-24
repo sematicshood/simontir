@@ -130,6 +130,65 @@
                                 </div>
                             </dir>
                         </dir>
+                        <dir class="row">
+                            <div class="col-lg-12">
+                                <dir class="box-sub-header">
+                                    <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
+                                    <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                </dir>
+
+                                <!-- Modal keluhan -->
+                                <b-modal id="keluhan">
+                                    <div class="form-group">
+                                        <label for="">Keluhan</label>
+                                        <input type="text" class="form-control" id="" placeholder="">
+                                    </div>
+                                </b-modal>
+
+                                <div class="form-group">
+                                    <table class="table table-hover">
+                                        <tbody><tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Keluhan</th>
+                                            <th>Check</th>
+                                            <th style="width: 100px">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>Lorem Ipsum Dolor Amet</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>
+                                                <div class="btn-group btn-sm">
+                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                
+                                            </td>
+                                        </tr>                
+                                    </tbody></table>
+                                </div>   
+                            </div>
+                        </dir>
+                        <dir class="row">
+                            <div class="col-lg-12">
+                                <dir class="box-sub-header">
+                                    <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
+                                </dir>
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                </div>   
+                            </div>
+                        </dir>
+                        <dir class="row">
+                            <div class="col-lg-12">
+                                <dir class="box-sub-header">
+                                    <h3 class="box-sub-title"><strong>Saran Mekanik</strong></h3>
+                                </dir>
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                </div>   
+                            </div>
+                        </dir>
                     </div>
 
                     <div class="box-body" id="part2" v-else-if="halaman == 2">
@@ -144,9 +203,51 @@
                             </div>
                             <div class="border-custom">
                                 <div class="box-sub-header">
-                                    <h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3>
-                                    <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                    <h3 class="box-sub-title"><strong>Pekerjaan / Jasa</strong></h3>
+                                    <button type="button" v-b-modal="'jasa'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                 </div>
+
+                                <!-- Modal jasa -->
+                                <b-modal id="jasa">
+                                    <div class="col-xs-12">
+                                        <div class="box">
+                                            <div class="box-header">
+                                            <h3 class="box-title">Data Jasa</h3>
+
+                                            <div class="box-tools">
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
+
+                                                <div class="input-group-btn">
+                                                    <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover">
+                                                <tbody><tr>
+                                                <th>#</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                </tr>
+                                                <tr>
+                                                <td>1</td>
+                                                <td>John Doe</td>
+                                                <td>11-7-2014</td>
+                                                <td><span class="label label-success">Approved</span></td>
+                                                <td>Bacon ipsum dolor</td>
+                                                </tr>
+                                            </tbody></table>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+                                    </div>
+                                </b-modal>
                                 <div class="box-body">
                                 <div class="form-group">
                                         <table class="table table-hover">
@@ -163,7 +264,7 @@
                                                 <td>1</td>
                                                 <td>Rp.125.000</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>                
                                         </tbody></table>
@@ -175,8 +276,50 @@
                             <div class="border-custom">
                                 <div class="box-sub-header">
                                     <h3 class="box-sub-title"><strong>Suku Cadang</strong></h3>
-                                    <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                    <button type="button" b-v-modal="'sukuCadang'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                 </div>
+
+                                <!-- Modal suku cadang -->
+                                <b-modal id="sukuCadang">
+                                    <div class="col-xs-12">
+                                        <div class="box">
+                                            <div class="box-header">
+                                            <h3 class="box-title">Data Suku Cadang</h3>
+
+                                            <div class="box-tools">
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
+
+                                                <div class="input-group-btn">
+                                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover">
+                                                <tbody><tr>
+                                                <th>#</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                <th>Column</th>
+                                                </tr>
+                                                <tr>
+                                                <td>1</td>
+                                                <td>John Doe</td>
+                                                <td>11-7-2014</td>
+                                                <td><span class="label label-success">Approved</span></td>
+                                                <td>Bacon ipsum dolor</td>
+                                                </tr>
+                                            </tbody></table>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+                                    </div>
+                                </b-modal>
                                 <div class="box-body">
                                 <div class="form-group">
                                         <table class="table table-hover">
@@ -193,7 +336,7 @@
                                                 <td>1</td>
                                                 <td>Rp.125.000</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>                
                                         </tbody></table>
