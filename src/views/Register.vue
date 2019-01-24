@@ -87,22 +87,42 @@
                                 <div class="col-lg-12">
                                     <dir class="box-sub-header">
                                         <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
-                                        <button type="button" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                        <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                     </dir>
+
+                                    <!-- Modal keluhan -->
+                                    <b-modal @ok="addKeluhan" id="keluhan">
+                                        <div class="form-group">
+                                            <label for="">Keluhan</label>
+                                            <input type="text" v-model="keluhan_input" class="form-control" id="" placeholder="">
+                                        </div>
+                                    </b-modal>
+
                                     <div class="form-group">
                                         <table class="table table-hover">
                                             <tbody><tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>Keluhan</th>
                                                 <th>Check</th>
-                                                <th style="width: 40px">Action</th>
+                                                <th style="width: 100px">Action</th>
                                             </tr>
-                                            <tr v-for="keluhan in keluhan_konsumer">
-                                                <td>1.</td>
-                                                <td>Lorem Ipsum Dolor Amet</td>
-                                                <td><input type="checkbox"></td>
+                                            <tr v-for="(keluhan, i) in keluhan_konsumer">
+                                                <td>{{ i += 1 }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                    <span v-if="edit_keluhan != i">{{ keluhan.nama }}</span>
+                                                    <input v-else-if="edit_keluhan == i" class="form-control" v-model="keluhan_input"></input>
+                                                </td>
+                                                <td><input disabled type="checkbox"></td>
+                                                <td v-if="edit_keluhan != i">
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" @click="editKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
+                                                        <button type="button" @click="deleteKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td v-else-if="edit_keluhan == i">
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" @click="saveKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-save"></i></button>
+                                                    </div>
                                                 </td>
                                             </tr>                
                                         </tbody></table>
@@ -129,45 +149,6 @@
                                     </div>   
                                 </div>
                             </dir>
-                        </dir>
-                        <dir class="row">
-                            <div class="col-lg-12">
-                                <dir class="box-sub-header">
-                                    <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
-                                    <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
-                                </dir>
-
-                                <!-- Modal keluhan -->
-                                <b-modal id="keluhan">
-                                    <div class="form-group">
-                                        <label for="">Keluhan</label>
-                                        <input type="text" class="form-control" id="" placeholder="">
-                                    </div>
-                                </b-modal>
-
-                                <div class="form-group">
-                                    <table class="table table-hover">
-                                        <tbody><tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Keluhan</th>
-                                            <th>Check</th>
-                                            <th style="width: 100px">Action</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>Lorem Ipsum Dolor Amet</td>
-                                            <td><input type="checkbox"></td>
-                                            <td>
-                                                <div class="btn-group btn-sm">
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
-                                                </div>
-                                                
-                                            </td>
-                                        </tr>                
-                                    </tbody></table>
-                                </div>   
-                            </div>
                         </dir>
                         <dir class="row">
                             <div class="col-lg-12">
@@ -568,14 +549,38 @@
         analisa_service: string            = ""
         saran_mekanik: string              = ""
 
-        button_history                     = false
+        button_history: boolean            = false
+        keluhan_input: string              = ""
+        edit_keluhan: number               = 0
+        keluhan_input: string              = ""
+
+        addKeluhan(): void {
+            this.keluhan_konsumer.push({ nama: this.keluhan_input })
+            this.keluhan_input = ""
+        }
+
+        deleteKeluhan(i): void {
+            this.keluhan_konsumer.splice(i - 1,1)
+        }
+
+        editKeluhan(i): void {
+            this.edit_keluhan  = i
+            this.keluhan_input = this.keluhan_konsumer[i - 1].nama
+        }
+
+        saveKeluhan(i): void {
+            this.keluhan_konsumer[i - 1].nama = this.keluhan_input
+            this.edit_keluhan  = 0
+
+            this.keluhan_input = ""
+        }
         
         @Watch('no_polisi')
         onNoPolisiChanged(val: string) {
             if(val == "")
-                this.$data.button_history  = false
+                this.button_history  = false
             else
-                this.$data.button_history  = true
+                this.button_history  = true
         }
     }
 </script>
