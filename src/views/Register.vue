@@ -7,7 +7,7 @@
                         <div class="box-header">
                             <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" v-if="halaman == 1">
                             <dir class="row">
                                 <div class="col-lg-6">
                                     <dir class="box-sub-header">
@@ -25,7 +25,7 @@
                                             Hello From My Modal!
                                         </b-modal>
                                     </div><div class="form-group">
-                                        <label for="">No. Unit</label>
+                                        <label for="">No. Urut</label>
                                         <input disabled type="text" class="form-control" id="" placeholder="">
                                     </div>
                                     <div class="form-group">
@@ -43,8 +43,7 @@
                                     <div class="form-group">
                                         <label>Type</label>
                                         <select class="form-control" v-model="type">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
+                                            <option v-for="ty in types" :value="ty.name" v-text="ty.name"></option>
                                         </select>
                                         </div>
                                     <div class="form-group">
@@ -133,7 +132,7 @@
                         </dir>
                     </div>
 
-                    <div class="box-body" id="part2">
+                    <div class="box-body" id="part2" v-else-if="halaman == 2">
                         <div class="box box-danger col-lg-8">
                             <div class="row" style="margin-top: 10px; border">
                                 <div class="form-group">
@@ -382,9 +381,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" class="btn btn-warning pull-right">Next</button>
+                    <div class="box-footer" v-if="halaman == 2">
+                        <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
+                        <button type="submit" class="btn btn-primary pull-right">Finish</button>
+                    </div>
+                    <div class="box-footer" v-else-if="halaman == 1">
+                        <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" >Next</button>
                     </div>
                     </form>
                 </div>
@@ -401,11 +403,14 @@
     })
 
     export default class Register extends Vue {
+        halaman: number             = 1
+
         no_polisi: string           = ""
         tgl_service: string         = ""
         no_mesin: string            = ""
         no_rangka: string           = ""
         type: string                = ""
+        types: Array<string>        = JSON.parse(localStorage.getItem('types'))
         tahun: number               = ""
 
         nama_pembawa: string        = ""

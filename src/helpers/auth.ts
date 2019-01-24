@@ -22,12 +22,19 @@ const cekRoleUrl = (role) => {
 }
 
 const cekData = () => {
-    let usersLocal = JSON.parse(localStorage.getItem('users'))
+    let usersLocal = JSON.parse(localStorage.getItem('users')),
+        typesLocal = JSON.parse(localStorage.getItem('types'))
     
     if(usersLocal == null) {
         let getUser = api.get('https://api.myjson.com/bins/1fxjqs')
 
         getUser.then(res => localStorage.setItem('users', JSON.stringify(res.data)))
+    }
+
+    if(typesLocal == null) {
+        let getType = api.get('https://api.myjson.com/bins/k8n7o')
+
+        getType.then(res => localStorage.setItem('types', JSON.stringify(res.data)))
     }
 }
 

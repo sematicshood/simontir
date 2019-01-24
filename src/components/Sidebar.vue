@@ -46,7 +46,7 @@
     }
 
     logout(): void {
-        localStorage.clear()
+        localStorage.removeItem('login')
 
         this.$router.push({ name: 'login' })
     }
