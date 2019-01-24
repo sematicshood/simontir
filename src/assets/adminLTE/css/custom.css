@@ -52,3 +52,10 @@
 .validasi{
     height: 60px;
 }
+
+.fade:not(.show){
+    opacity: 1;
+}
+.fade{
+    opacity: unset;
+}

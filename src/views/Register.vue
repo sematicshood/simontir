@@ -9,12 +9,23 @@
                     <div class="box-body" id="part1">
                         <dir class="row">
                             <div class="col-lg-6">
-                                <dir class="box-sub-header">
+                                <div class="box-sub-header">
                                     <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
-                                </dir><div class="form-group">
-                                    <label for="">No. Polisi</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div><div class="form-group">
+                                </div>
+
+                                <label for="">No. Polisi</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                    <button type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
+                                    </span>
+                                </div>
+                                <br>
+                                <b-btn v-b-modal.myModal>Show Modal</b-btn>
+                                <b-modal id="myModal">
+                                    Hello From My Modal!
+                                </b-modal>
+                                <div class="form-group">
                                     <label for="">No. Unit</label>
                                     <input type="text" class="form-control" id="" placeholder="">
                                 </div>
@@ -43,9 +54,9 @@
                                 </div>
                             </div>
                             <dir class="col-lg-6">
-                                <dir class="box-sub-header" style="margin-top: -14px !important;">
+                                <div class="box-sub-header" style="margin-top: -14px !important;">
                                     <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
-                                </dir>
+                                </div>
                                 <div class="form-group">
                                     <label for="">Nama</label>
                                     <input type="text" class="form-control" id="" placeholder="">
