@@ -17,6 +17,12 @@ const router = new Router({
       name: 'login',
       component: () => import('@views/Login'),
     },
+
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@views/Dashboard'),
+    },
     {
       path: '/register',
       name: 'register',
