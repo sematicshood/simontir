@@ -16,6 +16,9 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: () => import('@views/Login'),
+      meta: {
+        title: 'Login',
+      }
     },
     {
       path: '/register',
@@ -24,6 +27,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['front desk'],
+        title: 'Register',
+        show: true,
       },
     },
     {
@@ -33,6 +38,7 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik', 'asisten mekanik'],
+        title: 'Final Check',
       },
     },
     {
@@ -42,6 +48,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik', 'asisten mekanik'],
+        title: 'List Final Check',
+        show: true,
       },
     },
     {
@@ -51,6 +59,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['mekanik'],
+        title: 'List Mekanik',
+        show: true,
       },
     },
     {
@@ -60,6 +70,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik'],
+        title: 'Option Role',
+        show: true,
       },
     },
     {
@@ -69,6 +81,7 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['mekanik'],
+        title: 'Timesheet Mekanik',
       },
     },
   ],
@@ -77,10 +90,19 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let login: Array<string> = JSON.parse(localStorage.getItem('login'))
 
+  document.title = 'Simontir - ' + to.meta.title
+
+  if(to.name == 'login' && login) {
+    next({ name: auth.cekRoleUrl(login.role) })
+  }
+
   if(to.matched.some(record => record.meta.requiresAuth)) {
     if(login) {
-      if(login.role != 'manager') {
-        if(to.meta.role.includes(login.role) == false) next({ name: auth.cekRoleUrl(login.role) })
+      if(login.role.toUpperCase() != 'manager'.toUpperCase()) {
+        let role  = to.meta.role.map(function(x){ return x.toUpperCase() }),
+            lrole = login.role.toUpperCase()
+
+        if(role.includes(lrole) == false) next({ name: auth.cekRoleUrl(lrole) })
       }
     } else {
       next({ name: 'login' })

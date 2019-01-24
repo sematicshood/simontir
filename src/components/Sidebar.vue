@@ -17,52 +17,12 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
-            <a href="#">
-                <i class="fa fa-dashboard"></i> <span>Menu 1</span>
-                <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Menu 1.1</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Menu 1.2</a></li>
-            </ul>
-            </li>        
-            <li class="treeview">
-            <a href="#">
-                <i class="fa fa-share"></i> <span>Menu 2</span>
-                <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Menu One</a></li>
-                <li class="treeview">
-                <a href="#"><i class="fa fa-circle-o"></i> Level One
-                    <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                    <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                        <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                    </ul>
-                    </li>
-                </ul>
-                </li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            </ul>
+            <router-link v-for="route in routes" tag="li" :to="{ name: route.name }">
+                <a><i class="fa fa-book"></i> <span>{{ route.meta.title }}</span></a>
+            </router-link>
+            <li>
+                <a href="#" @click="logout">Logout</a>
             </li>
-            <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Menu 2</span></a></li>
         </ul>
         </section>
         <!-- /.sidebar -->
@@ -72,8 +32,47 @@
   </div>
 </template>
 
-<script>
-export default {
-    name: 'sidebar'
-}
+<script lang="ts">
+  import { Component, Vue, Watch } from 'vue-property-decorator';
+  import auth from '../helpers/auth';
+
+  @Component({})
+
+  export default class Sidebar extends Vue {
+    data() {
+      return {
+        routes: 'yayayay'
+      }
+    }
+
+    logout(): void {
+        localStorage.clear()
+
+        this.$router.push({ name: 'login' })
+    }
+
+    created() {
+        this.$data.routes = this.$router.options.routes.filter(el => {
+            return el.meta
+        })
+
+        this.$data.routes = this.$data.routes.filter(el => {
+            let login = JSON.parse(localStorage.getItem('login'))
+            
+            if (login.role.toUpperCase() != 'manager'.toUpperCase()) {
+                let role = ''
+
+                if(el.meta.role) {
+                    role  = el.meta.role.map(function(x){ return x.toUpperCase() })
+                } else {
+                    role  = el.meta.role
+                }
+                
+                return el.meta.show && role.includes(login.role.toUpperCase())
+            } else {
+                return el.meta.show
+            }
+        })
+    }
+  }
 </script>
