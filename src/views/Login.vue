@@ -2,8 +2,8 @@
     <div id="login">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-2"></div>
+            <div class="col-lg-4 col-md-8">
               <div class="card form-login">
                 <div class="card-body">
                     <div class="alert alert-danger" v-if="error.length > 0">
@@ -12,32 +12,24 @@
                       </ul>
                     </div>
                     <form @submit.prevent="cekLogin">
-                      <center><h1 class="title-login">Login Simontir</h1></center>
+                      <center><h1 class="title-login">Bengkel Pintar</h1></center>
+                      <center><h4 class="title-login">Login</h4></center>
                       <br>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
-                        </div>
-                        <input type="text" v-validate="'required'" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" v-model="login" name="username">
+                      <div class="form-group has-feedback">
+                        <input type="text" v-validate="'required'" class="form-control" placeholder="Username" v-model="login" name="username">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                       </div>
-                      <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
-                          </div>
-                          <input type="password" v-validate="'required'" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" v-model="password" name="password">
-                        </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label" for="dropdownCheck">
-                          Remember me
-                        </label>
+                      <div class="form-group has-feedback">
+                        <input type="password" v-validate="'required'" class="form-control" placeholder="Password" v-model="password" name="password">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                       </div>
+                      
                       <button type="submit" class="btn btn-danger btn-login">Login</button>
                     </form>
                 </div>
               </div>        
             </div>
-            <div class="col-lg-4"></div>
+            <div class="col-lg-4 col-md-2"></div>
           </div>
       </div>
     </div>
