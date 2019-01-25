@@ -84,6 +84,14 @@ const router = new Router({
         title: 'Timesheet Mekanik',
       },
     },
+    {
+      path: '/queue_board',
+      name: 'queue_board',
+      component: () => import('@views/QueueBoard'),
+      meta: {
+        title: 'Queue Board'
+      }
+    },
   ],
 })
 
