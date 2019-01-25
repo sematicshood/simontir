@@ -123,7 +123,7 @@
                                                 <th>Check</th>
                                                 <th style="width: 100px">Action</th>
                                             </tr>
-                                            <tr v-for="(keluhan, i) in keluhan_konsumer">
+                                            <tr v-for="(keluhan, i) in keluhan_konsumen">
                                                 <td>{{ i += 1 }}</td>
                                                 <td>
                                                     <span v-if="edit_keluhan != i">{{ keluhan.nama }}</span>
@@ -236,7 +236,7 @@
                                                 <th>Harga</th>
                                                 <th style="width: 40px">Action</th>
                                             </tr>
-                                            <tr>
+                                            <tr v-for="service in services_selected">
                                                 <td>1.</td>
                                                 <td>Lorem Ipsum Dolor Amet</td>
                                                 <td>1</td>
@@ -308,7 +308,7 @@
                                                 <th>Harga</th>
                                                 <th style="width: 40px">Action</th>
                                             </tr>
-                                            <tr>
+                                            <tr v-for="sparepart in spareparts_selected">
                                                 <td>1.</td>
                                                 <td>Lorem Ipsum Dolor Amet</td>
                                                 <td>1</td>
@@ -328,7 +328,7 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <th style="width: 70%;">Total</th>
-                                            <th>Rp.250.000</th>
+                                            <th>Rp. {{ convertToRupiah(total) }}</th>
                                         </tr>
                                     </table>
                                 </div>                                
@@ -455,8 +455,8 @@
                                             <td style="width:40%;"><strong>Service Advisor</strong></td>
                                         </tr>
                                         <tr class="validasi">
-                                            <td style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
-                                            <td><input type="checkbox"></td>
+                                            <td v-model="estimasi_konsumen" style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td><input v-model="estimasi_advisor" type="checkbox"></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -475,8 +475,8 @@
                                             <td style="width:50%;"><strong>Service Advisor</strong></td>
                                         </tr>
                                         <tr class="validasi">
-                                            <td style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
-                                            <td><input type="checkbox"></td>
+                                            <td v-model="tambahan_konsumen" style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td><input v-model="tambahan_advisor" type="checkbox"></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -494,7 +494,7 @@
                                             <td><strong>Konsumen</strong></td>
                                         </tr>
                                         <tr class="validasi">
-                                            <td><input type="checkbox"></td>
+                                            <td><input v-text="penyerahan_konsumen" type="checkbox"></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -517,7 +517,8 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue, Watch } from 'vue-property-decorator';
+    import { Component, Vue, Watch, mixins } from 'vue-property-decorator';
+    import additional from '../helpers/additional'
 
     @Component({
         components: {},
@@ -542,7 +543,7 @@
         nama_pemilik: string        = ""
         alamat: string              = ""
 
-        keluhan_konsumer: Array<string>    = []
+        keluhan_konsumen: Array<string>    = []
         analisa_service: string            = ""
         saran_mekanik: string              = ""
 
@@ -552,22 +553,41 @@
         keluhan_input: string              = ""
         histories: Array<string>           = []
 
+        services_selected: Array<string>   = []
+        spareparts_selected: Array<string> = []
+        spareparts: Array<string>          = []
+        services: Array<string>            = []
+
+        total: number                      = 0
+
+        estimasi_konsumen: boolean         = false
+        estimasi_advisor: boolean          = false
+
+        tambahan_konsumen: boolean         = false
+        tambahan_advisor: boolean          = false
+
+        penyerahan_konsumen: boolean       = false
+
+        convertToRupiah(angka): void {
+            return additional.convertToRupiah(angka)
+        }
+
         addKeluhan(): void {
-            this.keluhan_konsumer.push({ nama: this.keluhan_input })
+            this.keluhan_konsumen.push({ nama: this.keluhan_input })
             this.keluhan_input = ""
         }
 
         deleteKeluhan(i): void {
-            this.keluhan_konsumer.splice(i - 1,1)
+            this.keluhan_konsumen.splice(i - 1,1)
         }
 
         editKeluhan(i): void {
             this.edit_keluhan  = i
-            this.keluhan_input = this.keluhan_konsumer[i - 1].nama
+            this.keluhan_input = this.keluhan_konsumen[i - 1].nama
         }
 
         saveKeluhan(i): void {
-            this.keluhan_konsumer[i - 1].nama = this.keluhan_input
+            this.keluhan_konsumen[i - 1].nama = this.keluhan_input
             this.edit_keluhan  = 0
 
             this.keluhan_input = ""
