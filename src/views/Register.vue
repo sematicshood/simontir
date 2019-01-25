@@ -3,128 +3,152 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="box box-danger box-solid">
-                    <div class="box-header">
-                        <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
-                    </div>
-                    <div class="box-body" id="part1">
-                        <dir class="row">
-                            <div class="col-lg-6">
-                                <div class="box-sub-header">
-                                    <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
-                                </div>
-
-                                <label for="">No. Polisi</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control">
-                                    <span class="input-group-btn">
-                                    <button type="button" v-b-modal="'history'" class="btn btn-success btn-flat">History</button>
-                                    </span>
-                                </div>
-                                <br>
-
-                                <!-- Modal History -->
-                                <b-modal id="history">
-                                    Hello From My Modal!
-                                </b-modal>
-
-                                <div class="form-group">
-                                    <label for="">No. Unit</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Tgl. Servis</label>
-                                    <input type="date" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">No. Mesin</label>
-                                    <input type="number" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">No. Rangka</label>
-                                    <input type="number" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Type</label>
-                                    <select class="form-control">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                    </select>
+                    <form>
+                        <div class="box-header">
+                            <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
+                        </div>
+                        <div class="box-body" v-if="halaman == 1">
+                            <dir class="row">
+                                <div class="col-lg-6">
+                                    <dir class="box-sub-header">
+                                        <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
+                                    </dir><div class="form-group">
+                                        <label for="">No. Polisi</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" v-model="no_polisi">
+                                            <span class="input-group-btn">
+                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
+                                            </span>
+                                        </div>
+                                        <br>
+                                        <b-modal id="myModal">
+                                            Hello From My Modal!
+                                        </b-modal>
+                                    </div><div class="form-group">
+                                        <label for="">No. Urut</label>
+                                        <input disabled type="text" class="form-control" id="" placeholder="">
                                     </div>
-                                <div class="form-group">
-                                    <label for="">Tahun</label>
-                                    <input type="number" class="form-control" id="" placeholder="">
-                                </div>
-                            </div>
-                            <dir class="col-lg-6">
-                                <div class="box-sub-header" style="margin-top: -14px !important;">
-                                    <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Nama</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div><div class="form-group">
-                                    <label for="">No. Telp/HP</label>
-                                    <input type="number" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Email</label>
-                                    <input type="mail" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Sosmed</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <dir class="box-sub-header" style="margin-top: 30px !important;">
-                                    <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
-                                </dir>
-                                <div class="form-group">
-                                    <label for="">Nama</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Alamat</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                                </div>                                
-                            </dir>
-                        </dir>
-                        <dir class="row">
-                            <div class="col-lg-12">
-                                <dir class="box-sub-header">
-                                    <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
-                                    <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
-                                </dir>
-
-                                <!-- Modal keluhan -->
-                                <b-modal id="keluhan">
                                     <div class="form-group">
-                                        <label for="">Keluhan</label>
-                                        <input type="text" class="form-control" id="" placeholder="">
+                                        <label for="">Tgl. Servis</label>
+                                        <input type="date" class="form-control" id="" placeholder="" v-model="tgl_service">
                                     </div>
-                                </b-modal>
+                                    <div class="form-group">
+                                        <label for="">No. Mesin</label>
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_mesin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">No. Rangka</label>
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_rangka">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" v-model="type">
+                                            <option v-for="ty in types" :value="ty.name" v-text="ty.name"></option>
+                                        </select>
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="">Tahun</label>
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="tahun">
+                                    </div>
+                                </div>
+                                <dir class="col-lg-6">
+                                    <dir class="box-sub-header" style="margin-top: -14px !important;">
+                                        <center><h3 class="box-sub-title"><strong>Data Pemilik</strong></h3></center>
+                                    </dir>
+                                    <div class="form-group">
+                                        <label for="">Nama</label>
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pembawa">
+                                    </div><div class="form-group">
+                                        <label for="">No. Telp/HP</label>
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_telp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Email</label>
+                                        <input type="mail" class="form-control" id="" placeholder="" v-model="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Sosmed</label>
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="sosmed">
+                                    </div>
+                                    <dir class="box-sub-header" style="margin-top: 30px !important;">
+                                        <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
+                                    </dir>
+                                    <div class="form-group">
+                                        <label for="">Nama</label>
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pemilik">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Alamat</label>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="alamat"></textarea>
+                                    </div>                                
+                                </dir>
+                            </dir>
+                            <dir class="row">
+                                <div class="col-lg-12">
+                                    <dir class="box-sub-header">
+                                        <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
+                                        <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                    </dir>
 
-                                <div class="form-group">
-                                    <table class="table table-hover">
-                                        <tbody><tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Keluhan</th>
-                                            <th>Check</th>
-                                            <th style="width: 100px">Action</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>Lorem Ipsum Dolor Amet</td>
-                                            <td><input type="checkbox"></td>
-                                            <td>
-                                                <div class="btn-group btn-sm">
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
-                                                </div>
-                                                
-                                            </td>
-                                        </tr>                
-                                    </tbody></table>
-                                </div>   
-                            </div>
+                                    <!-- Modal keluhan -->
+                                    <b-modal @ok="addKeluhan" id="keluhan">
+                                        <div class="form-group">
+                                            <label for="">Keluhan</label>
+                                            <input type="text" v-model="keluhan_input" class="form-control" id="" placeholder="">
+                                        </div>
+                                    </b-modal>
+
+                                    <div class="form-group">
+                                        <table class="table table-hover">
+                                            <tbody><tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Keluhan</th>
+                                                <th>Check</th>
+                                                <th style="width: 100px">Action</th>
+                                            </tr>
+                                            <tr v-for="(keluhan, i) in keluhan_konsumer">
+                                                <td>{{ i += 1 }}</td>
+                                                <td>
+                                                    <span v-if="edit_keluhan != i">{{ keluhan.nama }}</span>
+                                                    <input v-else-if="edit_keluhan == i" class="form-control" v-model="keluhan_input"></input>
+                                                </td>
+                                                <td><input disabled type="checkbox"></td>
+                                                <td v-if="edit_keluhan != i">
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" @click="editKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
+                                                        <button type="button" @click="deleteKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td v-else-if="edit_keluhan == i">
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" @click="saveKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-save"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>                
+                                        </tbody></table>
+                                    </div>   
+                                </div>
+                            </dir>
+                            <dir class="row">
+                                <div class="col-lg-12">
+                                    <dir class="box-sub-header">
+                                        <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
+                                    </dir>
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisa_service"></textarea>
+                                    </div>   
+                                </div>
+                            </dir>
+                            <dir class="row">
+                                <div class="col-lg-12">
+                                    <dir class="box-sub-header">
+                                        <h3 class="box-sub-title"><strong>Saran Mekanik</strong></h3>
+                                    </dir>
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saran_mekanik"></textarea>
+                                    </div>   
+                                </div>
+                            </dir>
                         </dir>
                         <dir class="row">
                             <div class="col-lg-12">
@@ -148,7 +172,7 @@
                         </dir>
                     </div>
 
-                    <div class="box-body" id="part2">
+                    <div class="box-body" id="part2" v-else-if="halaman == 2">
                         <div class="box box-danger col-lg-8">
                             <div class="row" style="margin-top: 10px; border">
                                 <div class="form-group">
@@ -481,9 +505,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-warning pull-right">Next</button>
+                    <div class="box-footer" v-if="halaman == 2">
+                        <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
+                        <button type="submit" class="btn btn-primary pull-right">Finish</button>
                     </div>
+                    <div class="box-footer" v-else-if="halaman == 1">
+                        <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" >Next</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -491,13 +520,69 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue, Watch } from 'vue-property-decorator';
 
     @Component({
         components: {},
     })
 
-    export default class Register extends Vue {}
+    export default class Register extends Vue {
+        halaman: number             = 1
+
+        no_polisi: string           = ""
+        tgl_service: string         = ""
+        no_mesin: string            = ""
+        no_rangka: string           = ""
+        type: string                = ""
+        types: Array<string>        = JSON.parse(localStorage.getItem('types'))
+        tahun: number               = ""
+
+        nama_pembawa: string        = ""
+        no_telp: string             = ""
+        email: string               = ""
+        sosmed: string              = ""
+        
+        nama_pemilik: string        = ""
+        alamat: string              = ""
+
+        keluhan_konsumer: Array<string>    = []
+        analisa_service: string            = ""
+        saran_mekanik: string              = ""
+
+        button_history: boolean            = false
+        keluhan_input: string              = ""
+        edit_keluhan: number               = 0
+        keluhan_input: string              = ""
+
+        addKeluhan(): void {
+            this.keluhan_konsumer.push({ nama: this.keluhan_input })
+            this.keluhan_input = ""
+        }
+
+        deleteKeluhan(i): void {
+            this.keluhan_konsumer.splice(i - 1,1)
+        }
+
+        editKeluhan(i): void {
+            this.edit_keluhan  = i
+            this.keluhan_input = this.keluhan_konsumer[i - 1].nama
+        }
+
+        saveKeluhan(i): void {
+            this.keluhan_konsumer[i - 1].nama = this.keluhan_input
+            this.edit_keluhan  = 0
+
+            this.keluhan_input = ""
+        }
+        
+        @Watch('no_polisi')
+        onNoPolisiChanged(val: string) {
+            if(val == "")
+                this.button_history  = false
+            else
+                this.button_history  = true
+        }
+    }
 </script>
 
 <style>
