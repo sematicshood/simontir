@@ -181,6 +181,16 @@
                                         <input type="number" class="form-control" id="" placeholder="KM">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-6 control-label">Jenis Servis </label>
+                                    <div class="col-sm-6">
+                                        <select name="" id="" class="form-control">
+                                            <option value="reguler">Reguler</option>
+                                            <option value="Light Repair">Light Repair</option>
+                                            <option value="Booking Service">Booking Service</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="border-custom">
                                 <div class="box-sub-header">
@@ -257,7 +267,7 @@
                             <div class="border-custom">
                                 <div class="box-sub-header">
                                     <h3 class="box-sub-title"><strong>Suku Cadang</strong></h3>
-                                    <button type="button" b-v-modal="'sukuCadang'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                    <button type="button" v-b-modal="'sukuCadang'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                 </div>
 
                                 <!-- Modal suku cadang -->
@@ -343,51 +353,43 @@
                                     <center><h3 class="box-sub-title"><strong>Saran Ganti Sparepart</strong></h3></center>
                                 </div>
                                 <div class="box-body">
-                                    <table class="table table-hover">
-                                        <tbody><tr>
+                                    <table class="table">
+                                        <tbody>
+                                        <tr style="text-align: center;">
                                             <th>Periode Ganti (Km)</th>
                                             <th>Sparepart</th>
+                                            <th>Stok</th>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm">Busi</button>
-                                            </td>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-success">Ada</span></td>
+                                        </tr>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-warning">Habis</span></td>
                                         </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-warning btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-warning btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm" disabled>8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm" disabled>Busi</button>
-                                            </td>
-                                        </tr>               
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-success">Ada</span></td>
+                                        </tr>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-warning">Habis</span></td>
+                                        </tr>    
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-success">Ada</span></td>
+                                        </tr>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-warning">Habis</span></td>
+                                        </tr>              
                                     </tbody></table>
                                 </div>
                                 <!-- /.box-body -->
@@ -395,51 +397,33 @@
                                     <center><h3 class="box-sub-title"><strong>Paket Tambahan</strong></h3></center>
                                 </div>
                                 <div class="box-body">
-                                    <table class="table table-hover">
-                                        <tbody><tr>
+                                    <table class="table">
+                                        <tbody>
+                                        <tr style="text-align: center;">
                                             <th>Periode Ganti (Km)</th>
                                             <th>Sparepart</th>
+                                            <th>Stok</th>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm">Busi</button>
-                                            </td>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-success">Ada</span></td>
+                                        </tr>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-warning">Habis</span></td>
                                         </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-warning btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-warning btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm">8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm">Busi</button>
-                                            </td>
-                                        </tr> 
-                                        <tr>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm" disabled>8000</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm" disabled>Busi</button>
-                                            </td>
-                                        </tr>                
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-success">Ada</span></td>
+                                        </tr>
+                                        <tr class="item-tr-center">
+                                            <td>8000</td>
+                                            <td>Busi</td>
+                                            <td><span class="label label-warning">Habis</span></td>
+                                        </tr>              
                                     </tbody></table>
                                 </div>
                                 <!-- /.box-body -->
