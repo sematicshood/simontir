@@ -110,3 +110,12 @@
 .total-time tr td{
     text-align: center;
 }
+
+.item-tr-center {
+    text-align: center;
+    color: white;
+    background-color: #dd4c39d8;
+}
+.item-tr-center:hover {
+    background-color: #148351d5 !important;
+}

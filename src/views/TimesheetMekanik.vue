@@ -21,10 +21,10 @@
                 </div>
                 <table class="table table-striped white-background">
                     <tr>
-                        <td style="width: 20px;">1</td>
+                        <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
-                            Ganti Oli <br>
-                            00:00:00
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -37,8 +37,8 @@
                     <tr>
                         <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
-                            Ganti Ban <br>
-                            00:00:00
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -49,10 +49,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 20px;">3</td>
+                        <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
-                            Ganti Oli Rem<br>
-                            00:00:00
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -69,10 +69,10 @@
                 </div>
                 <table class="table table-striped white-background">
                     <tr>
-                        <td style="width: 20px;">1</td>
+                        <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
-                            Oli <br>
-                            00:00:00
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -86,7 +86,27 @@
                         <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
                             Ban <br>
-                            00:00:00
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
+                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="title-task" style="margin-top: -14px;">
+                    <center><h4><strong>Keluhan</strong></h4></center>
+                </div>
+                <table class="table table-striped white-background">
+                    <tr>
+                        <td style="width: 20px;">2</td>
+                        <td style="text-align: left;">
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -97,10 +117,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 20px;">3</td>
+                        <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
-                            Oli Rem<br>
-                            00:00:00
+                            Ban <br>
+                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
