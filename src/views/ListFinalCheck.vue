@@ -9,8 +9,8 @@
                             <img class="img-circle" src="../assets/img/user1-128x128.jpg" alt="User Avatar">
                         </div>
                         <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">Mamet Sudarmo</h3>
-                        <h5 class="widget-user-desc">Kepala Mekanik</h5>
+                        <h3 class="widget-user-username">{{ user.name }}</h3>
+                        <h5 class="widget-user-desc">{{ user.role }}</h5>
                     </div>
                     <div class="box-body no-padding">
                         <div class="row">
@@ -49,7 +49,13 @@
         },
     })
 
-    export default class LastFinalCheck extends Vue {}
+    export default class LastFinalCheck extends Vue {
+        user: Array<string> =   []
+
+        created() {
+            this.user = JSON.parse(localStorage.getItem('login'))
+        }
+    }
 </script>
 
 <style>

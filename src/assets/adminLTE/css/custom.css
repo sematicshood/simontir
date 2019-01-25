@@ -116,6 +116,11 @@
     color: white;
     background-color: #dd4c39d8;
 }
+
+.item-tr-center-default {
+    text-align: center;
+}
+
 .item-tr-center:hover {
     background-color: #148351d5 !important;
 }
@@ -144,4 +149,8 @@
 
 .navbar {
     padding: 0 !important;
+}
+.sparepartSelect {
+    background-color: green !important;
+    color: white !important;
 }

@@ -15,7 +15,6 @@
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>Role</th>
-                                            <th>Action</th>
                                         </tr>    
                                     </thead>    
                                     <tbody>
@@ -23,14 +22,7 @@
                                             <td>{{ i += 1 }}</td>
                                             <td>{{ user.name }}</td>
                                             <td>
-                                                <span v-if="edit != i">{{ user.job_id.name }}</span>
-                                                <select v-model="role" class="form-control" v-else-if="edit == i">
-                                                    <option :value="rol" v-for="rol in roles" v-text="rol"></option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button v-if="edit != i" @click="editUser(i)" class="btn btn-sm btn-warning">Edit</button>
-                                                <button @click="saveUser(i)" v-else-if="edit == i" class="btn btn-sm btn-primary">Save</button>
+                                                <button @click="changeRole(i, rol)" :class="{'btn': true, 'btn-default': true, 'btn-primary': rol == user.job_id.name}" v-for="rol in roles" v-text="rol"></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -64,11 +56,8 @@
             this.$data.role  = this.$data.users[id - 1].job_id.name
         }
 
-        saveUser(id): void {
-            this.$data.users[id - 1].job_id.name = this.$data.role
-
-            this.$data.edit  = 0
-            this.$data.role  = ""
+        changeRole(id, role): void {
+            this.$data.users[id - 1].job_id.name = role
 
             localStorage.setItem('users', JSON.stringify(this.$data.users))
         }

@@ -86,7 +86,8 @@
                 const role = user[0].job_id.name
 
                 const data = {
-                    role: role
+                    role: role,
+                    name: user[0].name
                 }
             
                 localStorage.setItem("login", JSON.stringify(data))
