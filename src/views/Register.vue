@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="box box-danger box-solid">
-                    <form>
+                    <form @submit.prevent="finish">
                         <div class="box-header">
                             <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
                         </div>
@@ -60,7 +60,7 @@
                                     <div class="form-group">
                                         <label>Type</label>
                                         <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="ty.name" v-text="ty.name"></option>
+                                            <option v-for="ty in types" :value="ty.name">{{ ty.name }}</option>
                                         </select>
                                         </div>
                                     <div class="form-group">
@@ -175,13 +175,13 @@
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 control-label">KM </label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="" placeholder="KM">
+                                        <input type="number" class="form-control" v-model="km" placeholder="KM">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="" class="col-sm-6 control-label">Jenis Servis </label>
                                     <div class="col-sm-6">
-                                        <select name="" id="" class="form-control">
+                                        <select name="" id="" v-model="jenis_service" class="form-control">
                                             <option value="reguler">Reguler</option>
                                             <option value="Light Repair">Light Repair</option>
                                             <option value="Booking Service">Booking Service</option>
@@ -196,7 +196,7 @@
                                 </div>
 
                                 <!-- Modal jasa -->
-                                <b-modal id="jasa">
+                                <b-modal id="jasa" @ok="addMultipleService">
                                     <div class="col-xs-12">
                                         <div class="box">
                                             <div class="box-header">
@@ -215,21 +215,21 @@
                                             <!-- /.box-header -->
                                             <div class="box-body table-responsive no-padding">
                                             <table class="table table-hover">
-                                                <tbody><tr>
-                                                <th>#</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                </tr>
-                                                <tr>
-                                                <td>1</td>
-                                                <td>John Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="label label-success">Approved</span></td>
-                                                <td>Bacon ipsum dolor</td>
-                                                </tr>
-                                            </tbody></table>
+                                            <tbody><tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Pekerjaan</th>
+                                                <th>Harga</th>
+                                                <th style="width: 40px">Action</th>
+                                            </tr>
+                                            <tr v-for="(service, i) in services_own">
+                                                <td>{{ i += 1 }}</td>
+                                                <td>{{ service.name }}</td>
+                                                <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
+                                                <td>
+                                                    <input type="checkbox" v-model="multiple_service" :value="service">
+                                                </td>
+                                            </tr>                
+                                        </tbody></table>
                                             </div>
                                             <!-- /.box-body -->
                                         </div>
@@ -242,17 +242,15 @@
                                             <tbody><tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>Pekerjaan</th>
-                                                <th>Qty</th>
                                                 <th>Harga</th>
                                                 <th style="width: 40px">Action</th>
                                             </tr>
-                                            <tr v-for="service in services_selected">
-                                                <td>1.</td>
-                                                <td>Lorem Ipsum Dolor Amet</td>
-                                                <td>1</td>
-                                                <td>Rp.125.000</td>
+                                            <tr v-for="(service, i) in services_selected">
+                                                <td>{{ i += 1 }}</td>
+                                                <td>{{ service.name }}</td>
+                                                <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
+                                                    <button @click="removeService(i)" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>                
                                         </tbody></table>
@@ -268,7 +266,7 @@
                                 </div>
 
                                 <!-- Modal suku cadang -->
-                                <b-modal id="sukuCadang">
+                                <b-modal id="sukuCadang" @ok="addMultipleSparepart">
                                     <div class="col-xs-12">
                                         <div class="box">
                                             <div class="box-header">
@@ -287,21 +285,21 @@
                                             <!-- /.box-header -->
                                             <div class="box-body table-responsive no-padding">
                                             <table class="table table-hover">
-                                                <tbody><tr>
-                                                <th>#</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                <th>Column</th>
-                                                </tr>
-                                                <tr>
-                                                <td>1</td>
-                                                <td>John Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="label label-success">Approved</span></td>
-                                                <td>Bacon ipsum dolor</td>
-                                                </tr>
-                                            </tbody></table>
+                                            <tbody><tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Suku Cadang</th>
+                                                <th>Harga</th>
+                                                <th style="width: 40px">Action</th>
+                                            </tr>
+                                            <tr v-for="(sparepart, i) in spareparts_own">
+                                                <td>{{ i += 1 }}</td>
+                                                <td>{{ sparepart.name }}</td>
+                                                <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
+                                                <td>
+                                                    <input type="checkbox" v-model="multiple_sparepart" :value="sparepart">
+                                                </td>
+                                            </tr>                
+                                        </tbody></table>
                                             </div>
                                             <!-- /.box-body -->
                                         </div>
@@ -314,17 +312,15 @@
                                             <tbody><tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>Suku Cadang</th>
-                                                <th>Qty</th>
                                                 <th>Harga</th>
                                                 <th style="width: 40px">Action</th>
                                             </tr>
-                                            <tr v-for="sparepart in spareparts_selected">
-                                                <td>1.</td>
-                                                <td>Lorem Ipsum Dolor Amet</td>
-                                                <td>1</td>
-                                                <td>Rp.125.000</td>
+                                            <tr v-for="(sparepart, i) in spareparts_selected">
+                                                <td>{{ i += 1 }}</td>
+                                                <td>{{ sparepart.name }}</td>
+                                                <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
                                                 </td>
                                             </tr>                
                                         </tbody></table>
@@ -357,36 +353,14 @@
                                             <th>Sparepart</th>
                                             <th>Stok</th>
                                         </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-success">Ada</span></td>
-                                        </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-warning">Habis</span></td>
-                                        </tr> 
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-success">Ada</span></td>
-                                        </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-warning">Habis</span></td>
-                                        </tr>    
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-success">Ada</span></td>
-                                        </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-warning">Habis</span></td>
-                                        </tr>              
+                                        <tr :class="{'item-tr-center': km >= spare.km, 'sparepartSelect': cekSparepartExist(spare) == false}" v-for="(spare, i) in list_spareparts" @click="addSparepart(spare)">
+                                            <td>{{ spare.km }}</td>
+                                            <td>{{ spare.name }}</td>
+                                            <td>
+                                                <span v-if="cekStok(spare.name)" class="label label-success">Ada</span>
+                                                <span v-else class="label label-warning">Habis</span>
+                                            </td>
+                                        </tr>        
                                     </tbody></table>
                                 </div>
                                 <!-- /.box-body -->
@@ -398,29 +372,18 @@
                                         <tbody>
                                         <tr style="text-align: center;">
                                             <th>Periode Ganti (Km)</th>
-                                            <th>Sparepart</th>
-                                            <th>Stok</th>
+                                            <th>Service</th>
+                                            <th>Status</th>
                                         </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-success">Ada</span></td>
-                                        </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-warning">Habis</span></td>
-                                        </tr> 
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-success">Ada</span></td>
-                                        </tr>
-                                        <tr class="item-tr-center">
-                                            <td>8000</td>
-                                            <td>Busi</td>
-                                            <td><span class="label label-warning">Habis</span></td>
-                                        </tr>              
+
+                                        <tr :class="{'item-tr-center': km >= ser.km, 'sparepartSelect': cekServiceExist(ser) == false}" v-for="ser in list_services" @click="addServicesSelected(ser)">
+                                            <td>{{ ser.km }}</td>
+                                            <td>{{ ser.name }}</td>
+                                            <td>
+                                                <span v-if="cekStatus(ser.name)" class="label label-success">Tersedia</span>
+                                                <span v-else class="label label-warning">Tidak Tersedia</span>
+                                            </td>
+                                        </tr>           
                                     </tbody></table>
                                 </div>
                                 <!-- /.box-body -->
@@ -439,7 +402,7 @@
                                             <td style="width:40%;"><strong>Service Advisor</strong></td>
                                         </tr>
                                         <tr class="validasi">
-                                            <td v-model="estimasi_konsumen" style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td style="border-right: 1px solid #dd4b39;"><input v-model="estimasi_konsumen" type="checkbox"></td>
                                             <td><input v-model="estimasi_advisor" type="checkbox"></td>
                                         </tr>
                                     </table>
@@ -459,7 +422,7 @@
                                             <td style="width:50%;"><strong>Service Advisor</strong></td>
                                         </tr>
                                         <tr class="validasi">
-                                            <td v-model="tambahan_konsumen" style="border-right: 1px solid #dd4b39;"><input type="checkbox"></td>
+                                            <td style="border-right: 1px solid #dd4b39;"><input v-model="tambahan_konsumen" type="checkbox"></td>
                                             <td><input v-model="tambahan_advisor" type="checkbox"></td>
                                         </tr>
                                     </table>
@@ -491,7 +454,7 @@
                         <button type="submit" class="btn btn-primary pull-right">Finish</button>
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
-                        <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" >Next</button>
+                        <button @click.prevent="halaman = 2" :disabled="isNext()" class="btn btn-warning pull-right" >Next</button>
                     </div>
                     </form>
                 </div>
@@ -509,7 +472,7 @@
     })
 
     export default class Register extends Vue {
-        halaman: number             = 1
+        halaman: number             = 2
 
         no_polisi: string           = ""
         tgl_service: string         = ""
@@ -542,6 +505,31 @@
         spareparts: Array<string>          = []
         services: Array<string>            = []
 
+        services_own: Array<string>        = []
+
+        km: number                         = 0
+        jenis_service: string              = "Regular"
+
+        list_spareparts: Array<string>     = [
+            {name: 'Busi', km: 8000},
+            {name: 'Oil Transmisi', km: 8000},
+            {name: 'Coolant', km: 12000},
+            {name: 'Filter Udara', km: 16000},
+            {name: 'Ban Depan', km: 24000},
+            {name: 'Ban Belakang', km: 24000},
+            {name: 'Rantai', km: 24000},
+            {name: 'Driver Belt', km: 24000},
+            {name: 'Kampas Rem', km: 24000},
+            {name: 'Aki', km: 24000},
+        ]
+        list_services: Array<string>       = [
+            {name: 'Injector Cleaner', km: 4000},
+            {name: 'Pembersih CVT', km: 8000},
+            {name: 'Kuras Tangki', km: 12000},
+            {name: 'Kuras Radiator', km: 12000},
+            {name: 'Carbon Celaner', km: 12000}
+        ]
+
         total: number                      = 0
 
         estimasi_konsumen: boolean         = false
@@ -551,6 +539,97 @@
         tambahan_advisor: boolean          = false
 
         penyerahan_konsumen: boolean       = false
+        products: Array<string>            = JSON.parse(localStorage.getItem('products'))
+        multiple_service: Array<string>    = []
+        multiple_sparepart: Array<string>  = []
+
+        created() {
+            this.spareparts = this.products.filter(el => {
+                return el.type == 'Stockable Product'
+            })
+
+            this.services = this.products.filter(el => {
+                return el.type == 'Service'
+            })
+
+            this.services_own = this.services.filter(el => {
+                let models = `${ el.make }${ el.name_model }`
+
+                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
+            })
+
+            this.spareparts_own = this.spareparts.filter(el => {
+                let models = `${ el.make }${ el.name_model }`
+                
+                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
+            })
+        }
+
+        cekStok(name): void {
+            let pro = this.products.filter(el => {
+                let models = `${ el.make }${ el.name_model }`
+
+                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+            })
+
+            if(pro[0])
+                if(pro[0].qty_available > 0) return true
+
+            return false
+        }
+
+        cekStatus(name): void {
+            let pro = this.products.filter(el => {
+                let models = `${ el.make }${ el.name_model }`
+
+                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+            })
+
+            if(pro[0]) return true
+
+            return false
+        }
+
+        cekSparepartSelect(index): void {
+            return this.spareparts_selected.indexOf(this.spareparts[index]) < 0
+        }
+
+        cekServiceSelect(index): void {
+            return this.services_selected.indexOf(this.services[index]) < 0
+        }
+
+        findIndexSparepart(i): void {
+            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+        }
+
+        findIndexService(i): void {
+            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+        }
+
+        cekSparepartExist(i): void {
+            return this.cekSparepartSelect(this.findIndexSparepart(i))
+        }
+
+        cekServiceExist(i): void {
+            return this.cekServiceSelect(this.findIndexService(i))
+        }
+
+        addServicesSelected(ser): void {
+            let index = this.findIndexService(ser);
+            
+            if(index > 0)
+                if(this.cekServiceSelect(index))
+                    this.services_selected.push(this.services[index])
+        }
+
+        addSparepart(i): void {
+            if(this.cekStok(i.name)) {
+                let index = this.findIndexSparepart(i);
+
+                if(this.cekSparepartSelect(index))
+                    this.spareparts_selected.push(this.spareparts[index])
+            }
+        }
 
         convertToRupiah(angka): void {
             return additional.convertToRupiah(angka)
@@ -577,6 +656,20 @@
             this.keluhan_input = ""
         }
 
+        addMultipleService(): void {
+            this.multiple_service.forEach(el => {
+                if(this.services_selected.indexOf(el) < 0)
+                    this.services_selected.push(el)
+            })
+        }
+
+        addMultipleSparepart(): void {
+            this.multiple_sparepart.forEach(el => {
+                if(this.spareparts_selected.indexOf(el) < 0)
+                    this.spareparts_selected.push(el)
+            })
+        }
+
         loadHistory(): void {
             let his = JSON.parse(localStorage.getItem('history')),
                 h   = his.filter(el => {
@@ -585,6 +678,47 @@
 
             this.histories = h
         }
+
+        refreshTotal(): void {
+            this.total = 0
+
+            this.spareparts_selected.forEach(el => {
+                this.total += parseInt(el.list_price)
+            })
+
+            this.services_selected.forEach(el => {
+                this.total += parseInt(el.list_price)
+            })
+        }
+
+        removeSparepart(i): void {
+            this.spareparts_selected.splice(i-1,1)
+        }
+
+        removeService(i): void {
+            this.services_selected.splice(i-1,1)
+        }
+
+        isNext() {
+            if(this.no_polisi == "") return true
+            if(this.tgl_service == "") return true
+            if(this.no_mesin == "") return true
+            if(this.no_rangka == "") return true
+            if(this.no_telp == "") return true
+            if(this.type == "") return true
+            if(this.tahun == "") return true
+            if(this.nama_pemilik == "") return true
+            if(this.nama_pembawa == "") return true
+            if(this.email == "") return true
+            if(this.sosmed == "") return true
+            if(this.alamat == "") return true
+
+            return false
+        }
+
+        finish(): void {
+            console.log(this.$data)
+        }
         
         @Watch('no_polisi')
         onNoPolisiChanged(val: string) {
@@ -592,6 +726,16 @@
                 this.button_history  = false
             else
                 this.button_history  = true
+        }
+
+        @Watch('spareparts_selected')
+        onSperpatedChange() {
+            this.refreshTotal()
+        }
+
+        @Watch('services_selected')
+        onServicesChange() {
+            this.refreshTotal()
         }
     }
 </script>
