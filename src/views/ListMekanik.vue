@@ -15,90 +15,21 @@
                     <div class="box-body no-padding">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="box no-border-top">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title"><strong>Booking Service</strong></h3>
-
-                                        <div class="box-tools pull-right">
-                                            <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">3</span>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="small-box bg-red">
-                                            <div class="inner">
-                                                <h3><strong>AB 1234 CA</strong></h3>
-
-                                                <p>Vario 150 New</p>
-                                            </div>
-                                            <div class="a-group-red">
-                                                <a href="#" class="number-task pull-left">
-                                                3 <i class="fa fa-gears"></i>
-                                                </a>
-                                                <a href="#" class="number-task pull-righ">
-                                                2 <i class="fa fa-motorcycle"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <router-link to="/timesheet_mekanik/2">
+                                    <BookingOrder></BookingOrder>
+                                </router-link>
                             </div>
                             <div class="col-lg-6">
-                                <div class="box no-border-top">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title"><strong>Light Repair</strong></h3>
-
-                                        <div class="box-tools pull-right">
-                                            <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">3</span>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="small-box bg-yellow">
-                                            <div class="inner">
-                                                <h3><strong>AB 1234 CA</strong></h3>
-
-                                                <p>Vario 150 New</p>
-                                            </div>
-                                            <div class="a-group-yellow">
-                                                <a href="#" class="number-task pull-left">
-                                                3 <i class="fa fa-gears"></i>
-                                                </a>
-                                                <a href="#" class="number-task pull-righ">
-                                                2 <i class="fa fa-motorcycle"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <router-link to="/timesheet_mekanik/2">
+                                    <LightRepair></LightRepair>
+                                </router-link>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="box no-border-top">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title"><strong>Reguler</strong></h3>
-
-                                        <div class="box-tools pull-right">
-                                            <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">3</span>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="small-box bg-green">
-                                            <div class="inner">
-                                                <h3><strong>AB 1234 CA</strong></h3>
-
-                                                <p>Vario 150 New</p>
-                                            </div>
-                                            <div class="a-group-green">
-                                                <a href="#" class="number-task pull-left">
-                                                3 <i class="fa fa-gears"></i>
-                                                </a>
-                                                <a href="#" class="number-task pull-righ">
-                                                2 <i class="fa fa-motorcycle"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <router-link to="/timesheet_mekanik/2">
+                                    <reguler></reguler>
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -109,10 +40,15 @@
 </template>
 
 <script lang="ts">
+    import BookingOrder from '../components/BookingOrder.vue';
+    import LightRepair from '../components/LightRepair.vue';
+    import reguler from '../components/Reguler.vue';
     import { Component, Vue } from 'vue-property-decorator';
 
     @Component({
-        components: {},
+        components: {
+            BookingOrder, LightRepair, reguler
+        },
     })
 
     export default class ListMekanik extends Vue {}
