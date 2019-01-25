@@ -17,12 +17,29 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" v-model="no_polisi">
                                             <span class="input-group-btn">
-                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
+                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" @click="loadHistory()" class="btn btn-success btn-flat">History</button>
                                             </span>
                                         </div>
                                         <br>
                                         <b-modal id="myModal">
-                                            Hello From My Modal!
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tanggal</th>
+                                                        <th>Riwayat</th>
+                                                        <th>Biaya</th>
+                                                        <th>KM</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="history in histories">
+                                                    <tr>
+                                                        <td v-text="history['Order Date']"></td>
+                                                        <td v-text="history['Order Lines/Product/Name']"></td>
+                                                        <td v-text="history['Order Lines/Unit Price']"></td>
+                                                        <td v-text="history['Last Odometer']"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </b-modal>
                                     </div><div class="form-group">
                                         <label for="">No. Urut</label>
@@ -149,26 +166,6 @@
                                     </div>   
                                 </div>
                             </dir>
-                        </dir>
-                        <dir class="row">
-                            <div class="col-lg-12">
-                                <dir class="box-sub-header">
-                                    <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
-                                </dir>
-                                <div class="form-group">
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                                </div>   
-                            </div>
-                        </dir>
-                        <dir class="row">
-                            <div class="col-lg-12">
-                                <dir class="box-sub-header">
-                                    <h3 class="box-sub-title"><strong>Saran Mekanik</strong></h3>
-                                </dir>
-                                <div class="form-group">
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                                </div>   
-                            </div>
                         </dir>
                     </div>
 
@@ -553,6 +550,7 @@
         keluhan_input: string              = ""
         edit_keluhan: number               = 0
         keluhan_input: string              = ""
+        histories: Array<string>           = []
 
         addKeluhan(): void {
             this.keluhan_konsumer.push({ nama: this.keluhan_input })
@@ -573,6 +571,15 @@
             this.edit_keluhan  = 0
 
             this.keluhan_input = ""
+        }
+
+        loadHistory(): void {
+            let his = JSON.parse(localStorage.getItem('history')),
+                h   = his.filter(el => {
+                    return el['License Plate'] == this.no_polisi
+                })
+
+            this.histories = h
         }
         
         @Watch('no_polisi')
