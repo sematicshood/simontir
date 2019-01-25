@@ -145,6 +145,9 @@
     .content-wrapper {
         margin: 0;
     }
+    .content-header {
+        display: none;
+    }
 }
 
 .navbar {
@@ -153,4 +156,8 @@
 .sparepartSelect {
     background-color: green !important;
     color: white !important;
+}
+
+.sidebar-toggle {
+    margin-left: -44%;
 }
