@@ -5,6 +5,11 @@ const convertToRupiah = (angka) => {
 	return rupiah.split('',rupiah.length-1).reverse().join('');
 }
 
+const exact = (angka) => {
+	return String("0" + angka).slice(-2)
+}
+
 export default {
-    convertToRupiah,
+	convertToRupiah,
+	exact
 }

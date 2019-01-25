@@ -8,7 +8,7 @@
                             <center><h3><strong>AB 1234 CD</strong></h3></center>
                         </div>
                         <div class="col-xs-4 timer">
-                            <center><h4>00:00:00</h4></center>
+                            <center><h4 v-text="timer"></h4></center>
                         </div>
                     </div>
                 </div>
@@ -131,16 +131,34 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
+    import additional from '../helpers/additional'
 
     @Component({
         components: {},
     })
 
     export default class TimesheetMekanik extends Vue {
-        data() {
-            return {
-                id: this.$route.params.id
-            }
+        timer: string   =   "00:00:00"
+        seconds: number =   0
+        minutes: number =   0
+        hours: number   =   0
+
+        created() {
+            setInterval(() => {
+                this.seconds++
+
+                if(this.seconds == 60) {
+                    this.seconds = 0
+                    this.minutes++
+                }
+
+                if(this.minutes == 60) {
+                    this.minutes = 0
+                    this.hours++
+                }
+
+                this.timer = additional.exact(this.hours) + ":" + additional.exact(this.minutes) + ":" + additional.exact(this.seconds)
+            }, 1000)
         }
     }
 </script>
