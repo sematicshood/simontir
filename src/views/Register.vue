@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tgl. Servis</label>
-                                        <input type="date" class="form-control" id="" placeholder="" v-model="tgl_service">
+                                        <input type="date" class="form-control" id="date" placeholder="" :value="tgl_service.toISOString().split('T')[0]" @input="tgl_service = $event.target.valueAsDate">
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Mesin</label>
@@ -472,10 +472,10 @@
     })
 
     export default class Register extends Vue {
-        halaman: number             = 2
+        halaman: number             = 1
 
         no_polisi: string           = ""
-        tgl_service: string         = ""
+        tgl_service: string         = new Date()
         no_mesin: string            = ""
         no_rangka: string           = ""
         type: string                = ""
@@ -673,7 +673,7 @@
         loadHistory(): void {
             let his = JSON.parse(localStorage.getItem('history')),
                 h   = his.filter(el => {
-                    return el['License Plate'] == this.no_polisi
+                    return el['License Plate'].toUpperCase() == this.no_polisi.toUpperCase()
                 })
 
             this.histories = h
@@ -702,22 +702,61 @@
         isNext() {
             if(this.no_polisi == "") return true
             if(this.tgl_service == "") return true
-            if(this.no_mesin == "") return true
-            if(this.no_rangka == "") return true
             if(this.no_telp == "") return true
             if(this.type == "") return true
-            if(this.tahun == "") return true
             if(this.nama_pemilik == "") return true
-            if(this.nama_pembawa == "") return true
-            if(this.email == "") return true
-            if(this.sosmed == "") return true
-            if(this.alamat == "") return true
 
             return false
         }
 
         finish(): void {
-            console.log(this.$data)
+            let d           = this.tgl_service,
+                timesheets  = []
+
+            this.services_selected.forEach((el, i) => {
+                timesheets.push({
+                    "id": i,
+                    "description": el.name,
+                    "date_start": "",
+                    "start_time": "",
+                    "stop_time": ""
+                })
+            })
+
+            let payload = {
+                "Order Date": `${ d.getUTCFullYear() }-${ d.getUTCMonth() }-${ d.getUTCDay() } ${ d.getUTCHours() }:${ d.getUTCMinutes() }:${ d.getUTCSeconds() }`,
+                "partner_id": "8511",
+                "partner_name": "ABU",
+                "sales_order_line_id": [
+                322
+                ],
+                "product_id": this.sparepartd_selected,
+                "jenis service": this.jenis_service,
+                "model_id": "332",
+                "name_model": this.type.split(' ')[1],
+                "make": this.type.split(' ')[0],
+                "Last Odometer": this.km,
+                "Chassis Number": "ISO 55738",
+                "License Plate": this.no_polisi,
+                "project_id": "12",
+                "task_id": [
+                3,
+                4,
+                5
+                ],
+                "timesheet_id": timesheets,
+                "waktu_mulai": "0000-0-0 00:00",
+                "stop_time": "00:00",
+                "total_time": "00:00"
+            }
+
+            let services = JSON.parse(localStorage.getItem('services'))
+
+            services.push(payload)
+
+            localStorage.setItem('services', JSON.stringify(services))
+
+            this.$router.push({ name: 'register' })
         }
         
         @Watch('no_polisi')

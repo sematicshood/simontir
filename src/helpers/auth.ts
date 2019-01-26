@@ -26,6 +26,7 @@ const cekData = () => {
         typesLocal = JSON.parse(localStorage.getItem('types')),
         historyLocal = JSON.parse(localStorage.getItem('history')),
         productsLocal = JSON.parse(localStorage.getItem('products')),
+        servicesLocal = JSON.parse(localStorage.getItem('services'))
     
     if(usersLocal == null) {
         let getUser = api.get('https://api.myjson.com/bins/1fxjqs')
@@ -49,6 +50,12 @@ const cekData = () => {
         let getProducts = api.get('https://api.myjson.com/bins/b31h0')
 
         getProducts.then(res => localStorage.setItem('products', JSON.stringify(res.data)))
+    }
+
+    if(servicesLocal == null) {
+        let getServices = api.get('https://api.myjson.com/bins/1h3dx0')
+
+        getServices.then(res => localStorage.setItem('services', JSON.stringify(res.data)))
     }
 }
 
