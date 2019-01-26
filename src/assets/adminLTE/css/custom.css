@@ -125,7 +125,39 @@
     background-color: #148351d5 !important;
 }
 
+.pit-kosong {
+    background-color: #f5f5f5;
+    color: rgb(202, 202, 202);
+}
+.pit-active {
+    background-color: #f5f5f5;
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    #sidebar{
+        display: none;
+    }
+    .content-wrapper {
+        margin: 0;
+    }
+    .content-header {
+        display: none;
+    }
+}
+
+.navbar {
+    padding: 0 !important;
+}
 .sparepartSelect {
     background-color: green !important;
     color: white !important;
+}
+
+.sidebar-toggle {
+    margin-left: -44%;
 }
