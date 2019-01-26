@@ -22,9 +22,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ bookings.length }}</span>
                                     </div>
                                 </div>
-                                <router-link to="/timesheet_mekanik/2">
-                                    <BookingOrder :data="booking" v-for="booking in bookings.splice(0,1)"></BookingOrder>
-                                </router-link>
+                                <BookingOrder :data="booking" v-for="booking in bookings"></BookingOrder>
                             </div>
                             <div class="col-lg-6">
                                 <div class="box-header with-border">
@@ -35,7 +33,7 @@
                                     </div>
                                 </div>
                                 <router-link to="/timesheet_mekanik/2">
-                                    <LightRepair v-for="light in lights.splice(0,1)"></LightRepair>
+                                    <LightRepair :data="light" v-for="light in lights"></LightRepair>
                                 </router-link>
                             </div>
                         </div>
@@ -49,7 +47,7 @@
                                     </div>
                                 </div>
                                 <router-link to="/timesheet_mekanik/2">
-                                    <reguler v-for="regular in regulars.splice(0,1)"></reguler>
+                                    <reguler :data="regular" v-for="regular in regulars"></reguler>
                                 </router-link>
                             </div>
                         </div>
@@ -84,15 +82,15 @@
             this.services   = JSON.parse(localStorage.getItem('services'))
             this.bookings   = this.services.filter(el => {
                 return el['jenis service'] == "Booking Service" 
-            })
+            }).splice(0,1)
 
             this.lights   = this.services.filter(el => {
                 return el['jenis service'] == "Light Repair" 
-            })
+            }).splice(0,1)
 
             this.regulars   = this.services.filter(el => {
                 return el['jenis service'] == "Regular" 
-            })
+            }).splice(0,1)
         }
     }
 </script>

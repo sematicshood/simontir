@@ -5,7 +5,7 @@
                 <div class="title-timesheet">
                     <div class="row">
                         <div class="col-xs-8">
-                            <center><h3><strong>AB 1234 CD</strong></h3></center>
+                            <center><h3><strong>{{ data['License Plate'] }}</strong></h3></center>
                         </div>
                         <div class="col-xs-4 timer">
                             <center><h4 v-text="timer"></h4></center>
@@ -20,34 +20,6 @@
                     <center><h4><strong>Pekerjaan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban <br>
-                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
-                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban <br>
-                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
-                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
                     <tr>
                         <td style="width: 20px;">2</td>
                         <td style="text-align: left;">
@@ -124,10 +96,21 @@
     })
 
     export default class TimesheetMekanik extends Vue {
-        timer: string   =   "00:00:00"
-        seconds: number =   0
-        minutes: number =   0
-        hours: number   =   0
+        timer: string           =   "00:00:00"
+        seconds: number         =   0
+        minutes: number         =   0
+        hours: number           =   0
+        ids: string             =   ""
+        data: Array<string>     =   []
+        service: Array<string>  =   JSON.parse(localStorage.getItem('services'))
+
+        getData(): void {
+            this.ids = this.$route.params.id
+            
+            this.data   =   this.service.filter(el => {
+                return el['License Plate'] == this.ids
+            })[0]
+        }
 
         created() {
             setInterval(() => {
@@ -145,6 +128,8 @@
 
                 this.timer = additional.exact(this.hours) + ":" + additional.exact(this.minutes) + ":" + additional.exact(this.seconds)
             }, 1000)
+
+            this.getData()
         }
     }
 </script>

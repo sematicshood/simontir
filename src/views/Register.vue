@@ -726,7 +726,7 @@
             let payload = {
                 "Order Date": `${ d.getUTCFullYear() }-${ d.getUTCMonth() }-${ d.getUTCDay() } ${ d.getUTCHours() }:${ d.getUTCMinutes() }:${ d.getUTCSeconds() }`,
                 "partner_id": "8511",
-                "partner_name": "ABU",
+                "partner_name": this.nama_pemilik,
                 "sales_order_line_id": [
                 322
                 ],
