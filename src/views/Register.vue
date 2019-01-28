@@ -12,7 +12,8 @@
                                 <div class="col-lg-6">
                                     <dir class="box-sub-header">
                                         <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
-                                    </dir><div class="form-group">
+                                    </dir>
+                                    <div class="form-group">
                                         <label for="">No. Polisi</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" v-model="no_polisi">
@@ -20,28 +21,17 @@
                                             <button v-if="button_history" type="button" v-b-modal="'myModal'" @click="loadHistory()" class="btn btn-success btn-flat">History</button>
                                             </span>
                                         </div>
-                                        <br>
-                                        <b-modal id="myModal">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tanggal</th>
-                                                        <th>Riwayat</th>
-                                                        <th>Biaya</th>
-                                                        <th>KM</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody v-for="history in histories">
-                                                    <tr>
-                                                        <td v-text="history['Order Date']"></td>
-                                                        <td v-text="history['Order Lines/Product/Name']"></td>
-                                                        <td v-text="history['Order Lines/Unit Price']"></td>
-                                                        <td v-text="history['Last Odometer']"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </b-modal>
-                                    </div><div class="form-group">
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label for="" class="control-label">Jenis Servis </label>
+                                        <select name="" id="" v-model="jenis_service" class="form-control">
+                                            <option value="reguler">Reguler</option>
+                                            <option value="Light Repair">Light Repair</option>
+                                            <option value="Booking Service">Booking Service</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="">No. Urut</label>
                                         <input disabled type="text" class="form-control" id="" placeholder="">
                                     </div>
@@ -181,14 +171,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="" class="col-sm-6 control-label">Jenis Servis </label>
-                                            <div class="col-sm-6">
-                                                <select name="" id="" v-model="jenis_service" class="form-control">
-                                                    <option value="reguler">Reguler</option>
-                                                    <option value="Light Repair">Light Repair</option>
-                                                    <option value="Booking Service">Booking Service</option>
-                                                </select>
-                                            </div>
+                                            <button type="button" v-b-modal="'myModal'" @click="loadHistory()" class="btn btn-success btn-flat">History</button>
                                         </div>
                                     </div>
                                     <div class="border-custom">
@@ -467,6 +450,26 @@
                 </div>
             </div>
         </div>
+        <b-modal id="myModal">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Riwayat</th>
+                        <th>Biaya</th>
+                        <th>KM</th>
+                    </tr>
+                </thead>
+                <tbody v-for="history in histories">
+                    <tr>
+                        <td v-text="history['Order Date']"></td>
+                        <td v-text="history['Order Lines/Product/Name']"></td>
+                        <td v-text="history['Order Lines/Unit Price']"></td>
+                        <td v-text="history['Last Odometer']"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </b-modal>
     </div>
 </template>
 
