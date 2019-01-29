@@ -2,24 +2,21 @@
   <div id="app">
       <div v-if="path != 'login' && path != undefined">
         <navbar></navbar>
-        <sidebar></sidebar>
-        <div class="content-wrapper">
-          <!-- Content Header (Page header) -->
+        <sidebar :class="{'tabSidebar': sidebar}"></sidebar>
+        <div :class="{'content-wrapper': true, 'tabWrapper': sidebar}">
           <section class="content-header">
-            <h1>
-              Title Page
-            </h1>
+            <h1 v-text="title"></h1>
             <ol class="breadcrumb">
               <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
               <li class="active">Active Page</li>
             </ol>
           </section>
-          <!-- Main content -->
           <section class="content">
             <router-view/>
           </section>
         </div>
       </div>
+
       <div v-else>
         <router-view/>
       </div>
@@ -30,23 +27,30 @@
   import navbar from './components/Navbar.vue';
   import sidebar from './components/Sidebar.vue';
   import { Component, Vue, Watch } from 'vue-property-decorator';
+  import { mapState } from 'vuex';
 
   @Component({
       components: {
           navbar, sidebar
       },
+
+      computed: {
+        ...mapState(['web']),
+
+        sidebar() {
+          return this.web.sidebar;
+        }
+      },
   })
 
   export default class App extends Vue {
-    data() {
-      return {
-        path: ''
-      }
-    }
+    path:string     = '';
+    title:string    = '';
 
     @Watch('$route', { immediate: true, deep: true })
     onUrlChange(newVal: any) {
-      this.$data.path = this.$router.currentRoute.name
+      this.$data.path  = this.$router.currentRoute.name
+      this.$data.title = this.$router.currentRoute.meta.title
     }
   }
 </script>

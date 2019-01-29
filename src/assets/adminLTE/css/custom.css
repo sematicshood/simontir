@@ -150,6 +150,18 @@
     }
 } */
 
+.tabSidebar {
+    display: none;
+}
+
+.tabWrapper {
+    margin: 0;
+}
+
+.tabHeader {
+    display: none;
+}
+
 .navbar {
     padding: 0 !important;
 }

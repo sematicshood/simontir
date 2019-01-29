@@ -13,6 +13,10 @@ const router = new Router({
       component: () => import('@views/404'),
     },
     {
+      path: '/',
+      component: () => import('@views/QueueBoard'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@views/Login'),

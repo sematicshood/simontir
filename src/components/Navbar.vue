@@ -11,7 +11,7 @@
     
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">      
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="#" @click="changeStatusSidebar" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
       <div class="navbar-custom-menu">
@@ -25,9 +25,17 @@
   </div>
 </template>
 
-<script>
-export default {
-    name: 'navbar'
-}
+<script lang="ts">
+  import { Component, Vue, Watch } from 'vue-property-decorator';
+
+  @Component({
+      name: 'navbar'
+  })
+
+  export default class App extends Vue {
+    changeStatusSidebar(): void {
+      this.$store.dispatch('web/changeStatusSidebar');
+    }
+  }
 </script>
 
