@@ -21,6 +21,17 @@ const router = new Router({
       }
     },
     {
+      path: '/profii',
+      name: 'profil',
+      component: () => import('@views/Profil'),
+      meta: {
+        requiresAuth: true,
+        role: ['front desk', 'kepala mekanik', 'asisten mekanik', 'mekanik'],
+        title: 'Profil',
+        show: true,
+      }
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('@views/Register'),
@@ -30,6 +41,17 @@ const router = new Router({
         title: 'Register',
         show: true,
       },
+    },
+    {
+      path: '/data_registrasi',
+      name: 'data_registrasi',
+      component: () => import('@views/TabelRegistrasi'),
+      meta: {
+        requiresAuth: true,
+        role: ['front desk'],
+        title: 'Data Registrasi',
+        show: true,
+      }
     },
     {
       path: '/final_check/:id',
