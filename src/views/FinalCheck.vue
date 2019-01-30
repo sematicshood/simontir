@@ -110,7 +110,21 @@
                         <div class="box-body" style="padding: 0px;">
                             <table class="custom-table">
                                 <tr class="validasi">
-                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                <input type="checkbox">
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control">
+                                                    <option>Pilih Asisten Mekanik</option>
+                                                    <option value="">A</option>
+                                                    <option value="">B</option>
+                                                    <option value="">C</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

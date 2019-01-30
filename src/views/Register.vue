@@ -317,6 +317,24 @@
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
+                                        <div class="box-footer">
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Cuci Motor </label>
+                                                <div class="col-sm-8">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">
+                                                            Ya
+                                                        </label>
+                                                        &nbsp;
+                                                        <label>
+                                                            <input type="checkbox">
+                                                            Tidak
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="border-custom">
