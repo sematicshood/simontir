@@ -37,131 +37,20 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-border pit-activ">
-                                            <center><h3 class="box-title"><strong>Pit #1</strong></h3></center>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                <div class="small-box bg-yellow">
-                                                    <div class="inner">
-                                                        <h3 style="font-size: 150%;">AB 1234 CA</h3>
+                                        <div v-for="a in dikerjakan" :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
+                                            <div class="inner">
+                                                <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
-                                                        <p>Vario 150 New</p>
-                                                    </div>
-                                                    <div class="a-group-yellow" style="font-size: 100%;">
-                                                        <a href="#" class="number-task pull-left">
-                                                        3 <i class="fa fa-gears"></i>
-                                                        </a>
-                                                        <a href="#" class="number-task pull-righ">
-                                                        2 <i class="fa fa-motorcycle"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                                <p>{{ a.customer }}</p>
                                             </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-border pit-active">
-                                            <center><h3 class="box-title"><strong>Pit #2</strong></h3></center>
+                                            <div :class="{'a-group-red': a.antrian_service == 'Booking Service','a-group-green': a.antrian_service == 'Regular Service','a-group-yellow': a.antrian_service == 'Light Repair'}">
+                                                <a href="#" class="number-task pull-left">
+                                                {{ countService(a.order_line) }} <i class="fa fa-gears"></i>
+                                                </a>
+                                                <a href="#" class="number-task pull-righ">
+                                                {{ countSparepart(a.order_line) }} <i class="fa fa-motorcycle"></i>
+                                                </a>
                                             </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                <div class="small-box bg-red">
-                                                    <div class="inner">
-                                                        <h3 style="font-size: 150%;">AB 1234 CA</h3>
-
-                                                        <p>Vario 150 New</p>
-                                                    </div>
-                                                    <div class="a-group-red" style="font-size: 100%;">
-                                                        <a href="#" class="number-task pull-left">
-                                                        3 <i class="fa fa-gears"></i>
-                                                        </a>
-                                                        <a href="#" class="number-task pull-righ">
-                                                        2 <i class="fa fa-motorcycle"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-border pit-kosong"> 
-                                            <center><h3 class="box-title"><strong>Pit #3</strong></h3></center>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                               
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-border pit-kosong">
-                                            <center><h3 class="box-title"><strong>Pit #4</strong></h3></center>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-yellow pit-active">
-                                            <center><h3 class="box-title"><strong>Pit #5</strong></h3></center>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                <div class="small-box bg-yellow">
-                                                    <div class="inner">
-                                                        <h3 style="font-size: 150%;">AB 1234 CA</h3>
-
-                                                        <p>Vario 150 New</p>
-                                                    </div>
-                                                    <div class="a-group-yellow" style="font-size: 100%;">
-                                                        <a href="#" class="number-task pull-left">
-                                                        3 <i class="fa fa-gears"></i>
-                                                        </a>
-                                                        <a href="#" class="number-task pull-righ">
-                                                        2 <i class="fa fa-motorcycle"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="box box-danger">
-                                            <div class="box-header with-border pit-active">
-                                            <center><h3 class="box-title"><strong>Pit #6</strong></h3></center>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body">
-                                                <div class="small-box bg-red">
-                                                    <div class="inner">
-                                                        <h3 style="font-size: 150%;">AB 1234 CA</h3>
-
-                                                        <p>Vario 150 New</p>
-                                                    </div>
-                                                    <div class="a-group-red" style="font-size: 100%;">
-                                                        <a href="#" class="number-task pull-left">
-                                                        3 <i class="fa fa-gears"></i>
-                                                        </a>
-                                                        <a href="#" class="number-task pull-righ">
-                                                        2 <i class="fa fa-motorcycle"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.box-body -->
                                         </div>
                                     </div>
                                 </div>
@@ -286,33 +175,37 @@
         dikerjakan: Array<string>       =   [];
         selesai: Array<string>          =   [];
         filterBooking: Array<string>    =   [];
+        filterLight: Array<string>      =   [];
+        filterRegular: Array<string>    =   [];
 
         created() {
-            board.getSO().then(res => {
-              this.antrian = res.data.results.filter(el => {
-                  return el.status == 'sent'
-              })
+            setInterval(() => {
+                board.getSO().then(res => {
+                    this.antrian = res.data.results.filter(el => {
+                        return el.status == 'sent'
+                    })
 
-              this.dikerjakan = res.data.results.filter(el => {
-                  return el.status == 'sale'
-              })
+                    this.dikerjakan = res.data.results.filter(el => {
+                        return el.status == 'sale' && el.invoice == 'no'
+                    })
 
-              this.selesai = res.data.results.filter(el => {
-                  return el.invoice == 'to invoice' 
-              })
+                    this.selesai = res.data.results.filter(el => {
+                        return el.invoice == 'to invoice' 
+                    })
 
-              this.filterBooking = this.selesai.filter(el => {
-                  return el.antrian_service == 'Booking Service'
-              })
+                    this.filterBooking = this.selesai.filter(el => {
+                        return el.antrian_service == 'Booking Service'
+                    })
 
-              this.filterLight = this.selesai.filter(el => {
-                  return el.antrian_service == 'Light Repair'
-              })
+                    this.filterLight = this.selesai.filter(el => {
+                        return el.antrian_service == 'Light Repair'
+                    })
 
-              this.filterRegular = this.selesai.filter(el => {
-                  return el.antrian_service == 'Regular Service'
-              })
-            })
+                    this.filterRegular = this.selesai.filter(el => {
+                        return el.antrian_service == 'Regular Service'
+                    })
+                })
+            }, 1000)
         }
 
         countService(data): void {
