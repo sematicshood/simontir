@@ -284,7 +284,7 @@
                                                     <tr v-for="(sparepart, i) in spareparts_own">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
                                                             <input type="checkbox" v-model="multiple_sparepart" :value="sparepart">
                                                         </td>
@@ -548,6 +548,7 @@
         spareparts: Array<string>          = [];
         services: Array<string>            = [];
         services_own: Array<string>        = [];
+        spareparts_own: Array<string>      = [];
         km: number                         = 0;
         jenis_service: string              = "Regular";
         list_spareparts: Array<string>     = [
@@ -575,7 +576,7 @@
         tambahan_konsumen: boolean         = false;
         tambahan_advisor: boolean          = false;
         penyerahan_konsumen: boolean       = false;
-        products: Array<string>            = JSON.parse(localStorage.getItem('products'));
+        products: Array<string>            = [];
         multiple_service: Array<string>    = [];
         multiple_sparepart: Array<string>  = [];
 
@@ -583,35 +584,30 @@
         no_urut: string                    = ""
 
         created() {
-            this.spareparts = this.products.filter(el => {
-                return el.type == 'Stockable Product'
-            })
-
-            this.services = this.products.filter(el => {
-                return el.type == 'Service'
-            })
-
-            this.services_own = this.services.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
-            })
-
-            this.spareparts_own = this.spareparts.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                
-                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
-            })
-
             register.cekSO().then(res => {
                 this.no_urut = res.data.results[0].name
+
+                this.products = res.data.results[0].product
+
+                this.spareparts = this.products.filter(el => {
+                    return el.type != 'Service'
+                })
+
+                this.services = this.products.filter(el => {
+                    return el.type == 'Service'
+                })
+
+                this.services_own = this.services
+
+                this.spareparts_own = this.spareparts
             })
         }
 
         cekNopol(): void {
-            register.cekNopol({nopol: this.no_polisi})
+            register.cekNopol({nopol: this.no_polisi.toUpperCase()})
                     .then(res => {
-                        if(res.data.result) {
-                            let data = res.data.result.results[0]
+                        if(res.data) {
+                            let data = res.data.results[0]
 
                             this.no_mesin       = data.no_mesin;
                             this.no_rangka      = data.no_rangka;
@@ -622,6 +618,8 @@
                             this.sosmed         = data.sosmed;
 
                             this.histories      = data.history
+
+                            console.log(this.histories)
                         }
                     })
         }
