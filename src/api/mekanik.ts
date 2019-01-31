@@ -20,8 +20,16 @@ const getFinalSO = async (no_ref) => {
     return await api.get('/simontir/get_final_detail/' + no_ref, {})
 }
 
+const getLastSO = async () => {
+    return await api.get('/simontir/getso_finalcheck', {})
+}
+
 const accept = async (data) => {
     return await api.post('/simontir/accept', data)
+}
+
+const reject = async (data) => {
+    return await api.post('/simontir/reject', data)
 }
 
 export default {
@@ -31,4 +39,6 @@ export default {
     unlock,
     getFinalSO,
     accept,
+    getLastSO,
+    reject,
 }

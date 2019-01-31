@@ -762,33 +762,6 @@
                 })
             })
 
-            let payload = {
-                "Order Date": `${ d.getUTCFullYear() }-${ d.getUTCMonth() }-${ d.getUTCDay() } ${ d.getUTCHours() }:${ d.getUTCMinutes() }:${ d.getUTCSeconds() }`,
-                "partner_id": "8511",
-                "partner_name": this.nama_pemilik,
-                "sales_order_line_id": [
-                322
-                ],
-                "product_id": this.sparepartd_selected,
-                "jenis service": this.jenis_service,
-                "model_id": "332",
-                "name_model": this.type.split(' ')[1],
-                "make": this.type.split(' ')[0],
-                "Last Odometer": this.km,
-                "Chassis Number": "ISO 55738",
-                "License Plate": this.no_polisi,
-                "project_id": "12",
-                "task_id": [
-                3,
-                4,
-                5
-                ],
-                "timesheet_id": timesheets,
-                "waktu_mulai": "0000-0-0 00:00",
-                "stop_time": "00:00",
-                "total_time": "00:00"
-            }
-
             // let services = JSON.parse(localStorage.getItem('services'))
 
             // services.push(payload)

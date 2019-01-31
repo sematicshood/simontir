@@ -24,8 +24,8 @@
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
-                                <button @click="accept(service.id)" type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
+                                <button @click="accept(service.id)" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': service.x_status == 'accept'}"><i class="fa fa-check"></i></button>
+                                <button @click="id_select = service.id" v-b-modal="'reject'" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': service.x_status == 'reject'}"><i class="fa fa-close"></i></button>                                
                             </div>
                         </td>
                     </tr>
@@ -35,27 +35,15 @@
                     <center><h4><strong>Suku Cadang</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
+                    <tr v-for="(spar, i) in sparepart">
+                        <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            Ban 
+                            {{ spar.name.split(':')[1] }}
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban 
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
+                                <button @click="accept(spar.id)" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': spar.x_status == 'accept'}"><i class="fa fa-check"></i></button>
+                                <button @click="id_select = spar.id" v-b-modal="'reject'" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': spar.x_status == 'reject'}"><i class="fa fa-close"></i></button>                                
                             </div>
                         </td>
                     </tr>
@@ -68,12 +56,12 @@
                     <tr v-for="(kel, i) in keluhan">
                         <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            {{ kel.name }}
+                            {{ kel.name.split(':')[1] }}
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
+                                <button @click="accept(kel.id)" type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                <button @click="id_select = kel.id" v-b-modal="'reject'" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': kel.x_status == 'reject'}"><i class="fa fa-close"></i></button>                                
                             </div>
                         </td>
                     </tr>
@@ -110,7 +98,7 @@
                 <button type="button" class="btn btn-success">Selesai</button>
 
                 <!-- Modal reject -->
-                <b-modal id="reject">
+                <b-modal id="reject" @ok="reject">
                     <h2>Reject Service?</h2>
                 </b-modal>
             </div>
@@ -130,28 +118,45 @@
         products: Array<string>     =   [];
         services: Array<string>     =   [];
         keluhan: Array<string>      =   [];
+        sparepart: Array<string>    =   [];
         nopol: string               =   "";
         id_select: number           =   0;
-        user: Array<string> =   []
+        user: Array<string>         =   []
 
         created() {
             this.user       = JSON.parse(localStorage.getItem('login'))
 
+            this.load()
+        }
+
+        load(): void {
             mekanik.getFinalSO(this.$route.params.id).then(res => {
                 this.nopol      =   res.data.results.nopol
 
                 this.services   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] != 'keluhan'
+                    return el.name.split(':')[0].split(' ')[1] == undefined
                 })
 
                 this.keluhan   =   res.data.results.tasks.filter(el => {
                     return el.name.split(':')[0].split(' ')[1] == 'keluhan'
                 })
+
+                this.sparepart   =   res.data.results.tasks.filter(el => {
+                    return el.name.split(':')[0].split(' ')[1] == 'sparepart'
+                })
             })
         }
 
         accept(ids): void {
-            mekanik.accept({id: ids, user_id: this.user.id})
+            mekanik.accept({id: ids, user_id: this.user.id}).then(() => {
+                this.load()
+            })
+        }
+
+        reject(): void {
+            mekanik.reject({id: this.id_select, user_id: this.user.id}).then(() => {
+                this.load()
+            })
         }
     }
 </script>

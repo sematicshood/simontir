@@ -62,7 +62,7 @@
         }
 
         loadData(): void {
-            mekanik.getFinalSO().then(res => {
+            mekanik.getLastSO().then(res => {
                 if(res.data.results) {
                     this.bookings   = res.data.results.filter(el => {
                         return el.antrian_service == "Booking Service" 
