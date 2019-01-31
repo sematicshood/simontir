@@ -63,6 +63,8 @@
 
                       let data = result[0]
 
+                      data['role'] = 'Manager'
+
                       localStorage.setItem("login", JSON.stringify(data))
 
                       this.$router.push({ name: auth.cekRoleUrl(data.role) })
