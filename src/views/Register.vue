@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         <label>Type</label>
                                         <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="ty.name">{{ ty.name }}</option>
+                                            <option v-for="ty in types" :value="ty">{{ ty.name }}</option>
                                         </select>
                                         <span>*) Wajib diisi</span>
                                     </div>
@@ -214,7 +214,7 @@
                                                     <tr v-for="(service, i) in services_own">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                                                         <td>
                                                             <input type="checkbox" v-model="multiple_service" :value="service">
                                                         </td>
@@ -238,7 +238,7 @@
                                                     <tr v-for="(service, i) in services_selected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                                                         <td>
                                                             <button @click="removeService(i)" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                         </td>
@@ -284,7 +284,7 @@
                                                     <tr v-for="(sparepart, i) in spareparts_own">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
                                                             <input type="checkbox" v-model="multiple_sparepart" :value="sparepart">
                                                         </td>
@@ -302,13 +302,15 @@
                                                     <tbody><tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Suku Cadang</th>
+                                                        <th>QTY</th>
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
                                                     <tr v-for="(sparepart, i) in spareparts_selected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
+                                                        <td><input type="number" :value="sparepart.qty" @change="updateSparepartQty($event, i)"></td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
                                                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
                                                         </td>
@@ -323,12 +325,12 @@
                                                 <div class="col-sm-8">
                                                     <div class="checkbox">
                                                         <label>
-                                                            <input type="checkbox">
+                                                            <input type="radio" v-model="cuci" value="true">
                                                             Ya
                                                         </label>
                                                         &nbsp;
                                                         <label>
-                                                            <input type="checkbox">
+                                                            <input type="radio" v-model="cuci" value="false">
                                                             Tidak
                                                         </label>
                                                     </div>
@@ -467,7 +469,7 @@
                         <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
-                        <button @click.prevent="halaman = 2" :disabled="isNext()" class="btn btn-warning pull-right" >Next</button>
+                        <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" :disabled="isNext()">Next</button>
                     </div>
                     </form>
                 </div>
@@ -486,11 +488,15 @@
                         <th>Biaya</th>
                     </tr>
                 </thead>
-                <tbody v-for="history in histories">
-                    <tr v-for="jasa in histories.jasa">
+                <tbody>
+                    <tr v-for="history in histories">
                         <td v-text="history.tanggal"></td>
                         <td v-text="history.km"></td>
-                        <td v-text="jasa.name"></td>
+                        <td>
+                            <ul>
+                                <li v-for="jasa in history.jasa" v-text="jasa.name"></li>
+                            </ul>
+                        </td>
                         <td></td>
                         <td v-text="history.mekanik"></td>
                         <td v-text="history.frontdesk"></td>
@@ -525,8 +531,8 @@
         tgl_service: string         = new Date();
         no_mesin: string            = "";
         no_rangka: string           = "";
-        type: string                = "";
-        types: Array<string>        = JSON.parse(localStorage.getItem('types'));
+        type: Array<string>         = "";
+        types: Array<string>        = [];
         tahun: number               = "";
         nama_pembawa: string        = "";
         no_telp: string             = "";
@@ -548,6 +554,7 @@
         spareparts: Array<string>          = [];
         services: Array<string>            = [];
         services_own: Array<string>        = [];
+        spareparts_own: Array<string>      = [];
         km: number                         = 0;
         jenis_service: string              = "Regular";
         list_spareparts: Array<string>     = [
@@ -575,43 +582,41 @@
         tambahan_konsumen: boolean         = false;
         tambahan_advisor: boolean          = false;
         penyerahan_konsumen: boolean       = false;
-        products: Array<string>            = JSON.parse(localStorage.getItem('products'));
+        products: Array<string>            = [];
         multiple_service: Array<string>    = [];
         multiple_sparepart: Array<string>  = [];
 
         notFinish: boolean                 = true;
-        no_urut: string                    = ""
+        no_urut: string                    = "";
+        cuci: string                       = "";
 
         created() {
-            this.spareparts = this.products.filter(el => {
-                return el.type == 'Stockable Product'
-            })
-
-            this.services = this.products.filter(el => {
-                return el.type == 'Service'
-            })
-
-            this.services_own = this.services.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
-            })
-
-            this.spareparts_own = this.spareparts.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                
-                return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
-            })
-
             register.cekSO().then(res => {
+                this.types   = res.data.results[0].tipe_motor
+                
                 this.no_urut = res.data.results[0].name
+
+                this.products = res.data.results[0].product
+
+                this.spareparts = this.products.filter(el => {
+                    return el.product_type != 'service'
+                })
+
+                this.services = this.products.filter(el => {
+                    return el.product_type == 'service'
+                })
+
+                this.services_own = this.services
+
+                this.spareparts_own = this.spareparts
             })
         }
 
         cekNopol(): void {
-            register.cekNopol({nopol: this.no_polisi})
+            register.cekNopol({nopol: this.no_polisi.toUpperCase()})
                     .then(res => {
-                        if(res.data.result) {
-                            let data = res.data.result.results[0]
+                        if(res.data) {
+                            let data = res.data.results[0]
 
                             this.no_mesin       = data.no_mesin;
                             this.no_rangka      = data.no_rangka;
@@ -629,7 +634,7 @@
         cekStok(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
             })
             
             if(pro[0])
@@ -641,7 +646,7 @@
         cekStatus(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
             })
             if(pro[0]) return true
             return false
@@ -653,10 +658,10 @@
             return this.services_selected.indexOf(this.services[index]) < 0
         }
         findIndexSparepart(i): void {
-            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
         }
         findIndexService(i): void {
-            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
         }
         cekSparepartExist(i): void {
             return this.cekSparepartSelect(this.findIndexSparepart(i))
@@ -674,8 +679,11 @@
         addSparepart(i): void {
             if(this.cekStok(i.name)) {
                 let index = this.findIndexSparepart(i);
-                if(this.cekSparepartSelect(index))
+                if(this.cekSparepartSelect(index)) {
+                    this.spareparts[index].push({qty: 1})
+
                     this.spareparts_selected.push(this.spareparts[index])
+                }
             }
         }
         convertToRupiah(angka): void {
@@ -705,18 +713,25 @@
         }
         addMultipleSparepart(): void {
             this.multiple_sparepart.forEach(el => {
-                if(this.spareparts_selected.indexOf(el) < 0)
+                if(this.spareparts_selected.indexOf(el) < 0) {
+                    el['qty'] = 1
+
                     this.spareparts_selected.push(el)
+                }
             })
+        }
+
+        updateSparepartQty(event, i): void {
+            this.spareparts_selected[i-1].qty = event.target.value
         }
         
         refreshTotal(): void {
             this.total = 0
             this.spareparts_selected.forEach(el => {
-                this.total += parseInt(el.list_price)
+                this.total += parseInt(el.harga)
             })
             this.services_selected.forEach(el => {
-                this.total += parseInt(el.list_price)
+                this.total += parseInt(el.harga)
             })
         }
         removeSparepart(i): void {
@@ -729,7 +744,7 @@
             if(this.no_polisi == "") return true
             if(this.tgl_service == "") return true
             if(this.no_telp == "") return true
-            if(this.type == "") return true
+            if(this.type.length > 0) return true
             if(this.nama_pemilik == "") return true
             return false
         }
@@ -786,7 +801,6 @@
         }
 
         cekFinish(): void {
-            console.log(this.services_selected)
             if(this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
                 this.notFinish = false
 

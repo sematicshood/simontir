@@ -5,7 +5,7 @@
                 <div class="title-timesheet">
                     <div class="row">
                         <div class="col-xs-8">
-                            <center><h3><strong>{{ data['License Plate'] }}</strong></h3></center>
+                            <center><h3><strong>{{ nopol }}</strong></h3></center>
                         </div>
                         <div class="col-xs-4 timer">
                             <center><h4 v-text="timer"></h4></center>
@@ -20,18 +20,10 @@
                     <center><h4><strong>Pekerjaan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
+                    <tr v-for="(service, i) in services">
+                        <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            Ban <br>
-                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
-                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
-                            </div>
+                            {{ service.name }} <br>
                         </td>
                     </tr>
                 </table>
@@ -40,48 +32,14 @@
                     <center><h4><strong>Keluhan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
+                    <tr v-for="(kel, i) in keluhan">
+                        <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            Ban <br>
-                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
-                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban <br>
-                            <span class="label label-default"><i class="fa fa-pause"></i> 00:00:00</span>&nbsp;<span class="label label-default"><i class="fa fa-clock-o"></i> 00:00:00</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-play"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fa fa-pause"></i></button>                                
-                                <button type="button" class="btn btn-default"><i class="fa fa-stop"></i></button>                                
-                            </div>
+                            {{ kel.name }} <br>
                         </td>
                     </tr>
                 </table>
-                <!-- <table class="table table-striped white-background total-time">
-                    <tr>
-                        <td><p><i class="fa fa-play"></i></p></td>
-                        <td><p><i class="fa fa-pause"></i></p></td>
-                        <td><p><i class="fa fa-stop"></i></p></td>
-                    </tr>
-                    <tr>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                        <td>00:00:00</td>
-                    </tr>
-                </table> -->
-                <button type="button" class="btn btn-primary btn-block">Selesai</button>
+                <button @click="finish" type="button" class="btn btn-primary btn-block">Selesai</button>
             </div>
         </div>
     </div>
@@ -89,27 +47,62 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import additional from '../helpers/additional'
+    import additional from '../helpers/additional';
+    import board from '../api/board';
+    import mekanik from '../api/mekanik';
 
     @Component({
         components: {},
     })
 
     export default class TimesheetMekanik extends Vue {
-        timer: string           =   "00:00:00"
-        seconds: number         =   0
-        minutes: number         =   0
-        hours: number           =   0
-        ids: string             =   ""
-        data: Array<string>     =   []
-        service: Array<string>  =   JSON.parse(localStorage.getItem('services'))
+        timer: string           =   "00:00:00";
+        seconds: number         =   0;
+        minutes: number         =   0;
+        hours: number           =   0;
+        ids: string             =   "";
+        data: Array<string>     =   [];
+        nopol: Array<string>    =   "";
+        services: Array<string> =   [];
+        keluhan: Array<string>  =   [];
+        waktu: string           =   "";
 
         getData(): void {
             this.ids = this.$route.params.id
-            
-            this.data   =   this.service.filter(el => {
-                return el['License Plate'] == this.ids
-            })[0]
+
+            board.getTask(this.ids).then(res => {
+                this.nopol      =   res.data.results.nopol
+                this.waktu      =   res.data.results.waktu_mulai
+
+                this.services   =   res.data.results.tasks.filter(el => {
+                    return el.name.split(':')[0].split(' ')[1] != 'keluhan'
+                })
+
+                this.keluhan   =   res.data.results.tasks.filter(el => {
+                    return el.name.split(':')[0].split(' ')[1] == 'keluhan'
+                })
+
+                let now     = new Date(),
+                    waktu   = new Date(this.waktu),
+                    diff    = now - waktu
+
+                var hh = Math.floor(diff / 1000 / 60 / 60);
+                diff -= hh * 1000 * 60 * 60;
+                var mm = Math.floor(diff / 1000 / 60);
+                diff -= mm * 1000 * 60;
+                var ss = Math.floor(diff / 1000);
+                diff -= ss * 1000;
+
+                this.hours      = hh
+                this.minutes    = mm
+                this.seconds    = ss
+            })
+        }
+
+        finish(): void {
+            mekanik.lock({invoice: this.ids}).then(res => {
+                this.$router.push({ name: 'list_mekanik' })
+            })
         }
 
         created() {

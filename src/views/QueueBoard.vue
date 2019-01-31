@@ -205,7 +205,7 @@
                         return el.antrian_service == 'Regular Service'
                     })
                 })
-            }, 1000)
+            }, 10000)
         }
 
         countService(data): void {

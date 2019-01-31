@@ -5,7 +5,7 @@
                 <div class="title-timesheet">
                     <div class="row">
                         <div class="col-xs-12">
-                            <center><h3><strong>AB 1234 CD</strong></h3></center>
+                            <center><h3><strong>{{ nopol }}</strong></h3></center>
                         </div>
                     </div>
                 </div>
@@ -17,26 +17,14 @@
                     <center><h4><strong>Pekerjaan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
+                    <tr v-for="(service, i) in services">
+                        <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            Ban 
+                            {{ service.name.split(':')[1] }}
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban 
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                <button @click="accept(service.id)" type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
                                 <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
                             </div>
                         </td>
@@ -77,22 +65,10 @@
                     <center><h4><strong>Keluhan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr>
-                        <td style="width: 20px;">2</td>
+                    <tr v-for="(kel, i) in keluhan">
+                        <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            Ban 
-                        </td>
-                        <td style="text-align: right;">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
-                                <button v-b-modal="'reject'" type="button" class="btn btn-default"><i class="fa fa-close"></i></button>                                
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20px;">2</td>
-                        <td style="text-align: left;">
-                            Ban 
+                            {{ kel.name }}
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
@@ -144,12 +120,40 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
+    import mekanik from '../api/mekanik';
 
     @Component({
         components: {},
     })
 
-    export default class FinalCheck extends Vue {}
+    export default class FinalCheck extends Vue {
+        products: Array<string>     =   [];
+        services: Array<string>     =   [];
+        keluhan: Array<string>      =   [];
+        nopol: string               =   "";
+        id_select: number           =   0;
+        user: Array<string> =   []
+
+        created() {
+            this.user       = JSON.parse(localStorage.getItem('login'))
+
+            mekanik.getFinalSO(this.$route.params.id).then(res => {
+                this.nopol      =   res.data.results.nopol
+
+                this.services   =   res.data.results.tasks.filter(el => {
+                    return el.name.split(':')[0].split(' ')[1] != 'keluhan'
+                })
+
+                this.keluhan   =   res.data.results.tasks.filter(el => {
+                    return el.name.split(':')[0].split(' ')[1] == 'keluhan'
+                })
+            })
+        }
+
+        accept(ids): void {
+            mekanik.accept({id: ids, user_id: this.user.id})
+        }
+    }
 </script>
 
 <style>

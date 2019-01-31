@@ -7,7 +7,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-            <img src="../assets/img/user1-128x128.jpg" class="img-circle" alt="User Image">
+            <img :src="`data:image/gif;base64,${ user.image }`" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
             <p>{{ user.name }}</p>
