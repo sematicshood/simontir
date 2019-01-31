@@ -32,6 +32,16 @@ export default {
 
     props: ['data'],
 
+    data() {
+        return {
+            user: []
+        }
+    },
+
+    created() {
+        this.$data.user  = JSON.parse(localStorage.getItem('login'))
+    },
+
     methods: {
         countService(dataq) {
             let datas = dataq.order_line.filter(el => {
@@ -50,7 +60,7 @@ export default {
         },
 
         pick() {
-            mekanik.pick({invoice: this.data.name})
+            mekanik.pick({invoice: this.data.name, user_id: this.$data.user.id})
         }
     }
 }

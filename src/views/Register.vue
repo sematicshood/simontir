@@ -214,7 +214,7 @@
                                                     <tr v-for="(service, i) in services_own">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                                                         <td>
                                                             <input type="checkbox" v-model="multiple_service" :value="service">
                                                         </td>
@@ -238,7 +238,7 @@
                                                     <tr v-for="(service, i) in services_selected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(service.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                                                         <td>
                                                             <button @click="removeService(i)" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                         </td>
@@ -308,7 +308,7 @@
                                                     <tr v-for="(sparepart, i) in spareparts_selected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.list_price) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
                                                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
                                                         </td>
@@ -590,11 +590,11 @@
                 this.products = res.data.results[0].product
 
                 this.spareparts = this.products.filter(el => {
-                    return el.type != 'Service'
+                    return el.product_type != 'service'
                 })
 
                 this.services = this.products.filter(el => {
-                    return el.type == 'Service'
+                    return el.product_type == 'service'
                 })
 
                 this.services_own = this.services
@@ -618,8 +618,6 @@
                             this.sosmed         = data.sosmed;
 
                             this.histories      = data.history
-
-                            console.log(this.histories)
                         }
                     })
         }
@@ -711,10 +709,10 @@
         refreshTotal(): void {
             this.total = 0
             this.spareparts_selected.forEach(el => {
-                this.total += parseInt(el.list_price)
+                this.total += parseInt(el.harga)
             })
             this.services_selected.forEach(el => {
-                this.total += parseInt(el.list_price)
+                this.total += parseInt(el.harga)
             })
         }
         removeSparepart(i): void {
@@ -784,7 +782,6 @@
         }
 
         cekFinish(): void {
-            console.log(this.services_selected)
             if(this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
                 this.notFinish = false
 
