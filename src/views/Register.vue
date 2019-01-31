@@ -522,7 +522,7 @@
     })
     
     export default class Register extends Vue {
-        halaman: number             = 2;
+        halaman: number             = 1;
         no_polisi: string           = "";
         tgl_service: string         = new Date();
         no_mesin: string            = "";
