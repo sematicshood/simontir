@@ -16,11 +16,12 @@
                                     <div class="form-group">
                                         <label for="">No. Polisi</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" v-model="no_polisi">
+                                            <input type="text" class="form-control" v-model="no_polisi" @change="cekNopol">
                                             <span class="input-group-btn">
-                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" @click="loadHistory()" class="btn btn-success btn-flat">History</button>
+                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
                                             </span>
                                         </div>
+                                        <span>*) Wajib diisi</span>
                                     </div>
                                         
                                     <div class="form-group">
@@ -33,7 +34,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
-                                        <input disabled type="text" class="form-control" id="" placeholder="">
+                                        <input disabled type="text" v-model="no_urut" class="form-control" id="" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tgl. Servis</label>
@@ -52,7 +53,8 @@
                                         <select class="form-control" v-model="type">
                                             <option v-for="ty in types" :value="ty.name">{{ ty.name }}</option>
                                         </select>
-                                        </div>
+                                        <span>*) Wajib diisi</span>
+                                    </div>
                                     <div class="form-group">
                                         <label for="">Tahun</label>
                                         <input type="number" class="form-control" id="" placeholder="" v-model="tahun">
@@ -64,10 +66,13 @@
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pembawa">
-                                    </div><div class="form-group">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pemilik">
+                                        <span>*) Wajib diisi</span>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="">No. Telp/HP</label>
                                         <input type="number" class="form-control" id="" placeholder="" v-model="no_telp">
+                                        <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Email</label>
@@ -82,7 +87,7 @@
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pemilik">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pembawa">
                                     </div>
                                     <div class="form-group">
                                         <label>Alamat</label>
@@ -171,7 +176,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="button" v-b-modal="'myModal'" @click="loadHistory()" class="btn btn-success btn-flat">History</button>
+                                            <button type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
                                         </div>
                                     </div>
                                     <div class="border-custom">
@@ -459,7 +464,7 @@
                     </div>
                     <div class="box-footer" v-if="halaman == 2">
                         <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" class="btn btn-primary pull-right">Finish</button>
+                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
                         <button @click.prevent="halaman = 2" :disabled="isNext()" class="btn btn-warning pull-right" >Next</button>
@@ -473,17 +478,23 @@
                 <thead>
                     <tr>
                         <th>Tanggal</th>
-                        <th>Riwayat</th>
-                        <th>Biaya</th>
                         <th>KM</th>
+                        <th>Jasa</th>
+                        <th>Part</th>
+                        <th>Mekanik</th>
+                        <th>Front Desk</th>
+                        <th>Biaya</th>
                     </tr>
                 </thead>
                 <tbody v-for="history in histories">
-                    <tr>
-                        <td v-text="history['Order Date']"></td>
-                        <td v-text="history['Order Lines/Product/Name']"></td>
-                        <td v-text="history['Order Lines/Unit Price']"></td>
-                        <td v-text="history['Last Odometer']"></td>
+                    <tr v-for="jasa in histories.jasa">
+                        <td v-text="history.tanggal"></td>
+                        <td v-text="history.km"></td>
+                        <td v-text="jasa.name"></td>
+                        <td></td>
+                        <td v-text="history.mekanik"></td>
+                        <td v-text="history.frontdesk"></td>
+                        <td v-text="history.biaya"></td>
                     </tr>
                 </tbody>
             </table>
@@ -494,40 +505,51 @@
 <script lang="ts">
     import { Component, Vue, Watch, mixins } from 'vue-property-decorator';
     import additional from '../helpers/additional'
+    import register from '../api/register';
+    import axios from 'axios';
+
     @Component({
-        components: {},
+        beforeRouteLeave (to, from , next) {
+        const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan')
+            if (answer) {
+                next()
+            } else {
+                next(false)
+            }
+        }
     })
+    
     export default class Register extends Vue {
-        halaman: number             = 1
-        no_polisi: string           = ""
-        tgl_service: string         = new Date()
-        no_mesin: string            = ""
-        no_rangka: string           = ""
-        type: string                = ""
-        types: Array<string>        = JSON.parse(localStorage.getItem('types'))
-        tahun: number               = ""
-        nama_pembawa: string        = ""
-        no_telp: string             = ""
-        email: string               = ""
-        sosmed: string              = ""
+        halaman: number             = 1;
+        no_polisi: string           = "";
+        tgl_service: string         = new Date();
+        no_mesin: string            = "";
+        no_rangka: string           = "";
+        type: string                = "";
+        types: Array<string>        = JSON.parse(localStorage.getItem('types'));
+        tahun: number               = "";
+        nama_pembawa: string        = "";
+        no_telp: string             = "";
+        email: string               = "";
+        sosmed: string              = "";
         
-        nama_pemilik: string        = ""
-        alamat: string              = ""
-        keluhan_konsumen: Array<string>    = []
-        analisa_service: string            = ""
-        saran_mekanik: string              = ""
-        button_history: boolean            = false
-        keluhan_input: string              = ""
-        edit_keluhan: number               = 0
-        keluhan_input: string              = ""
-        histories: Array<string>           = []
-        services_selected: Array<string>   = []
-        spareparts_selected: Array<string> = []
-        spareparts: Array<string>          = []
-        services: Array<string>            = []
-        services_own: Array<string>        = []
-        km: number                         = 0
-        jenis_service: string              = "Regular"
+        nama_pemilik: string        = "";
+        alamat: string              = "";
+        keluhan_konsumen: Array<string>    = [];
+        analisa_service: string            = "";
+        saran_mekanik: string              = "";
+        button_history: boolean            = false;
+        keluhan_input: string              = "";
+        edit_keluhan: number               = 0;
+        keluhan_input: string              = "";
+        histories: Array<string>           = [];
+        services_selected: Array<string>   = [];
+        spareparts_selected: Array<string> = [];
+        spareparts: Array<string>          = [];
+        services: Array<string>            = [];
+        services_own: Array<string>        = [];
+        km: number                         = 0;
+        jenis_service: string              = "Regular";
         list_spareparts: Array<string>     = [
             {name: 'Busi', km: 8000},
             {name: 'Oil Transmisi', km: 8000},
@@ -539,49 +561,83 @@
             {name: 'Driver Belt', km: 24000},
             {name: 'Kampas Rem', km: 24000},
             {name: 'Aki', km: 24000},
-        ]
+        ];
         list_services: Array<string>       = [
             {name: 'Injector Cleaner', km: 4000},
             {name: 'Pembersih CVT', km: 8000},
             {name: 'Kuras Tangki', km: 12000},
             {name: 'Kuras Radiator', km: 12000},
             {name: 'Carbon Celaner', km: 12000}
-        ]
-        total: number                      = 0
-        estimasi_konsumen: boolean         = false
-        estimasi_advisor: boolean          = false
-        tambahan_konsumen: boolean         = false
-        tambahan_advisor: boolean          = false
-        penyerahan_konsumen: boolean       = false
-        products: Array<string>            = JSON.parse(localStorage.getItem('products'))
-        multiple_service: Array<string>    = []
-        multiple_sparepart: Array<string>  = []
+        ];
+        total: number                      = 0;
+        estimasi_konsumen: boolean         = false;
+        estimasi_advisor: boolean          = false;
+        tambahan_konsumen: boolean         = false;
+        tambahan_advisor: boolean          = false;
+        penyerahan_konsumen: boolean       = false;
+        products: Array<string>            = JSON.parse(localStorage.getItem('products'));
+        multiple_service: Array<string>    = [];
+        multiple_sparepart: Array<string>  = [];
+
+        notFinish: boolean                 = true;
+        no_urut: string                    = ""
+
         created() {
             this.spareparts = this.products.filter(el => {
                 return el.type == 'Stockable Product'
             })
+
             this.services = this.products.filter(el => {
                 return el.type == 'Service'
             })
+
             this.services_own = this.services.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
                 return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
             })
+
             this.spareparts_own = this.spareparts.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
                 
                 return models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase()
             })
+
+            register.cekSO().then(res => {
+                this.no_urut = res.data.results[0].name
+            })
         }
+
+        cekNopol(): void {
+            register.cekNopol({nopol: this.no_polisi})
+                    .then(res => {
+                        if(res.data.result) {
+                            let data = res.data.result.results[0]
+
+                            this.no_mesin       = data.no_mesin;
+                            this.no_rangka      = data.no_rangka;
+                            this.tahun          = data.tahun;
+                            this.nama_pemilik   = data.nama_pemilik;
+                            this.no_telp        = data.telp_pemilik;
+                            this.email          = data.email_pemilik;
+                            this.sosmed         = data.sosmed;
+
+                            this.histories      = data.history
+                        }
+                    })
+        }
+
         cekStok(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
                 return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
             })
+            
             if(pro[0])
-                if(pro[0].qty_available > 0) return true
-            return false
+                if(pro[0].qty_available > 0) return true;
+
+            return false;
         }
+
         cekStatus(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
@@ -653,13 +709,7 @@
                     this.spareparts_selected.push(el)
             })
         }
-        loadHistory(): void {
-            let his = JSON.parse(localStorage.getItem('history')),
-                h   = his.filter(el => {
-                    return el['License Plate'].toUpperCase() == this.no_polisi.toUpperCase()
-                })
-            this.histories = h
-        }
+        
         refreshTotal(): void {
             this.total = 0
             this.spareparts_selected.forEach(el => {
@@ -724,13 +774,26 @@
                 "total_time": "00:00"
             }
 
-            let services = JSON.parse(localStorage.getItem('services'))
+            // let services = JSON.parse(localStorage.getItem('services'))
 
-            services.push(payload)
+            // services.push(payload)
 
-            localStorage.setItem('services', JSON.stringify(services))
+            // localStorage.setItem('services', JSON.stringify(services))
 
-            this.$router.push({ name: 'register' })
+            // this.$router.push({ name: 'register' })
+
+            register.createRegister(this.$data)
+        }
+
+        cekFinish(): void {
+            console.log(this.services_selected)
+            if(this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
+                this.notFinish = false
+
+                return;
+            }
+
+            this.notFinish     = true
         }
         
         @Watch('no_polisi')
@@ -740,13 +803,19 @@
             else
                 this.button_history  = true
         }
+
         @Watch('spareparts_selected')
         onSperpatedChange() {
-            this.refreshTotal()
+            this.refreshTotal();
+
+            this.cekFinish();
         }
+
         @Watch('services_selected')
         onServicesChange() {
-            this.refreshTotal()
+            this.refreshTotal();
+
+            this.cekFinish();
         }
     }
 </script>

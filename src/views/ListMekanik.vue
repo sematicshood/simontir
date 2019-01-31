@@ -32,9 +32,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ lights.length }}</span>
                                     </div>
                                 </div>
-                                <router-link to="/timesheet_mekanik/2">
-                                    <LightRepair :data="light" v-for="light in lights"></LightRepair>
-                                </router-link>
+                                <LightRepair :data="light" v-for="light in lights"></LightRepair>
                             </div>
                         </div>
                         <div class="row">
@@ -46,9 +44,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ regulars.length }}</span>
                                     </div>
                                 </div>
-                                <router-link to="/timesheet_mekanik/2">
-                                    <reguler :data="regular" v-for="regular in regulars"></reguler>
-                                </router-link>
+                                <reguler :data="regular" v-for="regular in regulars"></reguler>
                             </div>
                         </div>
                     </div>
@@ -62,6 +58,7 @@
     import BookingOrder from '../components/BookingOrder.vue';
     import LightRepair from '../components/LightRepair.vue';
     import reguler from '../components/Reguler.vue';
+    import mekanik from '../api/mekanik';
     import { Component, Vue } from 'vue-property-decorator';
 
     @Component({
@@ -79,18 +76,28 @@
 
         created() {
             this.user       = JSON.parse(localStorage.getItem('login'))
-            this.services   = JSON.parse(localStorage.getItem('services'))
-            this.bookings   = this.services.filter(el => {
-                return el['jenis service'] == "Booking Service" 
-            }).splice(0,1)
+            
+            this.loadData()
 
-            this.lights   = this.services.filter(el => {
-                return el['jenis service'] == "Light Repair" 
-            }).splice(0,1)
+            setInterval(() => {
+                this.loadData()
+            }, 5000)
+        }
 
-            this.regulars   = this.services.filter(el => {
-                return el['jenis service'] == "Regular" 
-            }).splice(0,1)
+        loadData(): void {
+            mekanik.getSO().then(res => {
+                this.bookings   = res.data.results.filter(el => {
+                    return el.antrian_service == "Booking Service" 
+                }).splice(0,1)
+
+                this.lights   = res.data.results.filter(el => {
+                    return el.antrian_service == "Light Repair" 
+                }).splice(0,1)
+
+                this.regulars = res.data.results.filter(el => {
+                    return el.antrian_service == "Regular Service" 
+                }).splice(0,1)
+            })
         }
     }
 </script>

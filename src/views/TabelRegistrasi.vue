@@ -19,50 +19,30 @@
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
-                <tbody><tr>
-                  <th>#</th>
-                  <th>Column 1</th>
-                  <th>Column 1</th>
-                  <th>Column 1</th>
-                  <th>Action</th>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
-                        <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
-                        <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>Bacon ipsum</td>
-                  <td>
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
-                        <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody></table>
+                <tbody>
+                  <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>No Polisi</th>
+                    <th>Tipe Kenadaraan</th>
+                    <th>Antrian Service</th>
+                    <th>Action</th>
+                  </tr>
+                  <tr v-for="(reg, i) in list_register">
+                    <td>{{ i += 1 }}</td>
+                    <td>{{ reg.customer }}</td>
+                    <td>{{ reg.no_polisi }}</td>
+                    <td>{{ reg.tipe_kenadaraan }}</td>
+                    <td>{{ reg.antrian_service }}</td>
+                    <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
+                          <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <!-- /.box-body -->
           </div>
@@ -80,12 +60,21 @@
 
 <script lang="ts">
     import { Component, Vue, Watch } from 'vue-property-decorator';
+    import board from '../api/board';
 
     @Component({
         components: {},
     })
 
-    export default class TabelRegistrasi extends Vue {}
+    export default class TabelRegistrasi extends Vue {
+      list_register: Array<string>  = []
+
+      created() {
+        board.getSO().then(res => {
+          this.list_register  = res.data.results
+        })
+      }
+    }
 </script>
 
 <style>

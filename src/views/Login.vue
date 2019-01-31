@@ -56,46 +56,20 @@
 
         this.$validator.validateAll().then((result) => {
           if (result) {
-            // users.cekUser(payload)
-            //      .then((res) => {
-            //         let user = res.data.filter(el => {
-            //             return el.login == payload.login && el.password == payload.password
-            //         })
+            users.cekUser(payload)
+                 .then(res => {
+                    if(res.data.result) {
+                      let result = JSON.parse(res.data.result)
 
-            //         if(user.length > 0) {
-            //             const role = user[0].job_id.name
+                      let data = result[0]
 
-            //             const data = {
-            //                 role: role
-            //             }
-                    
-            //             localStorage.setItem("login", JSON.stringify(data))
+                      localStorage.setItem("login", JSON.stringify(data))
 
-            //             this.$router.push({ name: auth.cekRoleUrl(role) })
-            //         } else {
-            //           alert('Username atau password salah')
-            //         }
-            //      })
-            //      .catch((err) => alert('Username atau password salah'))
-            
-            let user = users.cekUser(payload).filter(el => {
-                return el.login == payload.login && el.password == payload.password
-            })
-
-            if(user.length > 0) {
-                const role = user[0].job_id.name
-
-                const data = {
-                    role: role,
-                    name: user[0].name
-                }
-            
-                localStorage.setItem("login", JSON.stringify(data))
-
-                this.$router.push({ name: auth.cekRoleUrl(role) })
-            } else {
-              alert('Username atau password salah')
-            }
+                      this.$router.push({ name: auth.cekRoleUrl(data.role) })
+                    } else {
+                      alert('Username atau password salah')
+                    }
+                 })
 
             return true
           }
