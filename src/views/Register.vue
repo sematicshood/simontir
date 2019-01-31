@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         <label>Type</label>
                                         <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="tyz">{{ ty.name }}</option>
+                                            <option v-for="ty in types" :value="ty">{{ ty.name }}</option>
                                         </select>
                                         <span>*) Wajib diisi</span>
                                     </div>
@@ -325,12 +325,12 @@
                                                 <div class="col-sm-8">
                                                     <div class="checkbox">
                                                         <label>
-                                                            <input type="checkbox">
+                                                            <input type="radio" v-model="cuci" value="true">
                                                             Ya
                                                         </label>
                                                         &nbsp;
                                                         <label>
-                                                            <input type="checkbox">
+                                                            <input type="radio" v-model="cuci" value="false">
                                                             Tidak
                                                         </label>
                                                     </div>
@@ -469,7 +469,7 @@
                         <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
-                        <button @click.prevent="halaman = 2" :disabled="isNext()" class="btn btn-warning pull-right" >Next</button>
+                        <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" :disabled="isNext()">Next</button>
                     </div>
                     </form>
                 </div>
@@ -488,11 +488,15 @@
                         <th>Biaya</th>
                     </tr>
                 </thead>
-                <tbody v-for="history in histories">
-                    <tr v-for="jasa in histories.jasa">
+                <tbody>
+                    <tr v-for="history in histories">
                         <td v-text="history.tanggal"></td>
                         <td v-text="history.km"></td>
-                        <td v-text="jasa.name"></td>
+                        <td>
+                            <ul>
+                                <li v-for="jasa in history.jasa" v-text="jasa.name"></li>
+                            </ul>
+                        </td>
                         <td></td>
                         <td v-text="history.mekanik"></td>
                         <td v-text="history.frontdesk"></td>
@@ -583,7 +587,8 @@
         multiple_sparepart: Array<string>  = [];
 
         notFinish: boolean                 = true;
-        no_urut: string                    = ""
+        no_urut: string                    = "";
+        cuci: string                       = "";
 
         created() {
             register.cekSO().then(res => {
@@ -629,7 +634,7 @@
         cekStok(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
             })
             
             if(pro[0])
@@ -641,7 +646,7 @@
         cekStatus(name): void {
             let pro = this.products.filter(el => {
                 let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase();
+                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
             })
             if(pro[0]) return true
             return false
@@ -653,10 +658,10 @@
             return this.services_selected.indexOf(this.services[index]) < 0
         }
         findIndexSparepart(i): void {
-            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
         }
         findIndexService(i): void {
-            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.replace(/\s+/g, '').toUpperCase())
+            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
         }
         cekSparepartExist(i): void {
             return this.cekSparepartSelect(this.findIndexSparepart(i))
@@ -739,7 +744,7 @@
             if(this.no_polisi == "") return true
             if(this.tgl_service == "") return true
             if(this.no_telp == "") return true
-            if(this.type == "") return true
+            if(this.type.length > 0) return true
             if(this.nama_pemilik == "") return true
             return false
         }

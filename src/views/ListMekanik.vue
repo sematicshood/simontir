@@ -6,7 +6,7 @@
                     <!-- Add the bg color to the header using any of the bg-* classes -->
                     <div class="widget-user-header bg-red" style="margin-bottom: 20px;">
                         <div class="widget-user-image">
-                            <img class="img-circle" src="../assets/img/user1-128x128.jpg" alt="User Avatar">
+                            <img class="img-circle" :src="`data:image/gif;base64,${ user.image }`" alt="User Avatar">
                         </div>
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">{{ user.name }}</h3>
@@ -22,7 +22,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ bookings.length }}</span>
                                     </div>
                                 </div>
-                                <BookingOrder :data="booking" v-for="booking in bookings"></BookingOrder>
+                                <BookingOrder :type="'timesheet_mekanik'" :data="booking" v-for="booking in bookings"></BookingOrder>
                             </div>
                             <div class="col-lg-6">
                                 <div class="box-header with-border">
@@ -32,7 +32,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ lights.length }}</span>
                                     </div>
                                 </div>
-                                <LightRepair :data="light" v-for="light in lights"></LightRepair>
+                                <LightRepair :type="'timesheet_mekanik'" :data="light" v-for="light in lights"></LightRepair>
                             </div>
                         </div>
                         <div class="row">
@@ -44,7 +44,7 @@
                                         <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ regulars.length }}</span>
                                     </div>
                                 </div>
-                                <reguler :data="regular" v-for="regular in regulars"></reguler>
+                                <reguler :type="'timesheet_mekanik'" :data="regular" v-for="regular in regulars"></reguler>
                             </div>
                         </div>
                     </div>
@@ -86,17 +86,19 @@
 
         loadData(): void {
             mekanik.getSO().then(res => {
-                this.bookings   = res.data.results.filter(el => {
-                    return el.antrian_service == "Booking Service" 
-                }).splice(0,1)
+                if(res.data.results) {
+                    this.bookings   = res.data.results.filter(el => {
+                        return el.antrian_service == "Booking Service" 
+                    }).splice(0,1)
 
-                this.lights   = res.data.results.filter(el => {
-                    return el.antrian_service == "Light Repair" 
-                }).splice(0,1)
+                    this.lights   = res.data.results.filter(el => {
+                        return el.antrian_service == "Light Repair" 
+                    }).splice(0,1)
 
-                this.regulars = res.data.results.filter(el => {
-                    return el.antrian_service == "Regular Service" 
-                }).splice(0,1)
+                    this.regulars = res.data.results.filter(el => {
+                        return el.antrian_service == "Regular Service" 
+                    }).splice(0,1)
+                }
             })
         }
     }

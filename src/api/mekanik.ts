@@ -16,9 +16,19 @@ const unlock = async (data) => {
     return await api.post('/simontir/unlock_so', data)
 }
 
+const getFinalSO = async (no_ref) => {
+    return await api.get('/simontir/get_final_detail/' + no_ref, {})
+}
+
+const accept = async (data) => {
+    return await api.post('/simontir/accept', data)
+}
+
 export default {
     getSO,
     pick,
     lock,
     unlock,
+    getFinalSO,
+    accept,
 }
