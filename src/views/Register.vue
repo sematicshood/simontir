@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         <label>Type</label>
                                         <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="ty.name">{{ ty.name }}</option>
+                                            <option v-for="ty in types" :value="tyz">{{ ty.name }}</option>
                                         </select>
                                         <span>*) Wajib diisi</span>
                                     </div>
@@ -302,12 +302,14 @@
                                                     <tbody><tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Suku Cadang</th>
+                                                        <th>QTY</th>
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
                                                     <tr v-for="(sparepart, i) in spareparts_selected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
+                                                        <td><input type="number" :value="sparepart.qty" @change="updateSparepartQty($event, i)"></td>
                                                         <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
                                                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
@@ -520,13 +522,13 @@
     })
     
     export default class Register extends Vue {
-        halaman: number             = 1;
+        halaman: number             = 2;
         no_polisi: string           = "";
         tgl_service: string         = new Date();
         no_mesin: string            = "";
         no_rangka: string           = "";
-        type: string                = "";
-        types: Array<string>        = JSON.parse(localStorage.getItem('types'));
+        type: Array<string>         = "";
+        types: Array<string>        = [];
         tahun: number               = "";
         nama_pembawa: string        = "";
         no_telp: string             = "";
@@ -585,6 +587,8 @@
 
         created() {
             register.cekSO().then(res => {
+                this.types   = res.data.results[0].tipe_motor
+                
                 this.no_urut = res.data.results[0].name
 
                 this.products = res.data.results[0].product
@@ -670,8 +674,11 @@
         addSparepart(i): void {
             if(this.cekStok(i.name)) {
                 let index = this.findIndexSparepart(i);
-                if(this.cekSparepartSelect(index))
+                if(this.cekSparepartSelect(index)) {
+                    this.spareparts[index].push({qty: 1})
+
                     this.spareparts_selected.push(this.spareparts[index])
+                }
             }
         }
         convertToRupiah(angka): void {
@@ -701,9 +708,16 @@
         }
         addMultipleSparepart(): void {
             this.multiple_sparepart.forEach(el => {
-                if(this.spareparts_selected.indexOf(el) < 0)
+                if(this.spareparts_selected.indexOf(el) < 0) {
+                    el['qty'] = 1
+
                     this.spareparts_selected.push(el)
+                }
             })
+        }
+
+        updateSparepartQty(event, i): void {
+            this.spareparts_selected[i-1].qty = event.target.value
         }
         
         refreshTotal(): void {
