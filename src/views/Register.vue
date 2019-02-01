@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="row">
+        <div id="content">
+            <div class="row">
             <div class="col-lg-12">
                 <div class="box box-danger box-solid">
                     <form @submit.prevent="finish">
@@ -469,7 +470,7 @@
                         <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
                         <div class="pull-right" style="margin: 3px 0px 0px 15px;">
                             <label>
-                                <input type="checkbox"> Print    &nbsp; &nbsp;
+                                <input v-model="isPrint" type="checkbox"> Print    &nbsp; &nbsp;
                             </label>
                         </div>                        
                     </div>
@@ -510,8 +511,8 @@
                 </tbody>
             </table>
         </b-modal>
-        <button v-print="'#printMe'">Print local range</button>
-        <printpendaftaran></printpendaftaran>
+        </div>
+        <printpendaftaran :data="this.$data"></printpendaftaran>
     </div>
 </template>
 
@@ -599,6 +600,7 @@ export default class Register extends Vue {
     public notFinish: boolean                 = true;
     public noUrut: string                     = '';
     public cuci: string                       = '';
+    public isPrint: boolean                   = true;
 
     public created() {
         register.cekSO().then((res) => {
@@ -763,6 +765,8 @@ export default class Register extends Vue {
         return false;
     }
     public finish(): void {
+        if(this.isPrint) window.print()
+
         register.createRegister(this.$data);
     }
 

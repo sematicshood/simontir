@@ -13,74 +13,74 @@
                 </tr>
                 <tr class="data-motor">
                     <td><strong>NO ORDER</strong></td>
-                    <td>SO032</td>
+                    <td>{{ data.noUrut }}</td>
                     <td><strong>TANGGAL</strong></td>
-                    <td>20/21/2018</td>
+                    <td>{{ data.tglService | tanggal }}</td>
                 </tr>
                 <tr class="data-motor">
                     <td><strong>NO NOPOL</strong></td>
-                    <td>TE 1111 ST</td>
+                    <td>{{ data.noPolisi }}</td>
                     <td><strong>NAMA</strong></td>
-                    <td>Denny</td>
+                    <td>{{ data.namaPemilik }}</td>
                 </tr>
                 <tr class="data-motor">
                     <td><strong>KM</strong></td>
-                    <td>12300</td>
+                    <td>{{ data.km }}</td>
                     <td><strong>NO TELP</strong></td>
-                    <td>809778667556</td>
+                    <td>{{ data.noTelp }}</td>
                 </tr>
                 <tr class="data-motor">
                     <td><strong>JENIS</strong></td>
-                    <td>Vario 125</td>
+                    <td>{{ data.type.name }}</td>
                     <td><strong>ANTRIAN</strong></td>
-                    <td>BS/LR/RG</td>
+                    <td>{{ data.jenisService }}</td>
                 </tr>
                 <tr class="t-header">
                     <td colspan="3"><strong>PEKERJAAN</strong></td>
                     <td><strong>BIAYA</strong></td>
                 </tr>
-                <tr>
-                    <td colspan="3">1. Ganti Oli</td>
-                    <td>Rp.35.000</td>
+                <tr v-for="(service, i) in data.servicesSelected">
+                    <td colspan="3">{{ i += 1 }}. {{ service.name }}</td>
+                    <td>Rp. {{ servce.harga }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
                     <td colspan="3"><strong>SPARETPART</strong></td>
                     <td><strong>BIAYA</strong></td>
                 </tr>
-                <tr>
-                    <td colspan="3">1. Oli Rem</td>
-                    <td>Rp.60.000</td>
+                <tr v-for="(sparepart, i) in data.sparepartsSelected">
+                    <td colspan="3">{{ i += 1 }}. {{ sparepart.name }}</td>
+                    <td>Rp. {{ sparepart.harga }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr>
                     <td colspan="2">Subtotal</td>
                     <td></td>
-                    <td>Rp.95.000</td>
+                    <td>Rp. {{ data.total }}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td colspan="2">Diskon Service</td>
                     <td>20%</td>
                     <td>Rp.19.000</td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td colspan="2"><strong>Total</strong></td>
                     <td></td>
-                    <td><strong>Rp.76.000</strong></td>
+                    <td><strong>Rp. {{ data.total }}</strong></td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
                     <td colspan="4"><strong>KELUHAN CUSTOMER</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="4">1. Ban Geal Geol</td>
+                    <td colspan="4" v-for="(keluhan, i) in data.keluhanKonsumen">{{ i += 1 }}. keluhan.nama</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
                     <td colspan="4"><strong>ANALISA SERVICE ADVISOR</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="4">1. Kurang Sentuhan Mekanik</td>
+                    <td colspan="4">{{ data.analisaService }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr>
@@ -98,8 +98,8 @@
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr><tr class="t-space"><td colspan="4"></td></tr><tr class="t-space"><td colspan="4"></td></tr>
                 <tr>
-                    <td colspan="2">Nama</td>
-                    <td colspan="2">Nama User</td>
+                    <td colspan="2">{{ data.namaPemilik }}</td>
+                    <td colspan="2">{{ user.name }}</td>
                 </tr>
             </table>
         </div>
@@ -108,10 +108,33 @@
 
 <script>
   export default {
+      props: ['data'],
+
+      data() {
+          return {
+              user: JSON.parse(localStorage.getItem('login')),
+          }
+      },
+      filters: {
+          tanggal(value) {
+              return `${value.getUTCDay()}/${value.getUTCMonth()}/${value.getUTCFullYear()} ${value.getUTCHours()}:${value.getUTCMinutes()}:${value.getUTCSeconds()}`
+          }
+      },
+
       name: 'printPendaftaran'
   }
 </script>
 
 <style>
 @import '../assets/adminLTE/css/custom.css';
+
+#printPendafataran {
+    display: none;
+}
+
+@media print
+    {
+        #content { display: none; }
+        #printPendafataran { display: block; }
+    }
 </style>
