@@ -520,10 +520,12 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
-import Print from 'vue-print-nb';
 import printpendaftaran from './PrintPendaftaran.vue';
 
 @Component({
+    components:{
+        printpendaftaran
+    },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
     if (answer) {
