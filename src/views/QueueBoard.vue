@@ -166,9 +166,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import board from '../api/board';
 
-@Component({
-    components: {},
-})
+@Component({})
 
 export default class QueueBoard extends Vue {
     public antrian: string[]          =   [];

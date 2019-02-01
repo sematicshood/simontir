@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import auth from './helpers/auth';
 
+import Queue from './views/QueueBoard.vue'
+
 Vue.use(Router);
 
 const router = new Router({
@@ -14,7 +16,10 @@ const router = new Router({
     },
     {
       path: '/',
-      component: require('@views/QueueBoard'),
+      component: Queue,
+      meta: {
+        title: 'Queue Board',
+      },
     },
     {
       path: '/login',

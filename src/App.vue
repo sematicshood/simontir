@@ -50,8 +50,8 @@ export default class App extends Vue {
 
   @Watch('$route', { immediate: true, deep: true })
   public onUrlChange(newVal: any) {
-    this.$data.path  = this.$router.currentRoute.name;
-    this.$data.title = this.$router.currentRoute.meta.title;
+    this.$data.path  = (this.$router as any).currentRoute.name;
+    this.$data.title = (this.$router as any).currentRoute.meta.title;
   }
 }
 </script>
