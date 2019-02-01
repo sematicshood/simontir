@@ -148,7 +148,7 @@
                                         <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
                                     </dir>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisa_service"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisaService"></textarea>
                                     </div>   
                                 </div>
                             </dir>
@@ -555,7 +555,7 @@ export default class Register extends Vue {
     public namaPemilik: string        = '';
     public alamat: string              = '';
     public keluhanKonsumen: any[]     = [];
-    public analisa_service: string     = '';
+    public analisaService: string     = '';
     public saranMekanik: string       = '';
     public buttonHistory: boolean     = false;
     public keluhanInput: string       = '';
