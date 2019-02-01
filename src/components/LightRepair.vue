@@ -60,7 +60,7 @@ export default {
         },
 
         pick() {
-            if(type == 'timesheet_mekanik')
+            if(this.type == 'timesheet_mekanik')
                 mekanik.pick({invoice: this.data.name, user_id: this.$data.user.id})
         }
     }

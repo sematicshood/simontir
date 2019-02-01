@@ -71,32 +71,34 @@ export default class TimesheetMekanik extends Vue {
         this.ids = this.$route.params.id;
 
         board.getTask(this.ids).then((res) => {
-            this.nopol      =   res.data.results.nopol;
-            this.waktu      =   res.data.results.waktu_mulai;
+            if(res.data.results) {
+                this.nopol      =   res.data.results.nopol;
+                this.waktu      =   res.data.results.waktu_mulai;
 
-            this.services   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] !== 'keluhan';
-            });
+                this.services   =   res.data.results.tasks.filter((el: any) => {
+                    return el.name.split(':')[0].split(' ')[1] !== 'keluhan';
+                });
 
-            this.keluhan   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] === 'keluhan';
-            });
+                this.keluhan   =   res.data.results.tasks.filter((el: any) => {
+                    return el.name.split(':')[0].split(' ')[1] === 'keluhan';
+                });
 
-            const now: any     = new Date();
-            const waktu: any   = new Date(this.waktu);
+                const now: any     = new Date();
+                const waktu: any   = new Date(this.waktu);
 
-            let diff: any    = now - waktu;
+                let diff: any    = now - waktu;
 
-            const hh: any = Math.floor(diff / 1000 / 60 / 60);
-            diff -= hh * 1000 * 60 * 60;
-            const mm: any = Math.floor(diff / 1000 / 60);
-            diff -= mm * 1000 * 60;
-            const ss: any = Math.floor(diff / 1000);
-            diff -= ss * 1000;
+                const hh: any = Math.floor(diff / 1000 / 60 / 60);
+                diff -= hh * 1000 * 60 * 60;
+                const mm: any = Math.floor(diff / 1000 / 60);
+                diff -= mm * 1000 * 60;
+                const ss: any = Math.floor(diff / 1000);
+                diff -= ss * 1000;
 
-            this.hours      = hh;
-            this.minutes    = mm;
-            this.seconds    = ss;
+                this.hours      = hh;
+                this.minutes    = mm;
+                this.seconds    = ss;
+            }
         });
     }
 
