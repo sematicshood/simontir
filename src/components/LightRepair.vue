@@ -47,7 +47,7 @@ export default {
             })
 
             return datas.length
-        }
+        },
 
         pick() {
             if(type == 'timesheet_mekanik')
