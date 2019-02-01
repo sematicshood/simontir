@@ -84,7 +84,6 @@ export default class ListMekanik extends Vue {
 
     public loadData(): void {
         mekanik.getSO().then((res: any) => {
-            console.log(res.data.results)
             if (res.data.results) {
                 this.bookings   = res.data.results.filter((el: any) => {
                     return el.antrian_service == 'Booking Service';
@@ -97,6 +96,8 @@ export default class ListMekanik extends Vue {
                 this.regulars = res.data.results.filter((el: any) => {
                     return el.antrian_service == 'regular';
                 }).splice(0, 1);
+
+                console.log(this.regulars)
             }
         });
     }
