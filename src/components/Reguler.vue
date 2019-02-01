@@ -1,6 +1,6 @@
 <template>
     <div id="reguler">
-        <router-link :to="{ name: 'timesheet_mekanik', params: { id: data.name } }">
+        <router-link @click.native="pick" :to="{ name: 'timesheet_mekanik', params: { id: data.name } }">
             <div class="box no-border-top">
                 <div class="box-body">
                     <div class="small-box bg-green">
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import mekanik from '../api/mekanik';
+
 export default {
     name: 'reguler',
 
@@ -45,6 +47,11 @@ export default {
             })
 
             return datas.length
+        }
+
+        pick() {
+            if(type == 'timesheet_mekanik')
+                mekanik.pick({invoice: this.data.name, user_id: this.$data.user.id})
         }
     }
 }
