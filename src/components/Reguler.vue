@@ -32,6 +32,16 @@ export default {
 
     props: ['data', 'type'],
 
+    data() {
+        return {
+            user: []
+        }
+    },
+
+    created() {
+        this.$data.user  = JSON.parse(localStorage.getItem('login'))
+    },
+
     methods: {
         countService(dataq) {
             let datas = dataq.order_line.filter(el => {
