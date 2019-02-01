@@ -28,7 +28,7 @@
                     <th>Antrian Service</th>
                     <th>Action</th>
                   </tr>
-                  <tr v-for="(reg, i) in list_register">
+                  <tr v-for="(reg, i) in listRegister">
                     <td>{{ i += 1 }}</td>
                     <td>{{ reg.customer }}</td>
                     <td>{{ reg.no_polisi }}</td>
@@ -67,11 +67,11 @@ import board from '../api/board';
 })
 
 export default class TabelRegistrasi extends Vue {
-  public list_register: string[]  = [];
+  public listRegister: string[]  = [];
 
   public created() {
     board.getSO().then((res) => {
-      this.list_register  = res.data.results;
+      this.listRegister  = res.data.results;
     });
   }
 }

@@ -598,11 +598,11 @@ export default class Register extends Vue {
             this.products = res.data.results[0].product;
 
             this.spareparts = this.products.filter((el: any) => {
-                return el.product_type != 'service';
+                return el.product_type !== 'service';
             });
 
             this.services = this.products.filter((el: any) => {
-                return el.product_type == 'service';
+                return el.product_type === 'service';
             });
 
             this.services_own = this.services;
@@ -633,7 +633,7 @@ export default class Register extends Vue {
     public cekStok(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
         });
 
         if (pro[0]) {
@@ -646,7 +646,7 @@ export default class Register extends Vue {
     public cekStatus(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
         });
         if (pro[0]) { return true; }
         return false;
@@ -658,10 +658,10 @@ export default class Register extends Vue {
         return this.services_selected.indexOf(this.services[index]) < 0;
     }
     public findIndexSparepart(i: any): number {
-        return this.spareparts.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
     }
     public findIndexService(i: any): number {
-        return this.services.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
     }
     public cekSparepartExist(i: any): boolean {
         return this.cekSparepartSelect(this.findIndexSparepart(i));
@@ -744,11 +744,11 @@ export default class Register extends Vue {
         this.services_selected.splice(i - 1, 1);
     }
     public isNext() {
-        if (this.no_polisi == '') { return true; }
-        if (this.tgl_service == '') { return true; }
-        if (this.no_telp == '') { return true; }
+        if (this.no_polisi === '') { return true; }
+        if (this.tgl_service === '') { return true; }
+        if (this.no_telp === '') { return true; }
         if (this.type.length > 0) { return true; }
-        if (this.nama_pemilik == '') { return true; }
+        if (this.nama_pemilik === '') { return true; }
         return false;
     }
     public finish(): void {
@@ -767,7 +767,7 @@ export default class Register extends Vue {
 
     @Watch('no_polisi')
     public onNoPolisiChanged(val: string) {
-        if (val == '') {
+        if (val === '') {
             this.button_history  = false;
         } else {
             this.button_history  = true;
