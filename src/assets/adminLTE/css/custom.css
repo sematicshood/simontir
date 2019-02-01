@@ -191,3 +191,28 @@
     max-height: 100vh !important;
     margin: 25% auto 0% auto !important;
 }
+
+.display-none{
+    display: none;
+}
+
+.table-print{
+    top: 0;
+    font-size: 35px;
+    width: 100%;
+}
+.table-print tr td{
+    padding: 5px;
+}
+.table-print, .table-print .t-header{
+    border: 1px solid black !important;
+}
+.t-header td h1{
+    font-size: 50px;
+}
+.table-print .data-motor td{
+    border-right: 1px solid black;
+}
+.t-space{
+    height: 25px;
+}

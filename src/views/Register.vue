@@ -466,7 +466,12 @@
                     </div>
                     <div class="box-footer" v-if="halaman == 2">
                         <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
+                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
+                        <div class="pull-right" style="margin: 3px 0px 0px 15px;">
+                            <label>
+                                <input type="checkbox"> Print    &nbsp; &nbsp;
+                            </label>
+                        </div>                        
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
                         <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" :disabled="isNext()">Next</button>
@@ -505,6 +510,8 @@
                 </tbody>
             </table>
         </b-modal>
+        <button v-print="'#printMe'">Print local range</button>
+        <printpendaftaran></printpendaftaran>
     </div>
 </template>
 
@@ -513,6 +520,8 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
+import Print from 'vue-print-nb';
+import printpendaftaran from './PrintPendaftaran.vue';
 
 @Component({
     beforeRouteLeave(to, from , next) {
