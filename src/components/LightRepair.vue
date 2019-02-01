@@ -1,6 +1,6 @@
 <template>
     <div id="LightRepair">
-        <router-link @click.native="pick" :to="{ name: 'timesheet_mekanik', params: { id: data.name } }">
+        <router-link @click.native="pick" :to="{ name: type, params: { id: data.name } }">
             <div class="box no-border-top">
                 <div class="box-body">
                     <div class="small-box bg-yellow">
@@ -30,7 +30,7 @@ import mekanik from '../api/mekanik';
 export default {
     name: 'LightRepair',
 
-    props: ['data'],
+    props: ['data', 'type'],
 
     methods: {
         countService(dataq) {
