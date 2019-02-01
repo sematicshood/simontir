@@ -544,8 +544,8 @@ export default class Register extends Vue {
     public tglService: any            = new Date();
     public noMesin: string            = '';
     public noRangka: string           = '';
-    public type: any[]                 = [];
-    public types: any[]                = [];
+    public type: any                 = [];
+    public types: any                = [];
     public tahun: number               = 0;
     public namaPembawa: string        = '';
     public noTelp: string             = '';
@@ -647,7 +647,9 @@ export default class Register extends Vue {
     public cekStok(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name === name && models.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+            const nganu  = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false'
+
+            return el.name === name && models.toUpperCase() === nganu;
         });
 
         if (pro[0]) {
@@ -660,7 +662,9 @@ export default class Register extends Vue {
     public cekStatus(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name === name && models.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+            const nganu  = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+
+            return el.name === name && models.toUpperCase() === nganu;
         });
         if (pro[0]) { return true; }
         return false;
@@ -671,11 +675,15 @@ export default class Register extends Vue {
     public cekServiceSelect(index: number): boolean {
         return this.servicesSelected.indexOf(this.services[index]) < 0;
     }
-    public findIndexSparepart(i: any): number {
-        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false');
+    public findIndexSparepart(i: any): any {
+        let nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+
+        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === nganu);
     }
-    public findIndexService(i: any): number {
-        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false');
+    public findIndexService(i: any): any {
+        let nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+
+        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === nganu);
     }
     public cekSparepartExist(i: any): boolean {
         return this.cekSparepartSelect(this.findIndexSparepart(i));
