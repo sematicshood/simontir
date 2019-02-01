@@ -26,16 +26,16 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 
-  @Component({
-      name: 'navbar'
-  })
+@Component({
+    name: 'navbar',
+})
 
-  export default class App extends Vue {
-    changeStatusSidebar(): void {
-      this.$store.dispatch('web/changeStatusSidebar');
-    }
+export default class App extends Vue {
+  public changeStatusSidebar(): void {
+    this.$store.dispatch('web/changeStatusSidebar');
   }
+}
 </script>
 

@@ -46,85 +46,85 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
-    import additional from '../helpers/additional';
-    import board from '../api/board';
-    import mekanik from '../api/mekanik';
+import { Component, Vue } from 'vue-property-decorator';
+import additional from '../helpers/additional';
+import board from '../api/board';
+import mekanik from '../api/mekanik';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class TimesheetMekanik extends Vue {
-        timer: string           =   "00:00:00";
-        seconds: number         =   0;
-        minutes: number         =   0;
-        hours: number           =   0;
-        ids: string             =   "";
-        data: Array<string>     =   [];
-        nopol: Array<string>    =   "";
-        services: Array<string> =   [];
-        keluhan: Array<string>  =   [];
-        waktu: string           =   "";
+export default class TimesheetMekanik extends Vue {
+    public timer: string           =   '00:00:00';
+    public seconds: number         =   0;
+    public minutes: number         =   0;
+    public hours: number           =   0;
+    public ids: string             =   '';
+    public data: string[]          =   [];
+    public nopol: string           =   '';
+    public services: string[]      =   [];
+    public keluhan: string[]       =   [];
+    public waktu: string           =   '';
 
-        getData(): void {
-            this.ids = this.$route.params.id
+    public getData(): void {
+        this.ids = this.$route.params.id;
 
-            board.getTask(this.ids).then(res => {
-                this.nopol      =   res.data.results.nopol
-                this.waktu      =   res.data.results.waktu_mulai
+        board.getTask(this.ids).then((res) => {
+            this.nopol      =   res.data.results.nopol;
+            this.waktu      =   res.data.results.waktu_mulai;
 
-                this.services   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] != 'keluhan'
-                })
+            this.services   =   res.data.results.tasks.filter((el: any) => {
+                return el.name.split(':')[0].split(' ')[1] != 'keluhan';
+            });
 
-                this.keluhan   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] == 'keluhan'
-                })
+            this.keluhan   =   res.data.results.tasks.filter((el: any) => {
+                return el.name.split(':')[0].split(' ')[1] == 'keluhan';
+            });
 
-                let now     = new Date(),
-                    waktu   = new Date(this.waktu),
-                    diff    = now - waktu
+            let now: any     = new Date(),
+                waktu: any   = new Date(this.waktu),
+                diff: any    = now - waktu;
 
-                var hh = Math.floor(diff / 1000 / 60 / 60);
-                diff -= hh * 1000 * 60 * 60;
-                var mm = Math.floor(diff / 1000 / 60);
-                diff -= mm * 1000 * 60;
-                var ss = Math.floor(diff / 1000);
-                diff -= ss * 1000;
+            const hh: any = Math.floor(diff / 1000 / 60 / 60);
+            diff -= hh * 1000 * 60 * 60;
+            const mm: any = Math.floor(diff / 1000 / 60);
+            diff -= mm * 1000 * 60;
+            const ss: any = Math.floor(diff / 1000);
+            diff -= ss * 1000;
 
-                this.hours      = hh
-                this.minutes    = mm
-                this.seconds    = ss
-            })
-        }
-
-        finish(): void {
-            mekanik.lock({invoice: this.ids}).then(res => {
-                this.$router.push({ name: 'list_mekanik' })
-            })
-        }
-
-        created() {
-            setInterval(() => {
-                this.seconds++
-
-                if(this.seconds == 60) {
-                    this.seconds = 0
-                    this.minutes++
-                }
-
-                if(this.minutes == 60) {
-                    this.minutes = 0
-                    this.hours++
-                }
-
-                this.timer = additional.exact(this.hours) + ":" + additional.exact(this.minutes) + ":" + additional.exact(this.seconds)
-            }, 1000)
-
-            this.getData()
-        }
+            this.hours      = hh;
+            this.minutes    = mm;
+            this.seconds    = ss;
+        });
     }
+
+    public finish(): void {
+        mekanik.lock({invoice: this.ids}).then((res) => {
+            this.$router.push({ name: 'list_mekanik' });
+        });
+    }
+
+    public created() {
+        setInterval(() => {
+            this.seconds++;
+
+            if (this.seconds == 60) {
+                this.seconds = 0;
+                this.minutes++;
+            }
+
+            if (this.minutes == 60) {
+                this.minutes = 0;
+                this.hours++;
+            }
+
+            this.timer = additional.exact(this.hours) + ':' + additional.exact(this.minutes) + ':' + additional.exact(this.seconds);
+        }, 1000);
+
+        this.getData();
+    }
+}
 </script>
 
 <style>

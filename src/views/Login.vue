@@ -36,56 +36,52 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
-    import users from '../api/users';
-    import auth from '../helpers/auth';
+import { Component, Vue } from 'vue-property-decorator';
+import users from '../api/users';
+import auth from '../helpers/auth';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class Login extends Vue {
-      login: string         = ""
-      password: string      = ""
-      error: Array<string> = []
+export default class Login extends Vue {
+  public login: string         = '';
+  public password: string      = '';
+  public error: string[]       = [];
 
-      cekLogin(): void {
-        this.$data.error = []
+  public cekLogin(): void {
+    this.$data.error             = [];
 
-        let payload      = this.$data
+    const payload: any             = this.$data;
 
-        this.$validator.validateAll().then((result) => {
-          if (result) {
-            users.cekUser(payload)
-                 .then(res => {
-                    if(res.data.result) {
-                      let result = JSON.parse(res.data.result)
+    this.$validator.validateAll().then((result) => {
+      if (result) {
+        users.cekUser(payload)
+             .then((res: any) => {
+                if (res.data.result) {
+                  const result = JSON.parse(res.data.result);
 
-                      let data = result[0]
+                  const data = result[0];
 
-                      data['role'] = 'Manager'
+                  data.role = 'Manager';
 
-                      localStorage.setItem("login", JSON.stringify(data))
+                  localStorage.setItem('login', JSON.stringify(data));
 
-                      this.$router.push({ name: auth.cekRoleUrl(data.role) })
-                    } else {
-                      alert('Username atau password salah')
-                    }
-                 })
+                  this.$router.push({ name: auth.cekRoleUrl(data.role) });
+                } else {
+                  alert('Username atau password salah');
+                }
+             });
 
-            return true
-          }
-          
-          this.$validator.errors.items.forEach(el => {
-            this.$data.error.push(el.msg)
-          })
-        });
+        return true;
       }
 
-      created() {
-        auth.cekData();
-      }
-    }
+      this.$validator.errors.items.forEach((el) => {
+        this.$data.error.push(el.msg);
+      });
+    });
+  }
+}
 </script>
 
 <style>

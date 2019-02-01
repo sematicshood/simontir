@@ -37,33 +37,29 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class OptionRole extends Vue {
-        users: Array<string>    =   []
-        edit: number            =   0
-        role: string            =   ""
-        roles: Array<string>    =   [
-            "Front Desk", "Mekanik", "Asisten Mekanik", "Kepala Mekanik", "Manager"
-        ]
+export default class OptionRole extends Vue {
+    public users: any[]       =   [];
+    public edit: number       =   0;
+    public role: string       =   '';
+    public roles: string[]    =   [
+        'Front Desk', 'Mekanik', 'Asisten Mekanik', 'Kepala Mekanik', 'Manager',
+    ];
 
-        editUser(id): void {
-            this.$data.edit  = id
-            this.$data.role  = this.$data.users[id - 1].job_id.name
-        }
-
-        changeRole(id, role): void {
-            this.$data.users[id - 1].job_id.name = role
-
-            localStorage.setItem('users', JSON.stringify(this.$data.users))
-        }
-
-        created() {
-            this.$data.users = JSON.parse(localStorage.getItem('users'))
-        }
+    public editUser(id: number): void {
+        this.$data.edit  = id;
+        this.$data.role  = this.$data.users[id - 1].job_id.name;
     }
+
+    public changeRole(id: number, role: string): void {
+        this.$data.users[id - 1].job_id.name = role;
+
+        localStorage.setItem('users', JSON.stringify(this.$data.users));
+    }
+}
 </script>

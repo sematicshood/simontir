@@ -509,302 +509,285 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue, Watch, mixins } from 'vue-property-decorator';
-    import additional from '../helpers/additional'
-    import register from '../api/register';
-    import axios from 'axios';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import additional from '../helpers/additional';
+import register from '../api/register';
+import axios from 'axios';
 
-    @Component({
-        beforeRouteLeave (to, from , next) {
-        const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan')
-            if (answer) {
-                next()
-            } else {
-                next(false)
+@Component({
+    beforeRouteLeave(to, from , next) {
+    const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
+    if (answer) {
+            next();
+        } else {
+            next(false);
+        }
+    },
+})
+
+export default class Register extends Vue {
+    public halaman: number             = 1;
+    public no_polisi: string           = '';
+    public tgl_service: any            = new Date();
+    public no_mesin: string            = '';
+    public no_rangka: string           = '';
+    public type: any[]                 = [];
+    public types: any[]                = [];
+    public tahun: number               = 0;
+    public nama_pembawa: string        = '';
+    public no_telp: string             = '';
+    public email: string               = '';
+    public sosmed: string              = '';
+
+    public nama_pemilik: string        = '';
+    public alamat: string              = '';
+    public keluhan_konsumen: any[]     = [];
+    public analisa_service: string     = '';
+    public saran_mekanik: string       = '';
+    public button_history: boolean     = false;
+    public keluhan_input: string       = '';
+    public edit_keluhan: number        = 0;
+    public histories: any[]            = [];
+    public services_selected: any[]    = [];
+    public spareparts_selected: any[]  = [];
+    public spareparts: any[]           = [];
+    public services: any[]             = [];
+    public services_own: any[]         = [];
+    public spareparts_own: any[]       = [];
+    public km: number                  = 0;
+    public jenis_service: string       = '';
+    public list_spareparts: any[]     = [
+        {name: 'Busi', km: 8000},
+        {name: 'Oil Transmisi', km: 8000},
+        {name: 'Coolant', km: 12000},
+        {name: 'Filter Udara', km: 16000},
+        {name: 'Ban Depan', km: 24000},
+        {name: 'Ban Belakang', km: 24000},
+        {name: 'Rantai', km: 24000},
+        {name: 'Driver Belt', km: 24000},
+        {name: 'Kampas Rem', km: 24000},
+        {name: 'Aki', km: 24000},
+    ];
+    public list_services: any[]       = [
+        {name: 'Injector Cleaner', km: 4000},
+        {name: 'Pembersih CVT', km: 8000},
+        {name: 'Kuras Tangki', km: 12000},
+        {name: 'Kuras Radiator', km: 12000},
+        {name: 'Carbon Celaner', km: 12000},
+    ];
+    public total: number                      = 0;
+    public estimasi_konsumen: boolean         = false;
+    public estimasi_advisor: boolean          = false;
+    public tambahan_konsumen: boolean         = false;
+    public tambahan_advisor: boolean          = false;
+    public penyerahan_konsumen: boolean       = false;
+    public products: any[]                    = [];
+    public multiple_service: any[]            = [];
+    public multiple_sparepart: any[]          = [];
+
+    public notFinish: boolean                 = true;
+    public no_urut: string                    = '';
+    public cuci: string                       = '';
+
+    public created() {
+        register.cekSO().then((res) => {
+            this.types   = res.data.results[0].tipe_motor;
+
+            this.no_urut = res.data.results[0].name;
+
+            this.products = res.data.results[0].product;
+
+            this.spareparts = this.products.filter((el: any) => {
+                return el.product_type != 'service';
+            });
+
+            this.services = this.products.filter((el: any) => {
+                return el.product_type == 'service';
+            });
+
+            this.services_own = this.services;
+
+            this.spareparts_own = this.spareparts;
+        });
+    }
+
+    public cekNopol(): void {
+        register.cekNopol({nopol: this.no_polisi.toUpperCase()})
+                .then((res) => {
+                    if (res.data) {
+                        const data = res.data.results[0];
+
+                        this.no_mesin       = data.no_mesin;
+                        this.no_rangka      = data.no_rangka;
+                        this.tahun          = data.tahun;
+                        this.nama_pemilik   = data.nama_pemilik;
+                        this.no_telp        = data.telp_pemilik;
+                        this.email          = data.email_pemilik;
+                        this.sosmed         = data.sosmed;
+
+                        this.histories      = data.history;
+                    }
+                });
+    }
+
+    public cekStok(name: string): boolean {
+        const pro = this.products.filter((el: any) => {
+            const models = `${ el.make }${ el.name_model }`;
+            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+        });
+
+        if (pro[0]) {
+            if (pro[0].qty_available > 0) { return true; }
+        }
+
+        return false;
+    }
+
+    public cekStatus(name: string): boolean {
+        const pro = this.products.filter((el: any) => {
+            const models = `${ el.make }${ el.name_model }`;
+            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+        });
+        if (pro[0]) { return true; }
+        return false;
+    }
+    public cekSparepartSelect(index: number): boolean {
+        return this.spareparts_selected.indexOf(this.spareparts[index]) < 0;
+    }
+    public cekServiceSelect(index: number): boolean {
+        return this.services_selected.indexOf(this.services[index]) < 0;
+    }
+    public findIndexSparepart(i: any): number {
+        return this.spareparts.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+    }
+    public findIndexService(i: any): number {
+        return this.services.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+    }
+    public cekSparepartExist(i: any): boolean {
+        return this.cekSparepartSelect(this.findIndexSparepart(i));
+    }
+    public cekServiceExist(i: any): boolean {
+        return this.cekServiceSelect(this.findIndexService(i));
+    }
+    public addServicesSelected(ser: any): void {
+        const index: number = this.findIndexService(ser);
+
+        if (index > 0) {
+            if (this.cekServiceSelect(index)) {
+                this.services_selected.push(this.services[index]);
             }
-        }
-    })
-    
-    export default class Register extends Vue {
-        halaman: number             = 1;
-        no_polisi: string           = "";
-        tgl_service: string         = new Date();
-        no_mesin: string            = "";
-        no_rangka: string           = "";
-        type: Array<string>         = "";
-        types: Array<string>        = [];
-        tahun: number               = "";
-        nama_pembawa: string        = "";
-        no_telp: string             = "";
-        email: string               = "";
-        sosmed: string              = "";
-        
-        nama_pemilik: string        = "";
-        alamat: string              = "";
-        keluhan_konsumen: Array<string>    = [];
-        analisa_service: string            = "";
-        saran_mekanik: string              = "";
-        button_history: boolean            = false;
-        keluhan_input: string              = "";
-        edit_keluhan: number               = 0;
-        keluhan_input: string              = "";
-        histories: Array<string>           = [];
-        services_selected: Array<string>   = [];
-        spareparts_selected: Array<string> = [];
-        spareparts: Array<string>          = [];
-        services: Array<string>            = [];
-        services_own: Array<string>        = [];
-        spareparts_own: Array<string>      = [];
-        km: number                         = 0;
-        jenis_service: string              = "Regular";
-        list_spareparts: Array<string>     = [
-            {name: 'Busi', km: 8000},
-            {name: 'Oil Transmisi', km: 8000},
-            {name: 'Coolant', km: 12000},
-            {name: 'Filter Udara', km: 16000},
-            {name: 'Ban Depan', km: 24000},
-            {name: 'Ban Belakang', km: 24000},
-            {name: 'Rantai', km: 24000},
-            {name: 'Driver Belt', km: 24000},
-            {name: 'Kampas Rem', km: 24000},
-            {name: 'Aki', km: 24000},
-        ];
-        list_services: Array<string>       = [
-            {name: 'Injector Cleaner', km: 4000},
-            {name: 'Pembersih CVT', km: 8000},
-            {name: 'Kuras Tangki', km: 12000},
-            {name: 'Kuras Radiator', km: 12000},
-            {name: 'Carbon Celaner', km: 12000}
-        ];
-        total: number                      = 0;
-        estimasi_konsumen: boolean         = false;
-        estimasi_advisor: boolean          = false;
-        tambahan_konsumen: boolean         = false;
-        tambahan_advisor: boolean          = false;
-        penyerahan_konsumen: boolean       = false;
-        products: Array<string>            = [];
-        multiple_service: Array<string>    = [];
-        multiple_sparepart: Array<string>  = [];
-
-        notFinish: boolean                 = true;
-        no_urut: string                    = "";
-        cuci: string                       = "";
-
-        created() {
-            register.cekSO().then(res => {
-                this.types   = res.data.results[0].tipe_motor
-                
-                this.no_urut = res.data.results[0].name
-
-                this.products = res.data.results[0].product
-
-                this.spareparts = this.products.filter(el => {
-                    return el.product_type != 'service'
-                })
-
-                this.services = this.products.filter(el => {
-                    return el.product_type == 'service'
-                })
-
-                this.services_own = this.services
-
-                this.spareparts_own = this.spareparts
-            })
-        }
-
-        cekNopol(): void {
-            register.cekNopol({nopol: this.no_polisi.toUpperCase()})
-                    .then(res => {
-                        if(res.data) {
-                            let data = res.data.results[0]
-
-                            this.no_mesin       = data.no_mesin;
-                            this.no_rangka      = data.no_rangka;
-                            this.tahun          = data.tahun;
-                            this.nama_pemilik   = data.nama_pemilik;
-                            this.no_telp        = data.telp_pemilik;
-                            this.email          = data.email_pemilik;
-                            this.sosmed         = data.sosmed;
-
-                            this.histories      = data.history
-                        }
-                    })
-        }
-
-        cekStok(name): void {
-            let pro = this.products.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
-            })
-            
-            if(pro[0])
-                if(pro[0].qty_available > 0) return true;
-
-            return false;
-        }
-
-        cekStatus(name): void {
-            let pro = this.products.filter(el => {
-                let models = `${ el.make }${ el.name_model }`
-                return el.name == name && models.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase();
-            })
-            if(pro[0]) return true
-            return false
-        }
-        cekSparepartSelect(index): void {
-            return this.spareparts_selected.indexOf(this.spareparts[index]) < 0
-        }
-        cekServiceSelect(index): void {
-            return this.services_selected.indexOf(this.services[index]) < 0
-        }
-        findIndexSparepart(i): void {
-            return this.spareparts.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
-        }
-        findIndexService(i): void {
-            return this.services.findIndex(x => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type.name.replace(/\s+/g, '').toUpperCase())
-        }
-        cekSparepartExist(i): void {
-            return this.cekSparepartSelect(this.findIndexSparepart(i))
-        }
-        cekServiceExist(i): void {
-            return this.cekServiceSelect(this.findIndexService(i))
-        }
-        addServicesSelected(ser): void {
-            let index = this.findIndexService(ser);
-            
-            if(index > 0)
-                if(this.cekServiceSelect(index))
-                    this.services_selected.push(this.services[index])
-        }
-        addSparepart(i): void {
-            if(this.cekStok(i.name)) {
-                let index = this.findIndexSparepart(i);
-                if(this.cekSparepartSelect(index)) {
-                    this.spareparts[index].push({qty: 1})
-
-                    this.spareparts_selected.push(this.spareparts[index])
-                }
-            }
-        }
-        convertToRupiah(angka): void {
-            return additional.convertToRupiah(angka)
-        }
-        addKeluhan(): void {
-            this.keluhan_konsumen.push({ nama: this.keluhan_input })
-            this.keluhan_input = ""
-        }
-        deleteKeluhan(i): void {
-            this.keluhan_konsumen.splice(i - 1,1)
-        }
-        editKeluhan(i): void {
-            this.edit_keluhan  = i
-            this.keluhan_input = this.keluhan_konsumen[i - 1].nama
-        }
-        saveKeluhan(i): void {
-            this.keluhan_konsumen[i - 1].nama = this.keluhan_input
-            this.edit_keluhan  = 0
-            this.keluhan_input = ""
-        }
-        addMultipleService(): void {
-            this.multiple_service.forEach(el => {
-                if(this.services_selected.indexOf(el) < 0)
-                    this.services_selected.push(el)
-            })
-        }
-        addMultipleSparepart(): void {
-            this.multiple_sparepart.forEach(el => {
-                if(this.spareparts_selected.indexOf(el) < 0) {
-                    el['qty'] = 1
-
-                    this.spareparts_selected.push(el)
-                }
-            })
-        }
-
-        updateSparepartQty(event, i): void {
-            this.spareparts_selected[i-1].qty = event.target.value
-        }
-        
-        refreshTotal(): void {
-            this.total = 0
-            this.spareparts_selected.forEach(el => {
-                this.total += parseInt(el.harga)
-            })
-            this.services_selected.forEach(el => {
-                this.total += parseInt(el.harga)
-            })
-        }
-        removeSparepart(i): void {
-            this.spareparts_selected.splice(i-1,1)
-        }
-        removeService(i): void {
-            this.services_selected.splice(i-1,1)
-        }
-        isNext() {
-            if(this.no_polisi == "") return true
-            if(this.tgl_service == "") return true
-            if(this.no_telp == "") return true
-            if(this.type.length > 0) return true
-            if(this.nama_pemilik == "") return true
-            return false
-        }
-        finish(): void {
-            let d           = this.tgl_service,
-                timesheets  = []
-
-            this.services_selected.forEach((el, i) => {
-                timesheets.push({
-                    "id": i,
-                    "description": el.name,
-                    "date_start": "",
-                    "start_time": "",
-                    "stop_time": ""
-                })
-            })
-
-            // let services = JSON.parse(localStorage.getItem('services'))
-
-            // services.push(payload)
-
-            // localStorage.setItem('services', JSON.stringify(services))
-
-            // this.$router.push({ name: 'register' })
-
-            register.createRegister(this.$data)
-        }
-
-        cekFinish(): void {
-            if(this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
-                this.notFinish = false
-
-                return;
-            }
-
-            this.notFinish     = true
-        }
-        
-        @Watch('no_polisi')
-        onNoPolisiChanged(val: string) {
-            if(val == "")
-                this.button_history  = false
-            else
-                this.button_history  = true
-        }
-
-        @Watch('spareparts_selected')
-        onSperpatedChange() {
-            this.refreshTotal();
-
-            this.cekFinish();
-        }
-
-        @Watch('services_selected')
-        onServicesChange() {
-            this.refreshTotal();
-
-            this.cekFinish();
         }
     }
+    public addSparepart(i: any): any {
+        if (this.cekStok(i.name)) {
+            const index: number = this.findIndexSparepart(i);
+            if (this.cekSparepartSelect(index)) {
+                this.spareparts[index].push({qty: 1});
+
+                this.spareparts_selected.push(this.spareparts[index]);
+            }
+        }
+    }
+    public convertToRupiah(angka: number): string {
+        return additional.convertToRupiah(angka);
+    }
+    public addKeluhan(): void {
+        this.keluhan_konsumen.push({ nama: this.keluhan_input });
+        this.keluhan_input = '';
+    }
+    public deleteKeluhan(i: any): void {
+        this.keluhan_konsumen.splice(i - 1, 1);
+    }
+    public editKeluhan(i: any): void {
+        this.edit_keluhan  = i;
+        this.keluhan_input = this.keluhan_konsumen[i - 1].nama;
+    }
+    public saveKeluhan(i: any): void {
+        this.keluhan_konsumen[i - 1].nama = this.keluhan_input;
+        this.edit_keluhan  = 0;
+        this.keluhan_input = '';
+    }
+    public addMultipleService(): void {
+        this.multiple_service.forEach((el: any) => {
+            if (this.services_selected.indexOf(el) < 0) {
+                this.services_selected.push(el);
+            }
+        });
+    }
+    public addMultipleSparepart(): void {
+        this.multiple_sparepart.forEach((el: any) => {
+            if (this.spareparts_selected.indexOf(el) < 0) {
+                el.qty = 1;
+
+                this.spareparts_selected.push(el);
+            }
+        });
+    }
+
+    public updateSparepartQty(event: any, i: number): void {
+        this.spareparts_selected[i - 1].qty = event.target.value;
+    }
+
+    public refreshTotal(): void {
+        this.total = 0;
+        this.spareparts_selected.forEach((el: any) => {
+            this.total += parseInt(el.harga);
+        });
+        this.services_selected.forEach((el: any) => {
+            this.total += parseInt(el.harga);
+        });
+    }
+    public removeSparepart(i: any): void {
+        this.spareparts_selected.splice(i - 1, 1);
+    }
+    public removeService(i: any): void {
+        this.services_selected.splice(i - 1, 1);
+    }
+    public isNext() {
+        if (this.no_polisi == '') { return true; }
+        if (this.tgl_service == '') { return true; }
+        if (this.no_telp == '') { return true; }
+        if (this.type.length > 0) { return true; }
+        if (this.nama_pemilik == '') { return true; }
+        return false;
+    }
+    public finish(): void {
+        register.createRegister(this.$data);
+    }
+
+    public cekFinish(): void {
+        if (this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
+            this.notFinish = false;
+
+            return;
+        }
+
+        this.notFinish     = true;
+    }
+
+    @Watch('no_polisi')
+    public onNoPolisiChanged(val: string) {
+        if (val == '') {
+            this.button_history  = false;
+        } else {
+            this.button_history  = true;
+        }
+    }
+
+    @Watch('spareparts_selected')
+    public onSperpatedChange() {
+        this.refreshTotal();
+
+        this.cekFinish();
+    }
+
+    @Watch('services_selected')
+    public onServicesChange() {
+        this.refreshTotal();
+
+        this.cekFinish();
+    }
+}
 </script>
 
 <style>

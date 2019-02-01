@@ -55,53 +55,51 @@
 </template>
 
 <script lang="ts">
-    import BookingOrder from '../components/BookingOrder.vue';
-    import LightRepair from '../components/LightRepair.vue';
-    import reguler from '../components/Reguler.vue';
-    import mekanik from '../api/mekanik';
-    import { Component, Vue } from 'vue-property-decorator';
+import BookingOrder from '../components/BookingOrder.vue';
+import LightRepair from '../components/LightRepair.vue';
+import reguler from '../components/Reguler.vue';
+import mekanik from '../api/mekanik';
+import { Component, Vue } from 'vue-property-decorator';
 
-    @Component({
-        components: {
-            BookingOrder, LightRepair, reguler
-        },
-    })
+@Component({
+    components: {
+        BookingOrder, LightRepair, reguler,
+    },
+})
 
-    export default class ListMekanik extends Vue {
-        user: Array<string>     =   []
-        services: Array<string> =   []
-        bookings: Array<string> =   []
-        lights: Array<string>   =   []
-        regulars: Array<string> =   []
+export default class ListMekanik extends Vue {
+    public user: any       =   JSON.parse(localStorage.getItem('login')!);
+    public services: any[] =   [];
+    public bookings: any[] =   [];
+    public lights: any[]   =   [];
+    public regulars: any[] =   [];
 
-        created() {
-            this.user       = JSON.parse(localStorage.getItem('login'))
-            
-            this.loadData()
+    public created() {
+        this.loadData();
 
-            setInterval(() => {
-                this.loadData()
-            }, 5000)
-        }
-
-        loadData(): void {
-            mekanik.getSO().then(res => {
-                if(res.data.results) {
-                    this.bookings   = res.data.results.filter(el => {
-                        return el.antrian_service == "Booking Service" 
-                    }).splice(0,1)
-
-                    this.lights   = res.data.results.filter(el => {
-                        return el.antrian_service == "Light Repair" 
-                    }).splice(0,1)
-
-                    this.regulars = res.data.results.filter(el => {
-                        return el.antrian_service == "Regular Service" 
-                    }).splice(0,1)
-                }
-            })
-        }
+        setInterval(() => {
+            this.loadData();
+        }, 5000);
     }
+
+    public loadData(): void {
+        mekanik.getSO().then((res: any) => {
+            if (res.data.results) {
+                this.bookings   = res.data.results.filter((el: any) => {
+                    return el.antrian_service == 'Booking Service';
+                }).splice(0, 1);
+
+                this.lights   = res.data.results.filter((el: any) => {
+                    return el.antrian_service == 'Light Repair';
+                }).splice(0, 1);
+
+                this.regulars = res.data.results.filter((el: any) => {
+                    return el.antrian_service == 'Regular Service';
+                }).splice(0, 1);
+            }
+        });
+    }
+}
 </script>
 
 <style>

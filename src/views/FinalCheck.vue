@@ -107,58 +107,57 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
-    import mekanik from '../api/mekanik';
+import { Component, Vue } from 'vue-property-decorator';
+import mekanik from '../api/mekanik';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class FinalCheck extends Vue {
-        products: Array<string>     =   [];
-        services: Array<string>     =   [];
-        keluhan: Array<string>      =   [];
-        sparepart: Array<string>    =   [];
-        nopol: string               =   "";
-        id_select: number           =   0;
-        user: Array<string>         =   []
+export default class FinalCheck extends Vue {
+    public products: any[]     =   [];
+    public services: any[]     =   [];
+    public keluhan: any[]      =   [];
+    public sparepart: any[]    =   [];
+    public nopol: string       =   '';
+    public id_select: number   =   0;
+    public user: any           =   JSON.parse(localStorage.getItem('login')!);
 
-        created() {
-            this.user       = JSON.parse(localStorage.getItem('login'))
-
-            this.load()
-        }
-
-        load(): void {
-            mekanik.getFinalSO(this.$route.params.id).then(res => {
-                this.nopol      =   res.data.results.nopol
-
-                this.services   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] == undefined
-                })
-
-                this.keluhan   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] == 'keluhan'
-                })
-
-                this.sparepart   =   res.data.results.tasks.filter(el => {
-                    return el.name.split(':')[0].split(' ')[1] == 'sparepart'
-                })
-            })
-        }
-
-        accept(ids): void {
-            mekanik.accept({id: ids, user_id: this.user.id}).then(() => {
-                this.load()
-            })
-        }
-
-        reject(): void {
-            mekanik.reject({id: this.id_select, user_id: this.user.id}).then(() => {
-                this.load()
-            })
-        }
+    public created() {
+        this.load();
     }
+
+    public load(): void {
+        mekanik.getFinalSO(this.$route.params.id).then((res: any) => {
+            this.nopol      =   res.data.results.nopol;
+
+            this.services   =   res.data.results.tasks.filter((el: any) => {
+                return el.name.split(':')[0].split(' ')[1] == undefined;
+            });
+
+            this.keluhan   =   res.data.results.tasks.filter((el: any) => {
+                return el.name.split(':')[0].split(' ')[1] == 'keluhan';
+            });
+
+            this.sparepart   =   res.data.results.tasks.filter((el: any) => {
+                return el.name.split(':')[0].split(' ')[1] == 'sparepart';
+            });
+        });
+    }
+
+    public accept(ids: number): void {
+        mekanik.accept({id: ids, user_id: this.user.id}).then(() => {
+            this.load();
+        });
+    }
+
+    public reject(): void {
+        mekanik.reject({id: this.id_select, user_id: this.user.id})
+        .then(() => {
+            this.load();
+        });
+    }
+}
 </script>
 
 <style>

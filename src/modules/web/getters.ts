@@ -1,7 +1,7 @@
 export const getters = {
-    GET(state) {
-        return (params) => {
-            return state[params]
-        }
-    }
-}
+    GET(state: any) {
+        return (params: any) => {
+            return state[params];
+        };
+    },
+};
