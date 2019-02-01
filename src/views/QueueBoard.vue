@@ -178,34 +178,40 @@ export default class QueueBoard extends Vue {
 
     public created() {
         setInterval(() => {
-            board.getSO().then((res) => {
-                if(res.data.results) {
-                    this.antrian = res.data.results.filter((el: any) => {
-                        return el.status == 'sent';
-                    });
-
-                    this.dikerjakan = res.data.results.filter((el: any) => {
-                        return el.status == 'sale' && el.invoice == 'no';
-                    });
-
-                    this.selesai = res.data.results.filter((el: any) => {
-                        return el.invoice == 'to invoice';
-                    });
-
-                    this.filterBooking = this.selesai.filter((el: any) => {
-                        return el.antrian_service == 'Booking Service';
-                    });
-
-                    this.filterLight = this.selesai.filter((el: any) => {
-                        return el.antrian_service == 'Light Repair';
-                    });
-
-                    this.filterRegular = this.selesai.filter((el: any) => {
-                        return el.antrian_service == 'Regular Service';
-                    });
-                }
-            });
+            this.getData();
         }, 10000);
+
+        this.getData();
+    }
+
+    public getData(): void {
+        board.getSO().then((res) => {
+            if(res.data.results) {
+                this.antrian = res.data.results.filter((el: any) => {
+                    return el.status == 'sent';
+                });
+
+                this.dikerjakan = res.data.results.filter((el: any) => {
+                    return el.status == 'sale' && el.invoice == 'no';
+                });
+
+                this.selesai = res.data.results.filter((el: any) => {
+                    return el.invoice == 'to invoice';
+                });
+
+                this.filterBooking = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Booking Service';
+                });
+
+                this.filterLight = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Light Repair';
+                });
+
+                this.filterRegular = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Regular Service';
+                });
+            }
+        });
     }
 
     public countService(data: any[]): number {
