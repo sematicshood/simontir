@@ -466,7 +466,12 @@
                     </div>
                     <div class="box-footer" v-if="halaman == 2">
                         <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
+                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
+                        <div class="pull-right" style="margin: 3px 0px 0px 15px;">
+                            <label>
+                                <input type="checkbox"> Print    &nbsp; &nbsp;
+                            </label>
+                        </div>                        
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
                         <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" :disabled="isNext()">Next</button>
@@ -505,6 +510,8 @@
                 </tbody>
             </table>
         </b-modal>
+        <button v-print="'#printMe'">Print local range</button>
+        <printpendaftaran></printpendaftaran>
     </div>
 </template>
 
@@ -513,8 +520,15 @@
     import additional from '../helpers/additional'
     import register from '../api/register';
     import axios from 'axios';
+    import Print from 'vue-print-nb';
+    import printpendaftaran from './PrintPendaftaran.vue';
 
+    Vue.use(Print);
     @Component({
+        components:{
+            printpendaftaran
+        },
+        
         beforeRouteLeave (to, from , next) {
         const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan')
             if (answer) {
@@ -526,7 +540,7 @@
     })
     
     export default class Register extends Vue {
-        halaman: number             = 1;
+        halaman: number             = 2;
         no_polisi: string           = "";
         tgl_service: string         = new Date();
         no_mesin: string            = "";
@@ -762,32 +776,7 @@
                 })
             })
 
-            let payload = {
-                "Order Date": `${ d.getUTCFullYear() }-${ d.getUTCMonth() }-${ d.getUTCDay() } ${ d.getUTCHours() }:${ d.getUTCMinutes() }:${ d.getUTCSeconds() }`,
-                "partner_id": "8511",
-                "partner_name": this.nama_pemilik,
-                "sales_order_line_id": [
-                322
-                ],
-                "product_id": this.sparepartd_selected,
-                "jenis service": this.jenis_service,
-                "model_id": "332",
-                "name_model": this.type.split(' ')[1],
-                "make": this.type.split(' ')[0],
-                "Last Odometer": this.km,
-                "Chassis Number": "ISO 55738",
-                "License Plate": this.no_polisi,
-                "project_id": "12",
-                "task_id": [
-                3,
-                4,
-                5
-                ],
-                "timesheet_id": timesheets,
-                "waktu_mulai": "0000-0-0 00:00",
-                "stop_time": "00:00",
-                "total_time": "00:00"
-            }
+            
 
             // let services = JSON.parse(localStorage.getItem('services'))
 
