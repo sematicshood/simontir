@@ -94,7 +94,7 @@ export default class ListMekanik extends Vue {
                 }).splice(0, 1);
 
                 this.regulars = res.data.results.filter((el: any) => {
-                    return el.antrian_service == 'Regular Service';
+                    return el.antrian_service == 'regular';
                 }).splice(0, 1);
             }
         });
