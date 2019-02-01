@@ -59,22 +59,22 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue, Watch } from 'vue-property-decorator';
-    import board from '../api/board';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import board from '../api/board';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class TabelRegistrasi extends Vue {
-      list_register: Array<string>  = []
+export default class TabelRegistrasi extends Vue {
+  public list_register: string[]  = [];
 
-      created() {
-        board.getSO().then(res => {
-          this.list_register  = res.data.results
-        })
-      }
-    }
+  public created() {
+    board.getSO().then((res) => {
+      this.list_register  = res.data.results;
+    });
+  }
+}
 </script>
 
 <style>

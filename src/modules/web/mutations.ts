@@ -1,5 +1,5 @@
 export const mutations = {
-    UPDATE(state, data) {
+    UPDATE(state: any, data: any) {
         state[data.states] = data.update;
-    }
-}
+    },
+};

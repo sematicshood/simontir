@@ -24,7 +24,8 @@
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost"
+      "scripthost",
+      "es7"
     ]
   },
   "include": [
@@ -32,7 +33,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx", "src/modules/web/state.js", "src/modules/web/actions.js", "src/modules/web/getters.js"
   ],
   "exclude": [
     "node_modules"

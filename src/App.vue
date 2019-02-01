@@ -24,35 +24,36 @@
 </template>
 
 <script lang="ts">
-  import navbar from './components/Navbar.vue';
-  import sidebar from './components/Sidebar.vue';
-  import { Component, Vue, Watch } from 'vue-property-decorator';
-  import { mapState } from 'vuex';
+import navbar from './components/Navbar.vue';
+import sidebar from './components/Sidebar.vue';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { mapState } from 'vuex';
 
-  @Component({
-      components: {
-          navbar, sidebar
-      },
+@Component({
+    components: {
+        navbar, sidebar,
+    },
 
-      computed: {
-        ...mapState(['web']),
+    computed: {
+      ...mapState(['web']),
+    },
+})
 
-        sidebar() {
-          return this.web.sidebar;
-        }
-      },
-  })
+export default class App extends Vue {
+  public path: string     = '';
+  public title: string    = '';
+  public sidebar: any     = '';
 
-  export default class App extends Vue {
-    path:string     = '';
-    title:string    = '';
-
-    @Watch('$route', { immediate: true, deep: true })
-    onUrlChange(newVal: any) {
-      this.$data.path  = this.$router.currentRoute.name
-      this.$data.title = this.$router.currentRoute.meta.title
-    }
+  public created() {
+    this.sidebar = (this as any).web.sidebar;
   }
+
+  @Watch('$route', { immediate: true, deep: true })
+  public onUrlChange(newVal: any) {
+    this.$data.path  = this.$router.currentRoute.name;
+    this.$data.title = this.$router.currentRoute.meta.title;
+  }
+}
 </script>
 
 <style>

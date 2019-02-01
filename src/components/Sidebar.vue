@@ -33,49 +33,41 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator';
-  import auth from '../helpers/auth';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import auth from '../helpers/auth';
 
-  @Component({})
+@Component({})
 
-  export default class Sidebar extends Vue {
-    data() {
-      return {
-        routes: '',
-        user: []
-      }
-    }
+export default class Sidebar extends Vue {
+  public routes: any = '';
+  public user: any   = JSON.parse(localStorage.getItem('login')!);
 
-    logout(): void {
-        localStorage.removeItem('login')
+  public logout(): void {
+      localStorage.removeItem('login');
 
-        this.$router.push({ name: 'login' })
-    }
-
-    created() {
-        this.$data.routes = this.$router.options.routes.filter(el => {
-            return el.meta
-        })
-
-        this.$data.routes = this.$data.routes.filter(el => {
-            let login = JSON.parse(localStorage.getItem('login'))
-            
-            if (login.role.toUpperCase() != 'manager'.toUpperCase()) {
-                let role = ''
-
-                if(el.meta.role) {
-                    role  = el.meta.role.map(function(x){ return x.toUpperCase() })
-                } else {
-                    role  = el.meta.role
-                }
-                
-                return el.meta.show && role.includes(login.role.toUpperCase())
-            } else {
-                return el.meta.show
-            }
-        })
-
-        this.$data.user = JSON.parse(localStorage.getItem('login'))
-    }
+      this.$router.push({ name: 'login' });
   }
+
+  public created() {
+      this.routes = (this.$router as any).options.routes.filter((el: any) => {
+          return el.meta;
+      });
+
+      this.routes = this.routes.filter((el: any) => {
+          if (this.user.role.toUpperCase() != 'manager'.toUpperCase()) {
+              let role = '';
+
+              if (el.meta.role) {
+                  role  = el.meta.role.map(function(x: string) { return x.toUpperCase(); });
+              } else {
+                  role  = el.meta.role;
+              }
+
+              return el.meta.show && role.includes(this.user.role.toUpperCase());
+          } else {
+              return el.meta.show;
+          }
+      });
+  }
+}
 </script>

@@ -163,67 +163,67 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue, Watch } from 'vue-property-decorator';
-    import board from '../api/board'
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import board from '../api/board';
 
-    @Component({
-        components: {},
-    })
+@Component({
+    components: {},
+})
 
-    export default class QueueBoard extends Vue {
-        antrian: Array<string>          =   [];
-        dikerjakan: Array<string>       =   [];
-        selesai: Array<string>          =   [];
-        filterBooking: Array<string>    =   [];
-        filterLight: Array<string>      =   [];
-        filterRegular: Array<string>    =   [];
+export default class QueueBoard extends Vue {
+    public antrian: string[]          =   [];
+    public dikerjakan: string[]       =   [];
+    public selesai: string[]          =   [];
+    public filterBooking: string[]    =   [];
+    public filterLight: string[]      =   [];
+    public filterRegular: string[]    =   [];
 
-        created() {
-            setInterval(() => {
-                board.getSO().then(res => {
-                    this.antrian = res.data.results.filter(el => {
-                        return el.status == 'sent'
-                    })
+    public created() {
+        setInterval(() => {
+            board.getSO().then((res) => {
+                this.antrian = res.data.results.filter((el: any) => {
+                    return el.status == 'sent';
+                });
 
-                    this.dikerjakan = res.data.results.filter(el => {
-                        return el.status == 'sale' && el.invoice == 'no'
-                    })
+                this.dikerjakan = res.data.results.filter((el: any) => {
+                    return el.status == 'sale' && el.invoice == 'no';
+                });
 
-                    this.selesai = res.data.results.filter(el => {
-                        return el.invoice == 'to invoice' 
-                    })
+                this.selesai = res.data.results.filter((el: any) => {
+                    return el.invoice == 'to invoice';
+                });
 
-                    this.filterBooking = this.selesai.filter(el => {
-                        return el.antrian_service == 'Booking Service'
-                    })
+                this.filterBooking = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Booking Service';
+                });
 
-                    this.filterLight = this.selesai.filter(el => {
-                        return el.antrian_service == 'Light Repair'
-                    })
+                this.filterLight = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Light Repair';
+                });
 
-                    this.filterRegular = this.selesai.filter(el => {
-                        return el.antrian_service == 'Regular Service'
-                    })
-                })
-            }, 10000)
-        }
-
-        countService(data): void {
-            let datas = data.filter(el => {
-                return el.type == 'service'
-            })
-
-            return datas.length
-        }
-
-        countSparepart(data): void {
-            let datas = data.filter(el => {
-                return el.type != 'service'
-            })
-
-            return datas.length
-        }
+                this.filterRegular = this.selesai.filter((el: any) => {
+                    return el.antrian_service == 'Regular Service';
+                });
+            });
+        }, 10000);
     }
+
+    public countService(data: any[]): number {
+        const datas = data.filter((el: any) => {
+            return el.type == 'service';
+        });
+
+        return datas.length;
+    }
+
+    public countSparepart(data: any[]): number {
+        const datas = data.filter((el: any) => {
+            return el.type != 'service';
+        });
+
+        return datas.length;
+    }
+}
 </script>
 
 
