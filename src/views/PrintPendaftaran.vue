@@ -41,7 +41,7 @@
                 </tr>
                 <tr v-for="(service, i) in data.servicesSelected">
                     <td colspan="3">{{ i += 1 }}. {{ service.name }}</td>
-                    <td>Rp. {{ service.harga }}</td>
+                    <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
@@ -50,13 +50,13 @@
                 </tr>
                 <tr v-for="(sparepart, i) in data.sparepartsSelected">
                     <td colspan="3">{{ i += 1 }}. {{ sparepart.name }}</td>
-                    <td>Rp. {{ sparepart.harga }}</td>
+                    <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr>
                     <td colspan="2">Subtotal</td>
                     <td></td>
-                    <td>Rp. {{ data.total }}</td>
+                    <td>Rp. {{ convertToRupiah(data.total) }}</td>
                 </tr>
                 <!-- <tr>
                     <td colspan="2">Diskon Service</td>
@@ -66,7 +66,7 @@
                 <tr>
                     <td colspan="2"><strong>Total</strong></td>
                     <td></td>
-                    <td><strong>Rp. {{ data.total }}</strong></td>
+                    <td><strong>Rp. {{ convertToRupiah(data.total) }}</strong></td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
@@ -108,6 +108,7 @@
 
 <script>
   import { EventBus } from '../event';
+  import additional from '../helpers/additional';
 
   export default {
       props: ['datas'],
@@ -121,6 +122,12 @@
       filters: {
           tanggal(value) {
               return `${value.getUTCDay()}/${value.getUTCMonth()}/${value.getUTCFullYear()} ${value.getUTCHours()}:${value.getUTCMinutes()}:${value.getUTCSeconds()}`
+          }
+      },
+
+      methods: {
+          convertToRupiah(angka) {
+            return additional.convertToRupiah(angka);
           }
       },
 
