@@ -512,7 +512,7 @@
             </table>
         </b-modal>
         </div>
-        <printpendaftaran :data="this.$data"></printpendaftaran>
+        <printpendaftaran :datas="this.$data"></printpendaftaran>
     </div>
 </template>
 
@@ -522,6 +522,7 @@ import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
 import printpendaftaran from './PrintPendaftaran.vue';
+import { EventBus } from '../event';
 
 @Component({
     components:{
@@ -538,7 +539,7 @@ import printpendaftaran from './PrintPendaftaran.vue';
 })
 
 export default class Register extends Vue {
-    public halaman: number             = 1;
+    public halaman: number             = 2;
     public noPolisi: string           = '';
     public tglService: any            = new Date();
     public noMesin: string            = '';
@@ -765,6 +766,8 @@ export default class Register extends Vue {
         return false;
     }
     public finish(): void {
+        EventBus.$emit('finish', this.$data);
+
         if(this.isPrint) window.print()
 
         register.createRegister(this.$data);
