@@ -75,16 +75,17 @@ export default class TimesheetMekanik extends Vue {
             this.waktu      =   res.data.results.waktu_mulai;
 
             this.services   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] != 'keluhan';
+                return el.name.split(':')[0].split(' ')[1] !== 'keluhan';
             });
 
             this.keluhan   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] == 'keluhan';
+                return el.name.split(':')[0].split(' ')[1] === 'keluhan';
             });
 
-            let now: any     = new Date(),
-                waktu: any   = new Date(this.waktu),
-                diff: any    = now - waktu;
+            const now: any     = new Date();
+            const waktu: any   = new Date(this.waktu);
+
+            let diff: any    = now - waktu;
 
             const hh: any = Math.floor(diff / 1000 / 60 / 60);
             diff -= hh * 1000 * 60 * 60;
@@ -109,12 +110,12 @@ export default class TimesheetMekanik extends Vue {
         setInterval(() => {
             this.seconds++;
 
-            if (this.seconds == 60) {
+            if (this.seconds === 60) {
                 this.seconds = 0;
                 this.minutes++;
             }
 
-            if (this.minutes == 60) {
+            if (this.minutes === 60) {
                 this.minutes = 0;
                 this.hours++;
             }

@@ -7,7 +7,9 @@ import App from './App.vue';
 import router from './router';
 import store from './modules';
 import './registerServiceWorker';
+import Print from 'vue-print-nb';
 
+Vue.use(Print);
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VeeValidate);

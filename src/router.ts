@@ -2,7 +2,16 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import auth from './helpers/auth';
 
-import Queue from './views/QueueBoard.vue'
+import Queue from './views/QueueBoard.vue';
+import Login from './views/Login.vue';
+import Profile from './views/Profil.vue';
+import Register from './views/Register.vue';
+import DataRegistrasi from './views/TabelRegistrasi.vue';
+import FinalCheck from './views/FinalCheck.vue';
+import ListFinalCheck from './views/ListFinalCheck.vue';
+import ListMekanik from './views/ListMekanik.vue';
+import OptionRole from './views/OptionRole.vue';
+import TimesheetMekanik from './views/TimesheetMekanik.vue';
 
 Vue.use(Router);
 
@@ -24,7 +33,7 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: require('@views/Login'),
+      component: Login,
       meta: {
         title: 'Login',
       },
@@ -32,7 +41,7 @@ const router = new Router({
     {
       path: '/profii',
       name: 'profil',
-      component: require('@views/Profil'),
+      component: Profile,
       meta: {
         requiresAuth: true,
         role: ['front desk', 'kepala mekanik', 'asisten mekanik', 'mekanik'],
@@ -43,7 +52,7 @@ const router = new Router({
     {
       path: '/register',
       name: 'register',
-      component: require('@views/Register'),
+      component: Register,
       meta: {
         requiresAuth: true,
         role: ['front desk'],
@@ -54,7 +63,7 @@ const router = new Router({
     {
       path: '/data_registrasi',
       name: 'data_registrasi',
-      component: require('@views/TabelRegistrasi'),
+      component: DataRegistrasi,
       meta: {
         requiresAuth: true,
         role: ['front desk'],
@@ -65,7 +74,7 @@ const router = new Router({
     {
       path: '/final_check/:id',
       name: 'final_check',
-      component: require('@views/FinalCheck'),
+      component: FinalCheck,
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik', 'asisten mekanik'],
@@ -75,7 +84,7 @@ const router = new Router({
     {
       path: '/list_final_check',
       name: 'list_final_check',
-      component: require('@views/ListFinalCheck'),
+      component: ListFinalCheck,
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik', 'asisten mekanik'],
@@ -86,7 +95,7 @@ const router = new Router({
     {
       path: '/list_mekanik',
       name: 'list_mekanik',
-      component: require('@views/ListMekanik'),
+      component: ListMekanik,
       meta: {
         requiresAuth: true,
         role: ['mekanik'],
@@ -97,7 +106,7 @@ const router = new Router({
     {
       path: '/option_role',
       name: 'option_role',
-      component: require('@views/OptionRole'),
+      component: OptionRole,
       meta: {
         requiresAuth: true,
         role: ['kepala mekanik'],
@@ -108,7 +117,7 @@ const router = new Router({
     {
       path: '/timesheet_mekanik/:id',
       name: 'timesheet_mekanik',
-      component: require('@views/TimesheetMekanik'),
+      component: TimesheetMekanik,
       meta: {
         requiresAuth: true,
         role: ['mekanik'],
@@ -118,7 +127,7 @@ const router = new Router({
     {
       path: '/queue_board',
       name: 'queue_board',
-      component: require('@views/QueueBoard'),
+      component: Queue,
       meta: {
         title: 'Queue Board',
       },

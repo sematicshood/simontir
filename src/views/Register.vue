@@ -16,9 +16,9 @@
                                     <div class="form-group">
                                         <label for="">No. Polisi</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" v-model="no_polisi" @change="cekNopol">
+                                            <input type="text" class="form-control" v-model="noPolisi" @change="cekNopol">
                                             <span class="input-group-btn">
-                                            <button v-if="button_history" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
+                                            <button v-if="buttonHistory" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
                                             </span>
                                         </div>
                                         <span>*) Wajib diisi</span>
@@ -26,7 +26,7 @@
                                         
                                     <div class="form-group">
                                         <label for="" class="control-label">Jenis Servis </label>
-                                        <select name="" id="" v-model="jenis_service" class="form-control">
+                                        <select name="" id="" v-model="jenisService" class="form-control">
                                             <option value="reguler">Reguler</option>
                                             <option value="Light Repair">Light Repair</option>
                                             <option value="Booking Service">Booking Service</option>
@@ -34,19 +34,19 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
-                                        <input disabled type="text" v-model="no_urut" class="form-control" id="" placeholder="">
+                                        <input disabled type="text" v-model="noUrut" class="form-control" id="" placeholder="">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tgl. Servis</label>
-                                        <input type="date" class="form-control" id="date" placeholder="" :value="tgl_service.toISOString().split('T')[0]" @input="tgl_service = $event.target.valueAsDate">
+                                        <input type="date" class="form-control" id="date" placeholder="" :value="tglService.toISOString().split('T')[0]" @input="tglService = $event.target.valueAsDate">
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Mesin</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_mesin">
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="noMesin">
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Rangka</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_rangka">
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="noRangka">
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>
@@ -66,12 +66,12 @@
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pemilik">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPemilik">
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Telp/HP</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="no_telp">
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="noTelp">
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
@@ -87,7 +87,7 @@
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="nama_pembawa">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPembawa">
                                     </div>
                                     <div class="form-group">
                                         <label>Alamat</label>
@@ -106,7 +106,7 @@
                                     <b-modal @ok="addKeluhan" id="keluhan">
                                         <div class="form-group">
                                             <label for="">Keluhan</label>
-                                            <input type="text" v-model="keluhan_input" class="form-control" id="" placeholder="">
+                                            <input type="text" v-model="keluhanInput" class="form-control" id="" placeholder="">
                                         </div>
                                     </b-modal>
 
@@ -118,20 +118,20 @@
                                                 <th>Check</th>
                                                 <th style="width: 100px">Action</th>
                                             </tr>
-                                            <tr v-for="(keluhan, i) in keluhan_konsumen">
+                                            <tr v-for="(keluhan, i) in keluhanKonsumen">
                                                 <td>{{ i += 1 }}</td>
                                                 <td>
-                                                    <span v-if="edit_keluhan != i">{{ keluhan.nama }}</span>
-                                                    <input v-else-if="edit_keluhan == i" class="form-control" v-model="keluhan_input"></input>
+                                                    <span v-if="editKeluhan != i">{{ keluhan.nama }}</span>
+                                                    <input v-else-if="editKeluhan == i" class="form-control" v-model="keluhanInput"></input>
                                                 </td>
                                                 <td><input disabled type="checkbox"></td>
-                                                <td v-if="edit_keluhan != i">
+                                                <td v-if="editKeluhan != i">
                                                     <div class="btn-group btn-sm">
-                                                        <button type="button" @click="editKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
+                                                        <button type="button" @click="updateKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
                                                         <button type="button" @click="deleteKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                     </div>
                                                 </td>
-                                                <td v-else-if="edit_keluhan == i">
+                                                <td v-else-if="editKeluhan == i">
                                                     <div class="btn-group btn-sm">
                                                         <button type="button" @click="saveKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-save"></i></button>
                                                     </div>
@@ -157,7 +157,7 @@
                                         <h3 class="box-sub-title"><strong>Saran Mekanik</strong></h3>
                                     </dir>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saran_mekanik"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saranMekanik"></textarea>
                                     </div>   
                                 </div>
                             </dir>
@@ -211,12 +211,12 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(service, i) in services_own">
+                                                    <tr v-for="(service, i) in servicesOwn">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
                                                         <td>Rp. {{ convertToRupiah(service.harga) }}</td>
                                                         <td>
-                                                            <input type="checkbox" v-model="multiple_service" :value="service">
+                                                            <input type="checkbox" v-model="multipleService" :value="service">
                                                         </td>
                                                     </tr>                
                                                 </tbody></table>
@@ -235,7 +235,7 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(service, i) in services_selected">
+                                                    <tr v-for="(service, i) in servicesSelected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
                                                         <td>Rp. {{ convertToRupiah(service.harga) }}</td>
@@ -281,12 +281,12 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(sparepart, i) in spareparts_own">
+                                                    <tr v-for="(sparepart, i) in sparepartsOwn">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
                                                         <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
                                                         <td>
-                                                            <input type="checkbox" v-model="multiple_sparepart" :value="sparepart">
+                                                            <input type="checkbox" v-model="multipleSparepart" :value="sparepart">
                                                         </td>
                                                     </tr>                
                                                 </tbody></table>
@@ -306,7 +306,7 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(sparepart, i) in spareparts_selected">
+                                                    <tr v-for="(sparepart, i) in sparepartsSelected">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
                                                         <td><input type="number" :value="sparepart.qty" @change="updateSparepartQty($event, i)"></td>
@@ -364,7 +364,7 @@
                                                 <th>Sparepart</th>
                                                 <th>Stok</th>
                                             </tr>
-                                            <tr :class="{'item-tr-center': km >= spare.km, 'sparepartSelect': cekSparepartExist(spare) == false}" v-for="(spare, i) in list_spareparts" @click="addSparepart(spare)">
+                                            <tr :class="{'item-tr-center': km >= spare.km, 'sparepartSelect': cekSparepartExist(spare) == false}" v-for="(spare, i) in listSpareparts" @click="addSparepart(spare)">
                                                 <td>{{ spare.km }}</td>
                                                 <td>{{ spare.name }}</td>
                                                 <td>
@@ -387,7 +387,7 @@
                                                 <th>Status</th>
                                             </tr>
 
-                                            <tr :class="{'item-tr-center': km >= ser.km, 'sparepartSelect': cekServiceExist(ser) == false}" v-for="ser in list_services" @click="addServicesSelected(ser)">
+                                            <tr :class="{'item-tr-center': km >= ser.km, 'sparepartSelect': cekServiceExist(ser) == false}" v-for="ser in listServices" @click="addServicesSelected(ser)">
                                                 <td>{{ ser.km }}</td>
                                                 <td>{{ ser.name }}</td>
                                                 <td>
@@ -416,8 +416,8 @@
                                                 <td style="width:40%;"><strong>Service Advisor</strong></td>
                                             </tr>
                                             <tr class="validasi">
-                                                <td style="border-right: 1px solid #dd4b39;"><input v-model="estimasi_konsumen" type="checkbox"></td>
-                                                <td><input v-model="estimasi_advisor" type="checkbox"></td>
+                                                <td style="border-right: 1px solid #dd4b39;"><input v-model="estimasiKonsumen" type="checkbox"></td>
+                                                <td><input v-model="estimasiAdvisor" type="checkbox"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -436,8 +436,8 @@
                                                 <td style="width:50%;"><strong>Service Advisor</strong></td>
                                             </tr>
                                             <tr class="validasi">
-                                                <td style="border-right: 1px solid #dd4b39;"><input v-model="tambahan_konsumen" type="checkbox"></td>
-                                                <td><input v-model="tambahan_advisor" type="checkbox"></td>
+                                                <td style="border-right: 1px solid #dd4b39;"><input v-model="tambahanKonsumen" type="checkbox"></td>
+                                                <td><input v-model="tambahanAdvisor" type="checkbox"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -455,7 +455,7 @@
                                                 <td><strong>Konsumen</strong></td>
                                             </tr>
                                             <tr class="validasi">
-                                                <td><input v-text="penyerahan_konsumen" type="checkbox"></td>
+                                                <td><input v-text="penyerahanKonsumen" type="checkbox"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -466,7 +466,12 @@
                     </div>
                     <div class="box-footer" v-if="halaman == 2">
                         <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>
+                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
+                        <div class="pull-right" style="margin: 3px 0px 0px 15px;">
+                            <label>
+                                <input type="checkbox"> Print    &nbsp; &nbsp;
+                            </label>
+                        </div>                        
                     </div>
                     <div class="box-footer" v-else-if="halaman == 1">
                         <button @click.prevent="halaman = 2" class="btn btn-warning pull-right" :disabled="isNext()">Next</button>
@@ -505,6 +510,8 @@
                 </tbody>
             </table>
         </b-modal>
+        <button v-print="'#printMe'">Print local range</button>
+        <printpendaftaran></printpendaftaran>
     </div>
 </template>
 
@@ -513,8 +520,12 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
+import printpendaftaran from './PrintPendaftaran.vue';
 
 @Component({
+    components:{
+        printpendaftaran
+    },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
     if (answer) {
@@ -527,36 +538,36 @@ import axios from 'axios';
 
 export default class Register extends Vue {
     public halaman: number             = 1;
-    public no_polisi: string           = '';
-    public tgl_service: any            = new Date();
-    public no_mesin: string            = '';
-    public no_rangka: string           = '';
+    public noPolisi: string           = '';
+    public tglService: any            = new Date();
+    public noMesin: string            = '';
+    public noRangka: string           = '';
     public type: any[]                 = [];
     public types: any[]                = [];
     public tahun: number               = 0;
-    public nama_pembawa: string        = '';
-    public no_telp: string             = '';
+    public namaPembawa: string        = '';
+    public noTelp: string             = '';
     public email: string               = '';
     public sosmed: string              = '';
 
-    public nama_pemilik: string        = '';
+    public namaPemilik: string        = '';
     public alamat: string              = '';
-    public keluhan_konsumen: any[]     = [];
+    public keluhanKonsumen: any[]     = [];
     public analisa_service: string     = '';
-    public saran_mekanik: string       = '';
-    public button_history: boolean     = false;
-    public keluhan_input: string       = '';
-    public edit_keluhan: number        = 0;
+    public saranMekanik: string       = '';
+    public buttonHistory: boolean     = false;
+    public keluhanInput: string       = '';
+    public editKeluhan: number        = 0;
     public histories: any[]            = [];
-    public services_selected: any[]    = [];
-    public spareparts_selected: any[]  = [];
+    public servicesSelected: any[]    = [];
+    public sparepartsSelected: any[]  = [];
     public spareparts: any[]           = [];
     public services: any[]             = [];
-    public services_own: any[]         = [];
-    public spareparts_own: any[]       = [];
+    public servicesOwn: any[]         = [];
+    public sparepartsOwn: any[]       = [];
     public km: number                  = 0;
-    public jenis_service: string       = '';
-    public list_spareparts: any[]     = [
+    public jenisService: string       = '';
+    public listSpareparts: any[]     = [
         {name: 'Busi', km: 8000},
         {name: 'Oil Transmisi', km: 8000},
         {name: 'Coolant', km: 12000},
@@ -568,7 +579,7 @@ export default class Register extends Vue {
         {name: 'Kampas Rem', km: 24000},
         {name: 'Aki', km: 24000},
     ];
-    public list_services: any[]       = [
+    public listServices: any[]       = [
         {name: 'Injector Cleaner', km: 4000},
         {name: 'Pembersih CVT', km: 8000},
         {name: 'Kuras Tangki', km: 12000},
@@ -576,52 +587,52 @@ export default class Register extends Vue {
         {name: 'Carbon Celaner', km: 12000},
     ];
     public total: number                      = 0;
-    public estimasi_konsumen: boolean         = false;
-    public estimasi_advisor: boolean          = false;
-    public tambahan_konsumen: boolean         = false;
-    public tambahan_advisor: boolean          = false;
-    public penyerahan_konsumen: boolean       = false;
+    public estimasiKonsumen: boolean          = false;
+    public estimasiAdvisor: boolean           = false;
+    public tambahanKonsumen: boolean          = false;
+    public tambahanAdvisor: boolean           = false;
+    public penyerahanKonsumen: boolean        = false;
     public products: any[]                    = [];
-    public multiple_service: any[]            = [];
-    public multiple_sparepart: any[]          = [];
+    public multipleService: any[]             = [];
+    public multipleSparepart: any[]           = [];
 
     public notFinish: boolean                 = true;
-    public no_urut: string                    = '';
+    public noUrut: string                     = '';
     public cuci: string                       = '';
 
     public created() {
         register.cekSO().then((res) => {
             this.types   = res.data.results[0].tipe_motor;
 
-            this.no_urut = res.data.results[0].name;
+            this.noUrut = res.data.results[0].name;
 
             this.products = res.data.results[0].product;
 
             this.spareparts = this.products.filter((el: any) => {
-                return el.product_type != 'service';
+                return el.product_type !== 'service';
             });
 
             this.services = this.products.filter((el: any) => {
-                return el.product_type == 'service';
+                return el.product_type === 'service';
             });
 
-            this.services_own = this.services;
+            this.servicesOwn = this.services;
 
-            this.spareparts_own = this.spareparts;
+            this.sparepartsOwn = this.spareparts;
         });
     }
 
     public cekNopol(): void {
-        register.cekNopol({nopol: this.no_polisi.toUpperCase()})
+        register.cekNopol({nopol: this.noPolisi.toUpperCase()})
                 .then((res) => {
                     if (res.data) {
                         const data = res.data.results[0];
 
-                        this.no_mesin       = data.no_mesin;
-                        this.no_rangka      = data.no_rangka;
+                        this.noMesin       = data.noMesin;
+                        this.noRangka      = data.noRangka;
                         this.tahun          = data.tahun;
-                        this.nama_pemilik   = data.nama_pemilik;
-                        this.no_telp        = data.telp_pemilik;
+                        this.namaPemilik   = data.namaPemilik;
+                        this.noTelp        = data.telp_pemilik;
                         this.email          = data.email_pemilik;
                         this.sosmed         = data.sosmed;
 
@@ -633,7 +644,7 @@ export default class Register extends Vue {
     public cekStok(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
         });
 
         if (pro[0]) {
@@ -646,22 +657,22 @@ export default class Register extends Vue {
     public cekStatus(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name == name && models.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
         });
         if (pro[0]) { return true; }
         return false;
     }
     public cekSparepartSelect(index: number): boolean {
-        return this.spareparts_selected.indexOf(this.spareparts[index]) < 0;
+        return this.sparepartsSelected.indexOf(this.spareparts[index]) < 0;
     }
     public cekServiceSelect(index: number): boolean {
-        return this.services_selected.indexOf(this.services[index]) < 0;
+        return this.servicesSelected.indexOf(this.services[index]) < 0;
     }
     public findIndexSparepart(i: any): number {
-        return this.spareparts.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
     }
     public findIndexService(i: any): number {
-        return this.services.findIndex((x) => x.name == i.name && `${ x.make }${ x.name_model }`.toUpperCase() == this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
     }
     public cekSparepartExist(i: any): boolean {
         return this.cekSparepartSelect(this.findIndexSparepart(i));
@@ -674,7 +685,7 @@ export default class Register extends Vue {
 
         if (index > 0) {
             if (this.cekServiceSelect(index)) {
-                this.services_selected.push(this.services[index]);
+                this.servicesSelected.push(this.services[index]);
             }
         }
     }
@@ -684,7 +695,7 @@ export default class Register extends Vue {
             if (this.cekSparepartSelect(index)) {
                 this.spareparts[index].push({qty: 1});
 
-                this.spareparts_selected.push(this.spareparts[index]);
+                this.sparepartsSelected.push(this.spareparts[index]);
             }
         }
     }
@@ -692,63 +703,63 @@ export default class Register extends Vue {
         return additional.convertToRupiah(angka);
     }
     public addKeluhan(): void {
-        this.keluhan_konsumen.push({ nama: this.keluhan_input });
-        this.keluhan_input = '';
+        this.keluhanKonsumen.push({ nama: this.keluhanInput });
+        this.keluhanInput = '';
     }
     public deleteKeluhan(i: any): void {
-        this.keluhan_konsumen.splice(i - 1, 1);
+        this.keluhanKonsumen.splice(i - 1, 1);
     }
-    public editKeluhan(i: any): void {
-        this.edit_keluhan  = i;
-        this.keluhan_input = this.keluhan_konsumen[i - 1].nama;
+    public updateKeluhan(i: any): void {
+        this.editKeluhan  = i;
+        this.keluhanInput = this.keluhanKonsumen[i - 1].nama;
     }
     public saveKeluhan(i: any): void {
-        this.keluhan_konsumen[i - 1].nama = this.keluhan_input;
-        this.edit_keluhan  = 0;
-        this.keluhan_input = '';
+        this.keluhanKonsumen[i - 1].nama = this.keluhanInput;
+        this.editKeluhan  = 0;
+        this.keluhanInput = '';
     }
     public addMultipleService(): void {
-        this.multiple_service.forEach((el: any) => {
-            if (this.services_selected.indexOf(el) < 0) {
-                this.services_selected.push(el);
+        this.multipleService.forEach((el: any) => {
+            if (this.servicesSelected.indexOf(el) < 0) {
+                this.servicesSelected.push(el);
             }
         });
     }
     public addMultipleSparepart(): void {
-        this.multiple_sparepart.forEach((el: any) => {
-            if (this.spareparts_selected.indexOf(el) < 0) {
+        this.multipleSparepart.forEach((el: any) => {
+            if (this.sparepartsSelected.indexOf(el) < 0) {
                 el.qty = 1;
 
-                this.spareparts_selected.push(el);
+                this.sparepartsSelected.push(el);
             }
         });
     }
 
     public updateSparepartQty(event: any, i: number): void {
-        this.spareparts_selected[i - 1].qty = event.target.value;
+        this.sparepartsSelected[i - 1].qty = event.target.value;
     }
 
     public refreshTotal(): void {
         this.total = 0;
-        this.spareparts_selected.forEach((el: any) => {
+        this.sparepartsSelected.forEach((el: any) => {
             this.total += parseInt(el.harga);
         });
-        this.services_selected.forEach((el: any) => {
+        this.servicesSelected.forEach((el: any) => {
             this.total += parseInt(el.harga);
         });
     }
     public removeSparepart(i: any): void {
-        this.spareparts_selected.splice(i - 1, 1);
+        this.sparepartsSelected.splice(i - 1, 1);
     }
     public removeService(i: any): void {
-        this.services_selected.splice(i - 1, 1);
+        this.servicesSelected.splice(i - 1, 1);
     }
     public isNext() {
-        if (this.no_polisi == '') { return true; }
-        if (this.tgl_service == '') { return true; }
-        if (this.no_telp == '') { return true; }
+        if (this.noPolisi === '') { return true; }
+        if (this.tglService === '') { return true; }
+        if (this.noTelp === '') { return true; }
         if (this.type.length > 0) { return true; }
-        if (this.nama_pemilik == '') { return true; }
+        if (this.namaPemilik === '') { return true; }
         return false;
     }
     public finish(): void {
@@ -756,7 +767,7 @@ export default class Register extends Vue {
     }
 
     public cekFinish(): void {
-        if (this.spareparts_selected.length > 0 || this.services_selected.length > 0) {
+        if (this.sparepartsSelected.length > 0 || this.servicesSelected.length > 0) {
             this.notFinish = false;
 
             return;
@@ -765,23 +776,23 @@ export default class Register extends Vue {
         this.notFinish     = true;
     }
 
-    @Watch('no_polisi')
+    @Watch('noPolisi')
     public onNoPolisiChanged(val: string) {
-        if (val == '') {
-            this.button_history  = false;
+        if (val === '') {
+            this.buttonHistory  = false;
         } else {
-            this.button_history  = true;
+            this.buttonHistory  = true;
         }
     }
 
-    @Watch('spareparts_selected')
+    @Watch('sparepartsSelected')
     public onSperpatedChange() {
         this.refreshTotal();
 
         this.cekFinish();
     }
 
-    @Watch('services_selected')
+    @Watch('servicesSelected')
     public onServicesChange() {
         this.refreshTotal();
 
