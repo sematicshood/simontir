@@ -41,7 +41,7 @@
                 </tr>
                 <tr v-for="(service, i) in data.servicesSelected">
                     <td colspan="3">{{ i += 1 }}. {{ service.name }}</td>
-                    <td>Rp. {{ servce.harga }}</td>
+                    <td>Rp. {{ service.harga }}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
@@ -107,18 +107,27 @@
 </template>
 
 <script>
+  import { EventBus } from '../event';
+
   export default {
-      props: ['data'],
+      props: ['datas'],
 
       data() {
           return {
               user: JSON.parse(localStorage.getItem('login')),
+              data: this.datas
           }
       },
       filters: {
           tanggal(value) {
               return `${value.getUTCDay()}/${value.getUTCMonth()}/${value.getUTCFullYear()} ${value.getUTCHours()}:${value.getUTCMinutes()}:${value.getUTCSeconds()}`
           }
+      },
+
+      created() {
+          EventBus.$on('finish', data => {
+            this.$data.data = data
+          });
       },
 
       name: 'printPendaftaran'

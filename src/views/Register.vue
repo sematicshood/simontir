@@ -148,7 +148,7 @@
                                         <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
                                     </dir>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisa_service"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisaService"></textarea>
                                     </div>   
                                 </div>
                             </dir>
@@ -512,7 +512,7 @@
             </table>
         </b-modal>
         </div>
-        <printpendaftaran :data="this.$data"></printpendaftaran>
+        <printpendaftaran :datas="this.$data"></printpendaftaran>
     </div>
 </template>
 
@@ -522,6 +522,7 @@ import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
 import printpendaftaran from './PrintPendaftaran.vue';
+import { EventBus } from '../event';
 
 @Component({
     components:{
@@ -554,7 +555,7 @@ export default class Register extends Vue {
     public namaPemilik: string        = '';
     public alamat: string              = '';
     public keluhanKonsumen: any[]     = [];
-    public analisa_service: string     = '';
+    public analisaService: string     = '';
     public saranMekanik: string       = '';
     public buttonHistory: boolean     = false;
     public keluhanInput: string       = '';
@@ -646,7 +647,7 @@ export default class Register extends Vue {
     public cekStok(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
         });
 
         if (pro[0]) {
@@ -659,7 +660,7 @@ export default class Register extends Vue {
     public cekStatus(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            return el.name === name && models.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase();
+            return el.name === name && models.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
         });
         if (pro[0]) { return true; }
         return false;
@@ -671,10 +672,10 @@ export default class Register extends Vue {
         return this.servicesSelected.indexOf(this.services[index]) < 0;
     }
     public findIndexSparepart(i: any): number {
-        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false');
     }
     public findIndexService(i: any): number {
-        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === this.type[0].name.replace(/\s+/g, '').toUpperCase());
+        return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false');
     }
     public cekSparepartExist(i: any): boolean {
         return this.cekSparepartSelect(this.findIndexSparepart(i));
@@ -765,6 +766,8 @@ export default class Register extends Vue {
         return false;
     }
     public finish(): void {
+        EventBus.$emit('finish', this.$data);
+
         if(this.isPrint) window.print()
 
         register.createRegister(this.$data);
