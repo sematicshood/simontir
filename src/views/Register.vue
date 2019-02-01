@@ -539,7 +539,7 @@ import { EventBus } from '../event';
 })
 
 export default class Register extends Vue {
-    public halaman: number             = 2;
+    public halaman: number             = 1;
     public noPolisi: string           = '';
     public tglService: any            = new Date();
     public noMesin: string            = '';
