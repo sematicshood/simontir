@@ -195,11 +195,7 @@
 
                                                     <div class="box-tools">
                                                         <div class="input-group input-group-sm" style="width: 150px;">
-                                                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
-
-                                                        <div class="input-group-btn">
-                                                            <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
-                                                        </div>
+                                                        <input type="text" v-model="searchService" class="form-control pull-right" placeholder="Type to search..." style="height: 30px;">
                                                         </div>
                                                     </div>
                                                     </div>
@@ -265,11 +261,7 @@
 
                                                     <div class="box-tools">
                                                         <div class="input-group input-group-sm" style="width: 150px;">
-                                                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
-
-                                                        <div class="input-group-btn">
-                                                            <button class="btn btn-default"><i class="fa fa-search"></i></button>
-                                                        </div>
+                                                        <input type="text" v-model="searchSparepart" class="form-control pull-right" placeholder="Type to search" style="height: 30px;">
                                                         </div>
                                                     </div>
                                                     </div>
@@ -539,7 +531,7 @@ import { EventBus } from '../event';
 })
 
 export default class Register extends Vue {
-    public halaman: number              = 1;
+    public halaman: number              = 2;
     public noPolisi: string             = '';
     public tglService: any              = new Date();
     public noMesin: string              = '';
@@ -603,6 +595,9 @@ export default class Register extends Vue {
     public cuci: string                       = '';
     public isPrint: boolean                   = true;
 
+    public searchSparepart: string           = "";
+    public searchService: string             = "";
+
     public created() {
         register.cekSO().then((res) => {
             this.types   = res.data.results[0].tipe_motor;
@@ -619,9 +614,9 @@ export default class Register extends Vue {
                 return el.product_type === 'service';
             });
 
-            this.servicesOwn = this.services;
+            this.servicesOwn   = this.services.splice(0,10);
 
-            this.sparepartsOwn = this.spareparts;
+            this.sparepartsOwn = this.spareparts.splice(0,10);
         });
     }
 
@@ -812,6 +807,20 @@ export default class Register extends Vue {
         this.refreshTotal();
 
         this.cekFinish();
+    }
+
+    @Watch('searchSparepart')
+    public onSearchSparepart(val: string) {
+        this.sparepartsOwn = this.products.filter(el => {
+            return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
+        })
+    }
+
+    @Watch('searchService')
+    public onSearchService(val: string) {
+        this.servicesOwn = this.products.filter(el => {
+            return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
+        })
     }
 }
 </script>

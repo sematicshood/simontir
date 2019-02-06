@@ -22,6 +22,9 @@
                 <tbody>
                   <tr>
                     <th>#</th>
+                    <th>Tanggal</th>
+                    <th>Nomer SO</th>
+                    <th>Jenis Antrian</th>
                     <th>Customer</th>
                     <th>No Polisi</th>
                     <th>Tipe Kenadaraan</th>
@@ -30,10 +33,12 @@
                   </tr>
                   <tr v-for="(reg, i) in listRegister">
                     <td>{{ i += 1 }}</td>
+                    <td>{{ reg.date }}</td>
+                    <td>{{ reg.name }}</td>
+                    <td>{{ reg.antrian_service }}</td>
                     <td>{{ reg.customer }}</td>
                     <td>{{ reg.no_polisi }}</td>
                     <td>{{ reg.tipe_kenadaraan }}</td>
-                    <td>{{ reg.antrian_service }}</td>
                     <td>
                         <div class="btn-group">
                           <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>

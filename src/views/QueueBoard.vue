@@ -36,8 +36,8 @@
                             </div>
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div v-for="a in dikerjakan" :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
+                                    <div class="col-md-4" v-for="a in dikerjakan">
+                                        <div :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
                                             <div class="inner">
                                                 <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
@@ -179,7 +179,7 @@ export default class QueueBoard extends Vue {
     public created() {
         setInterval(() => {
             this.getData();
-        }, 10000);
+        }, 5000);
 
         this.getData();
     }
