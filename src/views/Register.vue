@@ -773,7 +773,9 @@ export default class Register extends Vue {
 
         if (this.isPrint) { window.print(); }
 
-        register.createRegister(this.$data);
+        register.createRegister(this.$data)
+
+        window.location.reload();
     }
 
     public cekFinish(): void {

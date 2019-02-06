@@ -1,5 +1,7 @@
 <template>
     <div>
+        <h1 class="text-center">Board Proses Service</h1>
+        <hr>
         <div class="row">
             <div class="col-md-3">
                 <div class="box box-danger box-solid">
