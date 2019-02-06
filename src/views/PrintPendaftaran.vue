@@ -73,7 +73,7 @@
                     <td colspan="4"><strong>KELUHAN CUSTOMER</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="4" v-for="(keluhan, i) in data.keluhanKonsumen">{{ i += 1 }}. keluhan.nama</td>
+                    <td colspan="4" v-for="(keluhan, i) in data.keluhanKonsumen">{{ i += 1 }}. {{keluhan.nama}}</td>
                 </tr>
                 <tr class="t-space"><td colspan="4"></td></tr>
                 <tr class="t-header">
