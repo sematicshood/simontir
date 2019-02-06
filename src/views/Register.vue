@@ -198,7 +198,7 @@
                                                         <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
 
                                                         <div class="input-group-btn">
-                                                            <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                                                            <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
                                                         </div>
                                                         </div>
                                                     </div>
@@ -268,7 +268,7 @@
                                                         <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" style="height: 30px;">
 
                                                         <div class="input-group-btn">
-                                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                                            <button class="btn btn-default"><i class="fa fa-search"></i></button>
                                                         </div>
                                                         </div>
                                                     </div>

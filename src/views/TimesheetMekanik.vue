@@ -123,9 +123,9 @@ export default class TimesheetMekanik extends Vue {
             }
 
             this.timer = additional.exact(this.hours) + ':' + additional.exact(this.minutes) + ':' + additional.exact(this.seconds);
-        }, 1000);
 
-        this.getData();
+            this.getData();
+        }, 1000);
     }
 }
 </script>

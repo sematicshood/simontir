@@ -71,7 +71,7 @@ export default class LastFinalCheck extends Vue {
                 }).splice(0, 1);
 
                 this.regulars = res.data.results.filter((el: any) => {
-                    return el.antrian_service == 'regular';
+                    return el.antrian_service == 'reguler';
                 }).splice(0, 1);
             }
         });
