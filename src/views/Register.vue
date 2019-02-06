@@ -525,8 +525,8 @@ import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
 
 @Component({
-    components:{
-        printpendaftaran
+    components: {
+        printpendaftaran,
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -539,37 +539,37 @@ import { EventBus } from '../event';
 })
 
 export default class Register extends Vue {
-    public halaman: number             = 1;
-    public noPolisi: string           = '';
-    public tglService: any            = new Date();
-    public noMesin: string            = '';
-    public noRangka: string           = '';
-    public type: any                 = [];
-    public types: any                = [];
-    public tahun: number               = 0;
-    public namaPembawa: string        = '';
-    public noTelp: string             = '';
-    public email: string               = '';
-    public sosmed: string              = '';
+    public halaman: number              = 1;
+    public noPolisi: string             = '';
+    public tglService: any              = new Date();
+    public noMesin: string              = '';
+    public noRangka: string             = '';
+    public type: any                    = [];
+    public types: any                   = [];
+    public tahun: number                = 0;
+    public namaPembawa: string          = '';
+    public noTelp: string               = '';
+    public email: string                = '';
+    public sosmed: string               = '';
 
-    public namaPemilik: string        = '';
-    public alamat: string              = '';
-    public keluhanKonsumen: any[]     = [];
-    public analisaService: string     = '';
-    public saranMekanik: string       = '';
-    public buttonHistory: boolean     = false;
-    public keluhanInput: string       = '';
-    public editKeluhan: number        = 0;
-    public histories: any[]            = [];
-    public servicesSelected: any[]    = [];
-    public sparepartsSelected: any[]  = [];
-    public spareparts: any[]           = [];
-    public services: any[]             = [];
-    public servicesOwn: any[]         = [];
-    public sparepartsOwn: any[]       = [];
-    public km: number                  = 0;
-    public jenisService: string       = '';
-    public listSpareparts: any[]     = [
+    public namaPemilik: string          = '';
+    public alamat: string               = '';
+    public keluhanKonsumen: any[]       = [];
+    public analisaService: string       = '';
+    public saranMekanik: string         = '';
+    public buttonHistory: boolean       = false;
+    public keluhanInput: string         = '';
+    public editKeluhan: number          = 0;
+    public histories: any[]             = [];
+    public servicesSelected: any[]      = [];
+    public sparepartsSelected: any[]    = [];
+    public spareparts: any[]            = [];
+    public services: any[]              = [];
+    public servicesOwn: any[]           = [];
+    public sparepartsOwn: any[]         = [];
+    public km: number                   = 0;
+    public jenisService: string         = '';
+    public listSpareparts: any[]        = [
         {name: 'Busi', km: 8000},
         {name: 'Oil Transmisi', km: 8000},
         {name: 'Coolant', km: 12000},
@@ -647,7 +647,7 @@ export default class Register extends Vue {
     public cekStok(name: string): boolean {
         const pro = this.products.filter((el: any) => {
             const models = `${ el.make }${ el.name_model }`;
-            const nganu  = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false'
+            const nganu  = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
 
             return el.name === name && models.toUpperCase() === nganu;
         });
@@ -676,12 +676,12 @@ export default class Register extends Vue {
         return this.servicesSelected.indexOf(this.services[index]) < 0;
     }
     public findIndexSparepart(i: any): any {
-        let nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+        const nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
 
         return this.spareparts.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === nganu);
     }
     public findIndexService(i: any): any {
-        let nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
+        const nganu: any = (this.type.length > 0) ? this.type.name.replace(/\s+/g, '').toUpperCase() : 'false';
 
         return this.services.findIndex((x) => x.name === i.name && `${ x.make }${ x.name_model }`.toUpperCase() === nganu);
     }
@@ -753,10 +753,10 @@ export default class Register extends Vue {
     public refreshTotal(): void {
         this.total = 0;
         this.sparepartsSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga);
+            this.total += parseInt(el.harga, 10);
         });
         this.servicesSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga);
+            this.total += parseInt(el.harga, 10);
         });
     }
     public removeSparepart(i: any): void {
@@ -776,7 +776,7 @@ export default class Register extends Vue {
     public finish(): void {
         EventBus.$emit('finish', this.$data);
 
-        if(this.isPrint) window.print()
+        if (this.isPrint) { window.print(); }
 
         register.createRegister(this.$data);
     }
