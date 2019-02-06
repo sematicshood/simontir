@@ -36,8 +36,8 @@
                             </div>
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div v-for="a in dikerjakan" :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
+                                    <div class="col-md-4" v-for="a in dikerjakan">
+                                        <div :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
                                             <div class="inner">
                                                 <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
@@ -179,7 +179,7 @@ export default class QueueBoard extends Vue {
     public created() {
         setInterval(() => {
             this.getData();
-        }, 10000);
+        }, 5000);
 
         this.getData();
     }
@@ -188,27 +188,27 @@ export default class QueueBoard extends Vue {
         board.getSO().then((res) => {
             if(res.data.results) {
                 this.antrian = res.data.results.filter((el: any) => {
-                    return el.status == 'sent';
+                    return el.status === 'sent';
                 });
 
                 this.dikerjakan = res.data.results.filter((el: any) => {
-                    return el.status == 'sale' && el.invoice == 'no';
+                    return el.status === 'sale' && el.invoice === 'no';
                 });
 
                 this.selesai = res.data.results.filter((el: any) => {
-                    return el.invoice == 'to invoice';
+                    return el.invoice === 'to invoice';
                 });
 
                 this.filterBooking = this.selesai.filter((el: any) => {
-                    return el.antrian_service == 'Booking Service';
+                    return el.antrian_service === 'Booking Service';
                 });
 
                 this.filterLight = this.selesai.filter((el: any) => {
-                    return el.antrian_service == 'Light Repair';
+                    return el.antrian_service === 'Light Repair';
                 });
 
                 this.filterRegular = this.selesai.filter((el: any) => {
-                    return el.antrian_service == 'Regular Service';
+                    return el.antrian_service === 'Regular Service';
                 });
             }
         });
@@ -216,7 +216,7 @@ export default class QueueBoard extends Vue {
 
     public countService(data: any[]): number {
         const datas = data.filter((el: any) => {
-            return el.type == 'service';
+            return el.type === 'service';
         });
 
         return datas.length;
@@ -224,7 +224,7 @@ export default class QueueBoard extends Vue {
 
     public countSparepart(data: any[]): number {
         const datas = data.filter((el: any) => {
-            return el.type != 'service';
+            return el.type !== 'service';
         });
 
         return datas.length;

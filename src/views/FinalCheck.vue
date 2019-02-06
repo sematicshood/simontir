@@ -132,15 +132,15 @@ export default class FinalCheck extends Vue {
             this.nopol      =   res.data.results.nopol;
 
             this.services   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] == undefined;
+                return el.name.split(':')[0].split(' ')[1] === undefined;
             });
 
             this.keluhan   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] == 'keluhan';
+                return el.name.split(':')[0].split(' ')[1] === 'keluhan';
             });
 
             this.sparepart   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] == 'sparepart';
+                return el.name.split(':')[0].split(' ')[1] === 'sparepart';
             });
         });
     }

@@ -53,6 +53,11 @@ export default class App extends Vue {
     this.$data.path  = (this.$router as any).currentRoute.name;
     this.$data.title = (this.$router as any).currentRoute.meta.title;
   }
+
+  @Watch('web.sidebar', { deep: true })
+  public onSidebarChange(newVal: any) {
+    this.sidebar = newVal;
+  }
 }
 </script>
 

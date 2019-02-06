@@ -86,15 +86,15 @@ export default class ListMekanik extends Vue {
         mekanik.getSO().then((res: any) => {
             if (res.data.results) {
                 this.bookings   = res.data.results.filter((el: any) => {
-                    return el.antrian_service == 'Booking Service';
+                    return el.antrian_service === 'Booking Service';
                 }).splice(0, 1);
 
                 this.lights   = res.data.results.filter((el: any) => {
-                    return el.antrian_service == 'Light Repair';
+                    return el.antrian_service === 'Light Repair';
                 }).splice(0, 1);
 
                 this.regulars = res.data.results.filter((el: any) => {
-                    return el.antrian_service == 'reguler';
+                    return el.antrian_service === 'reguler';
                 }).splice(0, 1);
             }
         });

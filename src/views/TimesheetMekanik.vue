@@ -71,7 +71,7 @@ export default class TimesheetMekanik extends Vue {
         this.ids = this.$route.params.id;
 
         board.getTask(this.ids).then((res) => {
-            if(res.data.results) {
+            if (res.data.results) {
                 this.nopol      =   res.data.results.nopol;
                 this.waktu      =   res.data.results.waktu_mulai;
 

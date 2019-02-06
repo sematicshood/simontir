@@ -116,24 +116,25 @@
       data() {
           return {
               user: JSON.parse(localStorage.getItem('login')),
-              data: this.datas
+              data: this.datas,
           }
       },
+
       filters: {
           tanggal(value) {
-              return `${value.getUTCDay()}/${value.getUTCMonth()}/${value.getUTCFullYear()} ${value.getUTCHours()}:${value.getUTCMinutes()}:${value.getUTCSeconds()}`
-          }
+              return `${value.getUTCDay()}/${value.getUTCMonth()}/${value.getUTCFullYear()} ${value.getUTCHours()}:${value.getUTCMinutes()}:${value.getUTCSeconds()}`;
+          },
       },
 
       methods: {
           convertToRupiah(angka) {
             return additional.convertToRupiah(angka);
-          }
+          },
       },
 
       created() {
-          EventBus.$on('finish', data => {
-            this.$data.data = data
+          EventBus.$on('finish', (data) => {
+            this.$data.data = data;
           });
       },
 
