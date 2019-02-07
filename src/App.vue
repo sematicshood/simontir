@@ -64,6 +64,6 @@ export default class App extends Vue {
 <style>
 @import 'assets/adminLTE/bootstrap/dist/css/bootstrap.min.css';
 @import 'assets/adminLTE/font-awesome/css/font-awesome.min.css';
-@import 'assets/adminLTE/css/AdminLTE.min.css';
+@import 'assets/adminLTE/css/AdminLTE.css';
 @import 'assets/adminLTE/css/skins/_all-skins.min.css';
 </style>

@@ -1,5 +1,7 @@
 <template>
     <div>
+        <h1 class="text-center">Board Proses Service</h1>
+        <hr>
         <div class="row">
             <div class="col-md-3">
                 <div class="box box-danger box-solid">
@@ -8,13 +10,13 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div v-for="a in antrian" :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
+                        <div v-for="a in antrian" :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'reguler','bg-yellow': a.antrian_service == 'Light Repair'}">
                             <div class="inner">
                                 <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
                                 <p>{{ a.customer }}</p>
                             </div>
-                            <div :class="{'a-group-red': a.antrian_service == 'Booking Service','a-group-green': a.antrian_service == 'Regular Service','a-group-yellow': a.antrian_service == 'Light Repair'}">
+                            <div :class="{'a-group-red': a.antrian_service == 'Booking Service','a-group-green': a.antrian_service == 'reguler','a-group-yellow': a.antrian_service == 'Light Repair'}">
                                 <a href="#" class="number-task pull-left">
                                 {{ countService(a.order_line) }} <i class="fa fa-gears"></i>
                                 </a>
@@ -37,13 +39,13 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-4" v-for="a in dikerjakan">
-                                        <div :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'Regular Service','bg-yellow': a.antrian_service == 'Light Repair'}">
+                                        <div :class="{'small-box': true, 'bg-red': a.antrian_service == 'Booking Service','bg-green': a.antrian_service == 'reguler','bg-yellow': a.antrian_service == 'Light Repair'}">
                                             <div class="inner">
                                                 <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
                                                 <p>{{ a.customer }}</p>
                                             </div>
-                                            <div :class="{'a-group-red': a.antrian_service == 'Booking Service','a-group-green': a.antrian_service == 'Regular Service','a-group-yellow': a.antrian_service == 'Light Repair'}">
+                                            <div :class="{'a-group-red': a.antrian_service == 'Booking Service','a-group-green': a.antrian_service == 'reguler','a-group-yellow': a.antrian_service == 'Light Repair'}">
                                                 <a href="#" class="number-task pull-left">
                                                 {{ countService(a.order_line) }} <i class="fa fa-gears"></i>
                                                 </a>
@@ -208,7 +210,7 @@ export default class QueueBoard extends Vue {
                 });
 
                 this.filterRegular = this.selesai.filter((el: any) => {
-                    return el.antrian_service === 'Regular Service';
+                    return el.antrian_service === 'reguler';
                 });
             }
         });

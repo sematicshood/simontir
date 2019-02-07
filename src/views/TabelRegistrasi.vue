@@ -28,10 +28,9 @@
                     <th>Customer</th>
                     <th>No Polisi</th>
                     <th>Tipe Kenadaraan</th>
-                    <th>Antrian Service</th>
                     <th>Action</th>
                   </tr>
-                  <tr v-for="(reg, i) in listRegister">
+                  <tr v-for="(reg, i) in listRegister" :key="i">
                     <td>{{ i += 1 }}</td>
                     <td>{{ reg.date }}</td>
                     <td>{{ reg.name }}</td>
@@ -75,6 +74,14 @@ export default class TabelRegistrasi extends Vue {
   public listRegister: string[]  = [];
 
   public created() {
+    setInterval(() => {
+      this.getData()
+    }, 3000)
+
+    this.getData()
+  }
+
+  public getData(): void {
     board.getSO().then((res) => {
       this.listRegister  = res.data.results;
     });

@@ -77,10 +77,10 @@
                                     <td>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">
-                                                <input type="checkbox">
+                                                <input type="checkbox" v-model="cuci">
                                             </label>
                                             <div class="col-sm-9">
-                                                <select class="form-control">
+                                                <select class="form-control" :disabled="cuci == false">
                                                     <option>Pilih Asisten Mekanik</option>
                                                     <option value="">A</option>
                                                     <option value="">B</option>
@@ -95,7 +95,7 @@
                         <!-- /.box-body -->
                     </div>
                 </div>
-                <button type="button" class="btn btn-success">Selesai</button>
+                <button type="button" @click="finished" class="btn btn-success">Selesai</button>
 
                 <!-- Modal reject -->
                 <b-modal id="reject" @ok="reject">
@@ -121,6 +121,7 @@ export default class FinalCheck extends Vue {
     public sparepart: any[]    =   [];
     public nopol: string       =   '';
     public id_select: number   =   0;
+    public cuci: boolean       =   true;
     public user: any           =   JSON.parse(localStorage.getItem('login')!);
 
     public created() {
@@ -156,6 +157,32 @@ export default class FinalCheck extends Vue {
         .then(() => {
             this.load();
         });
+    }
+
+    public finished(): void {
+        let serviceCek: number = this.services.filter(el => {
+            el.x_status !== 'reject'
+        }).length
+
+        let keluhanCek: number = this.keluhan.filter(el => {
+            el.x_status !== 'reject'
+        }).length
+
+        let sparepartCek: number = this.sparepart.filter(el => {
+            el.x_status !== 'reject'
+        }).length
+
+        if(serviceCek === 0 && keluhanCek === 0 && sparepartCek === 0) {
+            mekanik.finishFinal({'invoice': this.$route.params.id})
+                    .then(() => {
+                        this.$router.push({ name: 'list_final_check' });
+                    })
+        } else {
+            mekanik.unlock({'invoice': this.$route.params.id})
+                    .then(() => {
+                        this.$router.push({ name: 'list_final_check' });
+                    })
+        }
     }
 }
 </script>
