@@ -43,11 +43,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Mesin</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="noMesin">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="noMesin">
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Rangka</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="noRangka">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="noRangka">
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>

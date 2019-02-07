@@ -216,3 +216,7 @@
 .t-space{
     height: 25px;
 }
+
+.row {
+    padding: 0 !important;
+}
