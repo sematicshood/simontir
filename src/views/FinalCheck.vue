@@ -121,7 +121,7 @@ export default class FinalCheck extends Vue {
     public sparepart: any[]    =   [];
     public nopol: string       =   '';
     public id_select: number   =   0;
-    public cuci: booelan       =   true;
+    public cuci: boolean       =   true;
     public user: any           =   JSON.parse(localStorage.getItem('login')!);
 
     public created() {
