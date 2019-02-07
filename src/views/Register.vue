@@ -635,6 +635,8 @@ export default class Register extends Vue {
                         this.sosmed         = data.sosmed;
 
                         this.histories      = data.history;
+
+                        this.type           = data.tipe_motor;
                     }
                 });
     }
