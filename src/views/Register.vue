@@ -626,11 +626,11 @@ export default class Register extends Vue {
                     if (res.data) {
                         const data = res.data.results[0];
 
-                        this.noMesin       = data.noMesin;
-                        this.noRangka      = data.noRangka;
+                        this.noMesin        = data.no_mesin;
+                        this.noRangka       = data.no_rangka;
                         this.tahun          = data.tahun;
-                        this.namaPemilik   = data.namaPemilik;
-                        this.noTelp        = data.telp_pemilik;
+                        this.namaPemilik    = data.nama_pemilik;
+                        this.noTelp         = data.telp_pemilik;
                         this.email          = data.email_pemilik;
                         this.sosmed         = data.sosmed;
 
@@ -774,10 +774,8 @@ export default class Register extends Vue {
         if (this.isPrint) { window.print(); }
 
         register.createRegister(this.$data).then(() => {
-		window.location.reload();
-	});
-
-        //window.location.reload();
+            window.location.reload();
+        });
     }
 
     public cekFinish(): void {
