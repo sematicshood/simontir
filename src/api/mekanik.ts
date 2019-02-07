@@ -16,8 +16,8 @@ const unlock = async (data: any) => {
     return await api.post('/simontir/unlock_so', data);
 };
 
-const getFinalSO = async (no_ref: any) => {
-    return await api.get('/simontir/get_final_detail/' + no_ref, {});
+const getFinalSO = async (noRef: any) => {
+    return await api.get('/simontir/get_final_detail/' + noRef, {});
 };
 
 const getLastSO = async () => {
@@ -32,6 +32,10 @@ const reject = async (data: any) => {
     return await api.post('/simontir/reject', data);
 };
 
+const finishFinal = async (data: any) => {
+    return await api.post('/simontir/finish_final', data);
+};
+
 export default {
     getSO,
     pick,
@@ -41,4 +45,5 @@ export default {
     accept,
     getLastSO,
     reject,
+    finishFinal,
 };
