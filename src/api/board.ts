@@ -4,11 +4,16 @@ const getSO = async () => {
     return await api.get('/simontir/getso', {});
 };
 
-const getTask = async (no_ref: any) => {
-    return await api.get(`/simontir/get_task/${ no_ref }`);
+const getTask = async (noRef: any) => {
+    return await api.get(`/simontir/get_task/${ noRef }`);
+};
+
+const getCuci = async () => {
+    return await api.get(`/simontir/get_cuci`);
 };
 
 export default {
     getSO,
     getTask,
+    getCuci,
 };

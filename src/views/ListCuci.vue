@@ -4,7 +4,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Registrasi</h3>
+              <h3 class="box-title">Data Cuci</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -30,7 +30,7 @@
                   </tr>
                   <tr v-for="(reg, i) in listRegister" :key="i" :class="{ 'red': reg.invoice == 'to invoice' }">
                     <td>{{ i += 1 }}</td>
-                    <td>{{ reg.namaSo }}</td>
+                    <td>{{ reg.projectName }}</td>
                     <td>{{ reg.nopol }}</td>
                     <td>{{ reg.typeMotor }}</td>
                     <td>{{ reg.namaPemilik }}</td>
@@ -54,13 +54,14 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import board from '../api/board';
+import mekanik from '../api/mekanik';
 
 @Component({
     components: {},
 })
 
 export default class TabelRegistrasi extends Vue {
-  public listRegister: string[]  = [];
+  public listRegister: any[]  = [];
 
   public created() {
     setInterval(() => {
@@ -71,8 +72,8 @@ export default class TabelRegistrasi extends Vue {
   }
 
   public getData(): void {
-    board.getSO().then((res) => {
-      this.listRegister  = res.data.results;
+    board.getCuci().then((res) => {
+      this.listRegister  = res.data.data;
     });
   }
 }
