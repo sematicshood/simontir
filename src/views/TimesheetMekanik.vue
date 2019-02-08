@@ -39,6 +39,12 @@
                         </td>
                     </tr>
                 </table>
+                <div class="title-task" style="margin-top: -14px;">
+                    <center><h4><strong>Saran Mekanik</strong></h4></center>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" placeholder="Enter ...">{{ saranMekanik }}</textarea>
+                </div>
                 <button @click="finish" type="button" class="btn btn-primary btn-block">Selesai</button>
             </div>
         </div>
@@ -63,6 +69,7 @@ export default class TimesheetMekanik extends Vue {
     public ids: string             =   '';
     public data: string[]          =   [];
     public nopol: string           =   '';
+    public saranMekanik: string    =   '';
     public services: string[]      =   [];
     public keluhan: string[]       =   [];
     public waktu: string           =   '';
@@ -72,8 +79,9 @@ export default class TimesheetMekanik extends Vue {
 
         board.getTask(this.ids).then((res) => {
             if (res.data.results) {
-                this.nopol      =   res.data.results.nopol;
-                this.waktu      =   res.data.results.waktu_mulai;
+                this.nopol          =   res.data.results.nopol;
+                this.waktu          =   res.data.results.waktu_mulai;
+                this.saranMekanik   =   res.data.results.saran; 
 
                 this.services   =   res.data.results.tasks.filter((el: any) => {
                     return el.name.split(':')[0].split(' ')[1] !== 'keluhan';
