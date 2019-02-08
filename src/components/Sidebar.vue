@@ -67,7 +67,11 @@ export default class Sidebar extends Vue {
           } else {
               return el.meta.show;
           }
-      });
+      }).sort((a: any, b: any) => {
+            if(a.meta.title < b.meta.title) { return -1; }
+            if(a.meta.title > b.meta.title) { return 1; }
+            return 0;
+        });
   }
 }
 </script>
