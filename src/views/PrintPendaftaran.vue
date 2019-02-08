@@ -5,7 +5,9 @@
                 <tr class="t-header">
                     <td colspan="4"><center>
                         <h1><strong>AHASS MITRA PRATAMA<br>
-                        ALAMAT</strong></h1>
+                        Jl. Krangkungan / Anggajaya II No. 17<br>
+                        0274 4986274<br>
+                        0881 2608537 </strong></h1>
                         </center></td>
                 </tr>
                 <tr class="t-header">
