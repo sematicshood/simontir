@@ -20,10 +20,10 @@
                     <center><h4><strong>Pekerjaan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr v-for="(service, i) in services">
+                    <tr v-for="(service, i) in services" :key="i">
                         <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            {{ service.name }} <br>
+                            {{ service.name.split(':')[1] }} <br>
                         </td>
                     </tr>
                 </table>
@@ -32,10 +32,10 @@
                     <center><h4><strong>Keluhan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr v-for="(kel, i) in keluhan">
+                    <tr v-for="(kel, i) in keluhan" :key="i">
                         <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
-                            {{ kel.name }} <br>
+                            {{ kel.name.split(':')[1] }} <br>
                         </td>
                     </tr>
                 </table>
