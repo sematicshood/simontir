@@ -110,7 +110,7 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         role: ['asisten mekanik'],
-        title: 'Option Role',
+        title: 'List Cuci',
         show: true,
       },
     },

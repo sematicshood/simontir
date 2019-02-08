@@ -22,22 +22,18 @@
                 <tbody>
                   <tr>
                     <th>#</th>
-                    <th>Tanggal</th>
-                    <th>Nomer SO</th>
-                    <th>Jenis Antrian</th>
-                    <th>Customer</th>
-                    <th>No Polisi</th>
-                    <th>Tipe Kenadaraan</th>
+                    <th>Nomer WO</th>
+                    <th>No. Polilsi</th>
+                    <th>Tipe Kendaraan</th>
+                    <th>Pemilik</th>
                     <th>Action</th>
                   </tr>
                   <tr v-for="(reg, i) in listRegister" :key="i" :class="{ 'red': reg.invoice == 'to invoice' }">
                     <td>{{ i += 1 }}</td>
-                    <td>{{ reg.date }}</td>
-                    <td>{{ reg.name }}</td>
-                    <td>{{ reg.antrian_service }}</td>
-                    <td>{{ reg.customer }}</td>
-                    <td>{{ reg.no_polisi }}</td>
-                    <td>{{ reg.tipe_kenadaraan }}</td>
+                    <td>{{ reg.namaSo }}</td>
+                    <td>{{ reg.nopol }}</td>
+                    <td>{{ reg.typeMotor }}</td>
+                    <td>{{ reg.namaPemilik }}</td>
                     <td>
                         <div class="btn-group">
                           <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
