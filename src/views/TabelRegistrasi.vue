@@ -30,7 +30,7 @@
                     <th>Tipe Kenadaraan</th>
                     <th>Action</th>
                   </tr>
-                  <tr v-for="(reg, i) in listRegister" :key="i">
+                  <tr v-for="(reg, i) in listRegister" :key="i" :class="{ 'red': reg.invoice == 'to invoice' }">
                     <td>{{ i += 1 }}</td>
                     <td>{{ reg.date }}</td>
                     <td>{{ reg.name }}</td>
@@ -91,4 +91,14 @@ export default class TabelRegistrasi extends Vue {
 
 <style>
 @import '../assets/adminLTE/css/custom.css';
+
+.red {
+  background: red;
+  color: white;
+}
+
+.red:hover {
+  background: red !important;
+  color: white !important;
+}
 </style>

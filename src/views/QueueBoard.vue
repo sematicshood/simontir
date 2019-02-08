@@ -135,7 +135,7 @@
                                                 </div>
                                             </div>
                                             <div class="box-body">
-                                                <div v-for="a in filterRegular" class="small-box bg-green">
+                                                <div v-for="(a, i) in filterRegular" class="small-box bg-green" :key="i">
                                                     <div class="inner">
                                                         <h3 style="font-size: 200%;"><strong>{{ a.no_polisi }}</strong></h3>
 
