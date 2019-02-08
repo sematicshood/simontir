@@ -53,14 +53,14 @@
                     <center><h4><strong>Keluhan</strong></h4></center>
                 </div>
                 <table class="table table-striped white-background">
-                    <tr v-for="(kel, i) in keluhan">
+                    <tr v-for="(kel, i) in keluhan" :key="i">
                         <td style="width: 20px;">{{ i += 1 }}</td>
                         <td style="text-align: left;">
                             {{ kel.name.split(':')[1] }}
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group">
-                                <button @click="accept(kel.id)" type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                <button @click="accept(kel.id)" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': kel.x_status == 'accept'}"><i class="fa fa-check"></i></button>
                                 <button @click="id_select = kel.id" v-b-modal="'reject'" type="button" :class="{'btn': true, 'btn-default': true, 'btn-primary': kel.x_status == 'reject'}"><i class="fa fa-close"></i></button>                                
                             </div>
                         </td>
@@ -80,11 +80,8 @@
                                                 <input type="checkbox" v-model="cuci">
                                             </label>
                                             <div class="col-sm-9">
-                                                <select class="form-control" :disabled="cuci == false">
-                                                    <option>Pilih Asisten Mekanik</option>
-                                                    <option value="">A</option>
-                                                    <option value="">B</option>
-                                                    <option value="">C</option>
+                                                <select class="form-control" :disabled="cuci == false" v-model="userWash">
+                                                    <option v-for="(us, i) in users" v-text="us.name" :key="i" :value="us.id"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -123,17 +120,25 @@ export default class FinalCheck extends Vue {
     public id_select: number   =   0;
     public cuci: boolean       =   true;
     public user: any           =   JSON.parse(localStorage.getItem('login')!);
+    public users: any[]        =   [];
+    public userWash: number   =   0;
 
     public created() {
         this.load();
     }
 
     public load(): void {
+        mekanik.getusers().then(res => {
+            if(res.data.results) {
+                this.users = res.data.results
+            }
+        })
+
         mekanik.getFinalSO(this.$route.params.id).then((res: any) => {
             this.nopol      =   res.data.results.nopol;
 
             this.services   =   res.data.results.tasks.filter((el: any) => {
-                return el.name.split(':')[0].split(' ')[1] === undefined;
+                return el.name.split(':')[0].split(' ')[1] === undefined && el.name.split(':')[1].toUpperCase() !== 'Cuci Motor'.toUpperCase();
             });
 
             this.keluhan   =   res.data.results.tasks.filter((el: any) => {
@@ -147,7 +152,8 @@ export default class FinalCheck extends Vue {
     }
 
     public accept(ids: number): void {
-        mekanik.accept({id: ids, user_id: this.user.id}).then(() => {
+        mekanik.accept({id: ids, user_id: this.user.id}).then((res) => {
+            console.log(res)
             this.load();
         });
     }
@@ -173,7 +179,7 @@ export default class FinalCheck extends Vue {
         }).length
 
         if(serviceCek === 0 && keluhanCek === 0 && sparepartCek === 0) {
-            mekanik.finishFinal({'invoice': this.$route.params.id})
+            mekanik.finishFinal({'invoice': this.$route.params.id, 'user_cuci': this.userWash})
                     .then(() => {
                         this.$router.push({ name: 'list_final_check' });
                     })

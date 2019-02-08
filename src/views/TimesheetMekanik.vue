@@ -76,7 +76,7 @@ export default class TimesheetMekanik extends Vue {
                 this.waktu      =   res.data.results.waktu_mulai;
 
                 this.services   =   res.data.results.tasks.filter((el: any) => {
-                    return el.name.split(':')[0].split(' ')[1] !== 'keluhan';
+                    return el.name.split(':')[0].split(' ')[1] !== 'keluhan' && el.name.split(':')[1].toUpperCase() !== 'Cuci Motor'.toUpperCase();
                 });
 
                 this.keluhan   =   res.data.results.tasks.filter((el: any) => {

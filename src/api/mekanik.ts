@@ -36,6 +36,10 @@ const finishFinal = async (data: any) => {
     return await api.post('/simontir/finish_final', data);
 };
 
+const getusers = async () => {
+    return await api.get('/simontir/getusers', {});
+};
+
 export default {
     getSO,
     pick,
@@ -46,4 +50,5 @@ export default {
     getLastSO,
     reject,
     finishFinal,
+    getusers,
 };
