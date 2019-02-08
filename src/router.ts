@@ -104,6 +104,17 @@ const router = new Router({
       },
     },
     {
+      path: '/list_cuci',
+      name: 'list_cuci',
+      component: () => import('./views/ListCuci.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['asisten mekanik'],
+        title: 'Option Role',
+        show: true,
+      },
+    },
+    {
       path: '/timesheet_mekanik/:id',
       name: 'timesheet_mekanik',
       component: () => import('./views/TimesheetMekanik.vue'),

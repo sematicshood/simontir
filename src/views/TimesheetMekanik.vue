@@ -121,6 +121,10 @@ export default class TimesheetMekanik extends Vue {
     }
 
     public created() {
+        if(this.waktu === '') {
+            this.getData();
+        }
+        
         setInterval(() => {
             this.seconds++;
 
@@ -135,8 +139,6 @@ export default class TimesheetMekanik extends Vue {
             }
 
             this.timer = additional.exact(this.hours) + ':' + additional.exact(this.minutes) + ':' + additional.exact(this.seconds);
-
-            this.getData();
         }, 1000);
     }
 }
