@@ -43,7 +43,7 @@
                     <center><h4><strong>Saran Mekanik</strong></h4></center>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" rows="3" placeholder="Enter ...">{{ saranMekanik }}</textarea>
+                    <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saranMekanik"></textarea>
                 </div>
                 <button @click="finish" type="button" class="btn btn-primary btn-block">Selesai</button>
             </div>
@@ -73,6 +73,7 @@ export default class TimesheetMekanik extends Vue {
     public services: string[]      =   [];
     public keluhan: string[]       =   [];
     public waktu: string           =   '';
+    public id_saran: number        =   0;
 
     public getData(): void {
         this.ids = this.$route.params.id;
@@ -82,6 +83,7 @@ export default class TimesheetMekanik extends Vue {
                 this.nopol          =   res.data.results.nopol;
                 this.waktu          =   res.data.results.waktu_mulai;
                 this.saranMekanik   =   res.data.results.saran; 
+                this.id_saran       =   res.data.results.id_saran; 
 
                 this.services   =   res.data.results.tasks.filter((el: any) => {
                     return el.name.split(':')[0].split(' ')[1] !== 'keluhan' && el.name.split(':')[1].toUpperCase() !== 'Cuci Motor'.toUpperCase();
@@ -111,7 +113,9 @@ export default class TimesheetMekanik extends Vue {
     }
 
     public finish(): void {
-        mekanik.lock({invoice: this.ids}).then((res) => {
+        mekanik.lock({invoice: this.ids, 
+                      id_saran: this.id_saran, 
+                      saran: this.saranMekanik}).then((res) => {
             this.$router.push({ name: 'list_mekanik' });
         });
     }
