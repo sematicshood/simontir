@@ -28,7 +28,7 @@
                                     <div class="form-group">
                                         <label for="" class="control-label">Jenis Servis </label>
                                         <select name="" id="" v-model="jenisService" class="form-control">
-                                            <option value="reguler">Reguler</option>
+                                            <option value="reguler" selected>Reguler</option>
                                             <option value="Light Repair">Light Repair</option>
                                             <option value="Booking Service">Booking Service</option>
                                         </select>
@@ -303,9 +303,9 @@
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
                                                         <td><input type="number" :value="sparepart.qty" @change="updateSparepartQty($event, i)"></td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga * sparepart.qty) }}</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
+                                                            <button type="button" @click="removeSparepart(i)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                         </td>
                                                     </tr>                
                                                 </tbody></table>
@@ -618,6 +618,63 @@ export default class Register extends Vue {
 
             this.sparepartsOwn = this.spareparts.splice(0,10);
         });
+
+        if(this.$route.params.so) {
+            const so: any = this.$route.params.so;
+
+            register.getDetailSo(so).then(res => {
+                const result    =   res.data.results[0]
+
+                if(result) {
+                    this.halaman    =   2
+
+                    const tgl   =   new Date(result.tgl_service)
+
+                    this.noUrut         =   result.no_urut
+                    this.noPolisi       =   this.cekData(result.nopol)
+                    this.jenisService   =   result.antrian_service
+                    this.cuci           =   result.is_wash
+                    this.tglService     =   tgl
+                    this.namaPemilik    =   result.nama_pemilik
+                    this.noTelp         =   this.cekData(result.no_telp)
+                    this.email          =   result.email
+                    this.sosmed         =   result.sosmed
+                    this.keluhanKonsumen    =   result.keluhan_konsumen
+                    this.analisaService     =   this.cekData(result.analisa_service)
+                    this.saranMekanik       =   this.cekData(result.saran_mekanik)
+                    
+                    const motor =   result.motor[0]
+
+                    if(motor) {
+                        this.noMesin    =   motor.no_mesin
+                        this.noRangka   =   motor.no_rangka
+                        this.type       =   motor.type
+                        this.tahun      =   motor.tahun
+                        this.km         =   motor.km
+                    }
+
+                    const pembawa   =   result.pembawa[0]
+
+                    if(pembawa) {
+                        this.namaPembawa    =   pembawa.nama
+                        this.alamat         =   pembawa.alamat
+                    }
+
+                    result.sale_order_line.forEach((el: any) => {
+                        const type  =   el.type
+
+                        if(type == 'product') this.sparepartsSelected.push(el)
+                        if(type == 'service') this.servicesSelected.push(el)
+                    })
+                }
+            })
+        }
+    }
+
+    public cekData(data): any {
+        if(data) return data;
+
+        return "";
     }
 
     public cekNopol(): void {
@@ -750,10 +807,10 @@ export default class Register extends Vue {
     public refreshTotal(): void {
         this.total = 0;
         this.sparepartsSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga, 10);
+            this.total += (parseInt(el.harga, 10) * el.qty);
         });
         this.servicesSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga, 10);
+            this.total += (parseInt(el.harga, 10) * el.qty);
         });
     }
     public removeSparepart(i: any): void {
@@ -775,7 +832,30 @@ export default class Register extends Vue {
 
         if (this.isPrint) { window.print(); }
 
-        register.createRegister(this.$data).then(() => {
+        register.createRegister({
+            "tglService": this.tglService,
+            "noPolisi": this.noPolisi,
+            "namaPemilik": this.namaPemilik,
+            "noTelp": this.noTelp,
+            "email": this.email,
+            "sosmed": this.sosmed,
+            "namaPembawa": this.namaPembawa,
+            "alamat": this.alamat,
+            "noRangka": this.noRangka,
+            "noMesin": this.noMesin,
+            "type": this.type,
+            "tahun": this.tahun,
+            "noUrut": this.noUrut,
+            "jenisService": this.jenisService,
+            "total": this.total,
+            "km": this.km,
+            "keluhanKonsumen": this.keluhanKonsumen,
+            "analisaService": this.analisaService,
+            "saranMekanik": this.saranMekanik,
+            "sparepartsSelected": this.sparepartsSelected,
+            "servicesSelected": this.servicesSelected,
+            "cuci": this.cuci,
+        }).then(() => {
             window.location.reload();
         });
     }
