@@ -43,7 +43,7 @@
                         <td style="text-align: left;">
                             {{ sparepart.name.split(':')[1] }} <br>
                         </td>
-                        <td>{{ convertToTime(sparepart.duration) }}</td>
+                        <!-- <td>{{ convertToTime(sparepart.duration) }}</td> -->
                         <td v-if="sparepart.x_state.toUpperCase() == 'unfinished'.toUpperCase()">
                             <button class="btn btn-sm btn-warning" @click="start = `sparepart:${i}`">Start</button> &nbsp;
                             <button class="btn btn-sm btn-primary" @click="finishTask(sparepart.id)">Finish</button>
@@ -136,7 +136,7 @@ export default class TimesheetMekanik extends Vue {
                 });
 
                 this.spareparts.forEach((el: any, i: number) => {
-                    this.spareparts[i].duration =   (el.x_duration) ? el.x_duration : 0;
+                    el.x_duration =   (el.x_duration) ? el.x_duration : 0;
                 })
 
                 this.keluhan   =   res.data.results.tasks.filter((el: any) => {

@@ -670,7 +670,7 @@ export default class Register extends Vue {
         }
     }
 
-    public cekData(data): any {
+    public cekData(data: any): any {
         if(data) return data;
 
         return "";
