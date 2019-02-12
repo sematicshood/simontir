@@ -27,11 +27,10 @@
                                         
                                     <div class="form-group">
                                         <label for="" class="control-label">Jenis Servis </label>
-                                        <select name="" id="" v-model="jenisService" class="form-control">
-                                            <option value="reguler" selected>Reguler</option>
-                                            <option value="Light Repair">Light Repair</option>
-                                            <option value="Booking Service">Booking Service</option>
-                                        </select>
+                                        <br/>
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
@@ -473,7 +472,7 @@
                 </div>
             </div>
         </div>
-        <b-modal id="myModal">
+        <b-modal id="myModal" size="lg">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -492,7 +491,7 @@
                         <td v-text="history.km"></td>
                         <td>
                             <ul>
-                                <li v-for="jasa in history.jasa" v-text="jasa.name"></li>
+                                <li v-for="jasa in history.jasa" v-text="jasa.description"></li>
                             </ul>
                         </td>
                         <td></td>
@@ -560,7 +559,7 @@ export default class Register extends Vue {
     public servicesOwn: any[]           = [];
     public sparepartsOwn: any[]         = [];
     public km: number                   = 0;
-    public jenisService: string         = '';
+    public jenisService: string         = 'reguler';
     public listSpareparts: any[]        = [
         {name: 'Busi', km: 8000},
         {name: 'Oil Transmisi', km: 8000},
@@ -802,6 +801,14 @@ export default class Register extends Vue {
 
     public updateSparepartQty(event: any, i: number): void {
         this.sparepartsSelected[i - 1].qty = event.target.value;
+    }
+
+    public isJenisSelect(service: string): boolean {
+        return this.jenisService == service
+    }
+
+    public isNotJenisSelect(service: string): boolean {
+        return this.jenisService != service
     }
 
     public refreshTotal(): void {
