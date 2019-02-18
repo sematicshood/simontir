@@ -8,16 +8,16 @@ const getTask = async (noRef: any) => {
     return await api.get(`/simontir/get_task/${ noRef }`);
 };
 
-const getCuci = async () => {
-    return await api.get(`/simontir/get_cuci`);
+const getCuci = async (userId: number) => {
+    return await api.get(`/simontir/get_cuci/${userId}`);
 };
 
-const finishTask = async (id: number) => {
-    return await api.post('/simontir/task/finish', { id: id });
+const finishTask = async (data: any) => {
+    return await api.post('/simontir/task/finish', data);
 };
 
 const unfinishTask = async (id: number) => {
-    return await api.post('/simontir/task/unfinish', { id: id });
+    return await api.post('/simontir/task/unfinish', {id});
 };
 
 export default {

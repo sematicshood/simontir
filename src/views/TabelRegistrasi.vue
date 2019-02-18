@@ -43,7 +43,7 @@
                           <router-link :to="{ name: 'edit register', params: { so: reg.name } }">
                             <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
                           </router-link>
-                          <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button>
+                          <!-- <button type="button" class="btn btn-default btn-action" v-b-modal="'deleteModal'"><i class="fa fa-trash"></i></button> -->
                       </div>
                     </td>
                   </tr>

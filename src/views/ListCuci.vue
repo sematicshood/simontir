@@ -36,7 +36,7 @@
                     <td>{{ reg.namaPemilik }}</td>
                     <td>
                         <div class="btn-group">
-                          <button type="button" class="btn btn-default btn-action"><i class="fa fa-pencil"></i></button>
+                          <button type="button" @click="done(reg.taskId, i)" class="btn btn-default btn-primary">Selesai</button>
                       </div>
                     </td>
                   </tr>
@@ -62,6 +62,7 @@ import mekanik from '../api/mekanik';
 
 export default class TabelRegistrasi extends Vue {
   public listRegister: any[]  = [];
+  public user: any   = JSON.parse(localStorage.getItem('login')!);
 
   public created() {
     setInterval(() => {
@@ -71,8 +72,16 @@ export default class TabelRegistrasi extends Vue {
     this.getData()
   }
 
+  public done(id: number, i: number): void {
+    if(confirm('Yakin udah selesai?')) {
+      mekanik.accept({id}).then(() => {
+        this.listRegister.splice(i - 1, 1);
+      })
+    }
+  }
+
   public getData(): void {
-    board.getCuci().then((res) => {
+    board.getCuci(this.user.id).then((res) => {
       this.listRegister  = res.data.data;
     });
   }

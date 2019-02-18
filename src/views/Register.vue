@@ -24,6 +24,11 @@
                                         </div>
                                         <span>*) Wajib diisi</span>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="">Warna Kendaraan</label>
+                                        <autocomplete :colors="colors" :value="warnaKendaraan"/>
+                                        <span>*) Wajib diisi</span>
+                                    </div>
                                         
                                     <div class="form-group">
                                         <label for="" class="control-label">Jenis Servis </label>
@@ -50,9 +55,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>
-                                        <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="ty">{{ ty.name }}</option>
-                                        </select>
+                                        <model-select :options="types"
+                                            v-model="type"
+                                            placeholder="select type"/>
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
@@ -472,7 +477,7 @@
                 </div>
             </div>
         </div>
-        <b-modal id="myModal" size="lg">
+        <b-modal id="myModal" size="xl">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -497,7 +502,7 @@
                         <td></td>
                         <td v-text="history.mekanik"></td>
                         <td v-text="history.frontdesk"></td>
-                        <td v-text="history.biaya"></td>
+                        <td>Rp. {{convertToRupiah(history.biaya)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -514,10 +519,13 @@ import register from '../api/register';
 import axios from 'axios';
 import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
+const ModelSelectSearch = require('vue-search-select');
+const { ModelSelect } = ModelSelectSearch;
+import autocomplete from '../components/Autocomplete';
 
 @Component({
     components: {
-        printpendaftaran,
+        printpendaftaran, ModelSelect, autocomplete
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -596,10 +604,23 @@ export default class Register extends Vue {
 
     public searchSparepart: string           = "";
     public searchService: string             = "";
+    public colors: any                       = [];
+    public warnaKendaraan: string            = "";
 
     public created() {
+        EventBus.$on('changeValue', (value: string) => {
+            this.warnaKendaraan = value;
+        })
+
         register.cekSO().then((res) => {
-            this.types   = res.data.results[0].tipe_motor;
+            res.data.results[0].tipe_motor.forEach((el: any) => {
+                this.types.push({
+                    "value": el,
+                    "text": el.name
+                })
+            })
+
+            this.colors = res.data.colors;
 
             this.noUrut = res.data.results[0].name;
 
@@ -668,6 +689,14 @@ export default class Register extends Vue {
                 }
             })
         }
+    }
+
+    getLabel (item: any): string {
+        return item.color
+    }
+
+    updateItems (text: any): void {
+      console.log(text)
     }
 
     public cekData(data: any): any {
@@ -800,7 +829,9 @@ export default class Register extends Vue {
     }
 
     public updateSparepartQty(event: any, i: number): void {
-        this.sparepartsSelected[i - 1].qty = event.target.value;
+        if(event.target.value >= 0) {
+            this.sparepartsSelected[i - 1].qty = event.target.value;
+        }
     }
 
     public isJenisSelect(service: string): boolean {
@@ -817,7 +848,7 @@ export default class Register extends Vue {
             this.total += (parseInt(el.harga, 10) * el.qty);
         });
         this.servicesSelected.forEach((el: any) => {
-            this.total += (parseInt(el.harga, 10) * el.qty);
+            this.total += (parseInt(el.harga, 10));
         });
     }
     public removeSparepart(i: any): void {
@@ -850,7 +881,7 @@ export default class Register extends Vue {
             "alamat": this.alamat,
             "noRangka": this.noRangka,
             "noMesin": this.noMesin,
-            "type": this.type,
+            "type": this.type.value,
             "tahun": this.tahun,
             "noUrut": this.noUrut,
             "jenisService": this.jenisService,
@@ -862,6 +893,7 @@ export default class Register extends Vue {
             "sparepartsSelected": this.sparepartsSelected,
             "servicesSelected": this.servicesSelected,
             "cuci": this.cuci,
+            "warnaKendaraan": this.warnaKendaraan.toUpperCase(),
         }).then(() => {
             window.location.reload();
         });
@@ -918,4 +950,13 @@ export default class Register extends Vue {
 
 <style>
 @import '../assets/adminLTE/css/custom.css';
+
+.v-autocomplete{position:relative};
+.v-autocomplete-list{position:absolute};
+.v-autocomplete-list-item{
+    cursor:pointer;
+    background: gray;
+    color: white;
+};
+.v-autocomplete-item-active{background-color:#f3f6fa};
 </style>
