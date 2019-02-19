@@ -139,7 +139,7 @@ export default class TimesheetMekanik extends Vue {
 
         this.$data[type][i].x_duration = totalTime;
 
-        if(el.x_state === 'finished') this.done += 1;
+        if (el.x_state === 'finished') this.done += 1;
 
         this.waktu += parseInt(totalTime);
     }
@@ -158,24 +158,24 @@ export default class TimesheetMekanik extends Vue {
                 });
 
                 this.services.forEach((el: any, i: number) => {
-                    this.setDuration('services', el, i)
-                })
+                    this.setDuration('services', el, i);
+                });
 
                 this.spareparts   =   res.data.results.tasks.filter((el: any) => {
                     return el.name.split(':')[0].split(' ')[1] === 'sparepart';
                 });
 
                 this.spareparts.forEach((el: any, i: number) => {
-                    this.setDuration('spareparts', el, i)
-                })
+                    this.setDuration('spareparts', el, i);
+                });
 
                 this.keluhan   =   res.data.results.tasks.filter((el: any) => {
                     return el.name.split(':')[0].split(' ')[1] === 'keluhan';
                 });
 
                 this.keluhan.forEach((el: any, i: number) => {
-                    this.setDuration('keluhan', el, i)
-                })
+                    this.setDuration('keluhan', el, i);
+                });
 
                 let diff: any    = this.waktu;
 
@@ -215,14 +215,15 @@ export default class TimesheetMekanik extends Vue {
     public finish(): void {
         mekanik.lock({invoice: this.ids, 
                       id_saran: this.id_saran, 
-                      saran: this.saranMekanik}).then((res) => {
+                      saran: this.saranMekanik,
+                      duration: this.timer}).then((res) => {
             this.$router.push({ name: 'list_mekanik' });
         });
     }
 
     @Watch('done')
     onDoneChange(): void {
-        this.isNotDone()
+        this.isNotDone();
     }
 
     public startTimer():void {
@@ -242,15 +243,15 @@ export default class TimesheetMekanik extends Vue {
     }
 
     public isNotDone(): boolean {
-        if(this.done >= (this.spareparts.length + this.services.length + this.keluhan.length)) {
-            this.isDone = true
+        if (this.done >= (this.spareparts.length + this.services.length + this.keluhan.length)) {
+            this.isDone = true;
 
-            return true
+            return true;
         }
 
-        this.isDone = false
+        this.isDone = false;
 
-        return true
+        return true;
     }
 
     public created() {
@@ -258,14 +259,14 @@ export default class TimesheetMekanik extends Vue {
             let type = this.start.split(':')[0],
                 id   = parseInt(this.start.split(':')[1]) - 1;
 
-            if(type) {
-                this.$data[type][id].x_duration++
-                localStorage.setItem(this.$data[type][id].id, this.$data[type][id].x_duration)
+            if (type) {
+                this.$data[type][id].x_duration++;
+                localStorage.setItem(this.$data[type][id].id, this.$data[type][id].x_duration);
             }
 
-            if(this.start) this.startTimer();
+            if (this.start) this.startTimer();
 
-            if(this.waktu === 0) {
+            if (this.waktu === 0) {
                 this.getData();
             }
         }, 1000);

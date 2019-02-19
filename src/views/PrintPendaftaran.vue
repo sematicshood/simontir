@@ -33,7 +33,7 @@
                 </tr>
                 <tr class="data-motor">
                     <td><strong>JENIS</strong></td>
-                    <td>{{ data.type.name }}</td>
+                    <td>{{ (data.type) ? data.type.text : "" }}</td>
                     <td><strong>ANTRIAN</strong></td>
                     <td>{{ data.jenisService }}</td>
                 </tr>

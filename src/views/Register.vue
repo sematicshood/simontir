@@ -522,6 +522,7 @@ import { EventBus } from '../event';
 const ModelSelectSearch = require('vue-search-select');
 const { ModelSelect } = ModelSelectSearch;
 import autocomplete from '../components/Autocomplete.vue';
+import board from '@/api/board';
 
 @Component({
     components: {
@@ -606,6 +607,7 @@ export default class Register extends Vue {
     public searchService: string             = "";
     public colors: any                       = [];
     public warnaKendaraan: string            = "";
+    public cekMesin: boolean                 = true;
 
     public created() {
         EventBus.$on('changeValue', (value: string) => {
@@ -858,12 +860,14 @@ export default class Register extends Vue {
         this.servicesSelected.splice(i - 1, 1);
     }
     public isNext() {
-        if (this.noPolisi === '') { return true; }
-        if (this.tglService === '') { return true; }
-        if (this.noTelp === '') { return true; }
-        if (this.type.length > 0) { return true; }
-        if (this.namaPemilik === '') { return true; }
-        return false;
+        if (this.noPolisi !== '' &&
+            this.tglService !== '' &&
+            this.noTelp !== '' &&
+            this.type &&
+            this.namaPemilik !== '' &&
+            this.cekMesin) { return false; }
+
+        return true;
     }
     public finish(): void {
         EventBus.$emit('finish', this.$data);
@@ -916,6 +920,8 @@ export default class Register extends Vue {
         } else {
             this.buttonHistory  = true;
         }
+
+        this.cekNoMesin();
     }
 
     @Watch('sparepartsSelected')
@@ -944,6 +950,26 @@ export default class Register extends Vue {
         this.servicesOwn = this.products.filter(el => {
             return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
         })
+    }
+
+    @Watch('noMesin')
+    public onNoMesinChange() {
+        this.cekNoMesin();
+    }
+
+    public cekNoMesin(): void {
+        if (this.noPolisi !== "" && this.noMesin !== "") {
+            board.cekNoMesin({ nopol: this.noPolisi, nomesin: this.noMesin })
+                 .then((el: any) => {
+                     if (el.data.result === false) {
+                         alert('No mesin telah digunakan');
+
+                         this.cekMesin = false;
+                     } else {
+                         this.cekMesin = true;
+                     };
+                 });
+        }
     }
 }
 </script>
