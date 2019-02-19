@@ -521,7 +521,7 @@ import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
 const ModelSelectSearch = require('vue-search-select');
 const { ModelSelect } = ModelSelectSearch;
-import autocomplete from '../components/Autocomplete';
+import autocomplete from '../components/Autocomplete.vue';
 
 @Component({
     components: {
