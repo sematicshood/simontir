@@ -50,6 +50,16 @@ const router = new Router({
       },
     },
     {
+      path: '/register/edit/:so',
+      name: 'edit register',
+      component: () => import('./views/Register.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['front desk'],
+        title: 'Edit Register',
+      },
+    },
+    {
       path: '/data_registrasi',
       name: 'data_registrasi',
       component: () => import('./views/TabelRegistrasi.vue'),

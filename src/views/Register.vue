@@ -24,14 +24,18 @@
                                         </div>
                                         <span>*) Wajib diisi</span>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="">Warna Kendaraan</label>
+                                        <autocomplete :colors="colors" :value="warnaKendaraan"/>
+                                        <span>*) Wajib diisi</span>
+                                    </div>
                                         
                                     <div class="form-group">
                                         <label for="" class="control-label">Jenis Servis </label>
-                                        <select name="" id="" v-model="jenisService" class="form-control">
-                                            <option value="reguler">Reguler</option>
-                                            <option value="Light Repair">Light Repair</option>
-                                            <option value="Booking Service">Booking Service</option>
-                                        </select>
+                                        <br/>
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
@@ -51,9 +55,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>
-                                        <select class="form-control" v-model="type">
-                                            <option v-for="ty in types" :value="ty">{{ ty.name }}</option>
-                                        </select>
+                                        <model-select :options="types"
+                                            v-model="type"
+                                            placeholder="select type"/>
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
@@ -303,9 +307,9 @@
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ sparepart.name }}</td>
                                                         <td><input type="number" :value="sparepart.qty" @change="updateSparepartQty($event, i)"></td>
-                                                        <td>Rp. {{ convertToRupiah(sparepart.harga) }}</td>
+                                                        <td>Rp. {{ convertToRupiah(sparepart.harga * sparepart.qty) }}</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash" @click="removeSparepart(i)"></i></button>
+                                                            <button type="button" @click="removeSparepart(i)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>
                                                         </td>
                                                     </tr>                
                                                 </tbody></table>
@@ -473,7 +477,7 @@
                 </div>
             </div>
         </div>
-        <b-modal id="myModal">
+        <b-modal id="myModal" size="xl">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -492,13 +496,13 @@
                         <td v-text="history.km"></td>
                         <td>
                             <ul>
-                                <li v-for="jasa in history.jasa" v-text="jasa.name"></li>
+                                <li v-for="jasa in history.jasa" v-text="jasa.description"></li>
                             </ul>
                         </td>
                         <td></td>
                         <td v-text="history.mekanik"></td>
                         <td v-text="history.frontdesk"></td>
-                        <td v-text="history.biaya"></td>
+                        <td>Rp. {{convertToRupiah(history.biaya)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -515,10 +519,13 @@ import register from '../api/register';
 import axios from 'axios';
 import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
+const ModelSelectSearch = require('vue-search-select');
+const { ModelSelect } = ModelSelectSearch;
+import autocomplete from '../components/Autocomplete.vue';
 
 @Component({
     components: {
-        printpendaftaran,
+        printpendaftaran, ModelSelect, autocomplete
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -560,7 +567,7 @@ export default class Register extends Vue {
     public servicesOwn: any[]           = [];
     public sparepartsOwn: any[]         = [];
     public km: number                   = 0;
-    public jenisService: string         = '';
+    public jenisService: string         = 'reguler';
     public listSpareparts: any[]        = [
         {name: 'Busi', km: 8000},
         {name: 'Oil Transmisi', km: 8000},
@@ -597,10 +604,23 @@ export default class Register extends Vue {
 
     public searchSparepart: string           = "";
     public searchService: string             = "";
+    public colors: any                       = [];
+    public warnaKendaraan: string            = "";
 
     public created() {
+        EventBus.$on('changeValue', (value: string) => {
+            this.warnaKendaraan = value;
+        })
+
         register.cekSO().then((res) => {
-            this.types   = res.data.results[0].tipe_motor;
+            res.data.results[0].tipe_motor.forEach((el: any) => {
+                this.types.push({
+                    "value": el,
+                    "text": el.name
+                })
+            })
+
+            this.colors = res.data.colors;
 
             this.noUrut = res.data.results[0].name;
 
@@ -618,6 +638,71 @@ export default class Register extends Vue {
 
             this.sparepartsOwn = this.spareparts.splice(0,10);
         });
+
+        if(this.$route.params.so) {
+            const so: any = this.$route.params.so;
+
+            register.getDetailSo(so).then(res => {
+                const result    =   res.data.results[0]
+
+                if(result) {
+                    this.halaman    =   2
+
+                    const tgl   =   new Date(result.tgl_service)
+
+                    this.noUrut         =   result.no_urut
+                    this.noPolisi       =   this.cekData(result.nopol)
+                    this.jenisService   =   result.antrian_service
+                    this.cuci           =   result.is_wash
+                    this.tglService     =   tgl
+                    this.namaPemilik    =   result.nama_pemilik
+                    this.noTelp         =   this.cekData(result.no_telp)
+                    this.email          =   result.email
+                    this.sosmed         =   result.sosmed
+                    this.keluhanKonsumen    =   result.keluhan_konsumen
+                    this.analisaService     =   this.cekData(result.analisa_service)
+                    this.saranMekanik       =   this.cekData(result.saran_mekanik)
+                    
+                    const motor =   result.motor[0]
+
+                    if(motor) {
+                        this.noMesin    =   motor.no_mesin
+                        this.noRangka   =   motor.no_rangka
+                        this.type       =   motor.type
+                        this.tahun      =   motor.tahun
+                        this.km         =   motor.km
+                    }
+
+                    const pembawa   =   result.pembawa[0]
+
+                    if(pembawa) {
+                        this.namaPembawa    =   pembawa.nama
+                        this.alamat         =   pembawa.alamat
+                    }
+
+                    result.sale_order_line.forEach((el: any) => {
+                        const type  =   el.type
+
+                        if(type == 'product') this.sparepartsSelected.push(el)
+                        if(type == 'service') this.servicesSelected.push(el)
+                    })
+                }
+            })
+        }
+    }
+
+    getLabel (item: any): string {
+        return item.color
+    }
+
+    updateItems (text: any): void {
+      console.log(text)
+    }
+
+    public cekData(data: any): any {
+        if(data) return data;
+
+        return "";
     }
 
     public cekNopol(): void {
@@ -744,16 +829,26 @@ export default class Register extends Vue {
     }
 
     public updateSparepartQty(event: any, i: number): void {
-        this.sparepartsSelected[i - 1].qty = event.target.value;
+        if(event.target.value >= 0) {
+            this.sparepartsSelected[i - 1].qty = event.target.value;
+        }
+    }
+
+    public isJenisSelect(service: string): boolean {
+        return this.jenisService == service
+    }
+
+    public isNotJenisSelect(service: string): boolean {
+        return this.jenisService != service
     }
 
     public refreshTotal(): void {
         this.total = 0;
         this.sparepartsSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga, 10);
+            this.total += (parseInt(el.harga, 10) * el.qty);
         });
         this.servicesSelected.forEach((el: any) => {
-            this.total += parseInt(el.harga, 10);
+            this.total += (parseInt(el.harga, 10));
         });
     }
     public removeSparepart(i: any): void {
@@ -775,7 +870,31 @@ export default class Register extends Vue {
 
         if (this.isPrint) { window.print(); }
 
-        register.createRegister(this.$data).then(() => {
+        register.createRegister({
+            "tglService": this.tglService,
+            "noPolisi": this.noPolisi,
+            "namaPemilik": this.namaPemilik,
+            "noTelp": this.noTelp,
+            "email": this.email,
+            "sosmed": this.sosmed,
+            "namaPembawa": this.namaPembawa,
+            "alamat": this.alamat,
+            "noRangka": this.noRangka,
+            "noMesin": this.noMesin,
+            "type": this.type.value,
+            "tahun": this.tahun,
+            "noUrut": this.noUrut,
+            "jenisService": this.jenisService,
+            "total": this.total,
+            "km": this.km,
+            "keluhanKonsumen": this.keluhanKonsumen,
+            "analisaService": this.analisaService,
+            "saranMekanik": this.saranMekanik,
+            "sparepartsSelected": this.sparepartsSelected,
+            "servicesSelected": this.servicesSelected,
+            "cuci": this.cuci,
+            "warnaKendaraan": this.warnaKendaraan.toUpperCase(),
+        }).then(() => {
             window.location.reload();
         });
     }
@@ -831,4 +950,13 @@ export default class Register extends Vue {
 
 <style>
 @import '../assets/adminLTE/css/custom.css';
+
+.v-autocomplete{position:relative};
+.v-autocomplete-list{position:absolute};
+.v-autocomplete-list-item{
+    cursor:pointer;
+    background: gray;
+    color: white;
+};
+.v-autocomplete-item-active{background-color:#f3f6fa};
 </style>

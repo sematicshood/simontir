@@ -1,7 +1,7 @@
 import api from './api';
 
-const getSO = async () => {
-    return await api.get('/simontir/getso_mekanik', {});
+const getSO = async (userId: number) => {
+    return await api.get('/simontir/getso_mekanik/' + userId, {});
 };
 
 const pick = async (data: any) => {
