@@ -187,6 +187,22 @@
                                     <div class="border-custom">
                                         <div class="box-sub-header">
                                             <h3 class="box-sub-title"><strong>Pekerjaan / Jasa</strong></h3>
+                                            <SearchAutocomplete 
+                                                    :value="searchNameService" 
+                                                    :type="'name'" 
+                                                    :protype="'service'"
+                                                    :placeholder="'Name Service'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchBarcodeService" 
+                                                    :type="'barcode'"
+                                                    :protype="'service'"
+                                                    :placeholder="'Barcode Service'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchSimiliarService" 
+                                                    :type="'similiar'"
+                                                    :protype="'service'"
+                                                    :placeholder="'Similiar Service'"/>
+
                                             <button type="button" v-b-modal="'jasa'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                         </div>
 
@@ -253,6 +269,23 @@
                                     <div class="border-custom">
                                         <div class="box-sub-header">
                                             <h3 class="box-sub-title"><strong>Suku Cadang</strong></h3>
+
+                                            <SearchAutocomplete 
+                                                    :value="searchNameSparepart" 
+                                                    :type="'name'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Name Sparepart'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchBarcodeService" 
+                                                    :type="'barcode'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Barcode Sparepart'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchSimiliarSparepart" 
+                                                    :type="'similiar'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Similiar Sparepart'"/>
+
                                             <button type="button" v-b-modal="'sukuCadang'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                         </div>
 
@@ -522,11 +555,12 @@ import { EventBus } from '../event';
 const ModelSelectSearch = require('vue-search-select');
 const { ModelSelect } = ModelSelectSearch;
 import autocomplete from '../components/Autocomplete.vue';
+import SearchAutocomplete from '../components/SearchAutocomplete.vue';
 import board from '@/api/board';
 
 @Component({
     components: {
-        printpendaftaran, ModelSelect, autocomplete
+        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -609,9 +643,36 @@ export default class Register extends Vue {
     public warnaKendaraan: string            = "";
     public cekMesin: boolean                 = true;
 
+    public searchNameService: string         = "";
+    public searchBarcodeService: string      = "";
+    public searchSimiliarService: string     = "";
+
+    public searchNameSparepart: string         = "";
+    public searchBarcodeSparepart: string      = "";
+    public searchSimiliarSparepart: string     = "";
+
     public created() {
         EventBus.$on('changeValue', (value: string) => {
             this.warnaKendaraan = value;
+        })
+
+        EventBus.$on('addItem', (item: any) => {
+            const data = {
+                harga: item.item.list_price,
+                id: item.item.id,
+                name: item.item.name,
+                product_type: item.item.type,
+                stok: item.item.qty_available,
+                qty: 1,
+            }
+
+            const cekIfExist = this.$data[item.type].filter((el: any) => {
+                return el.id == item.item.id;
+            }).length
+
+            if (cekIfExist === 0) {
+                this.$data[item.type].push(data)
+            }
         })
 
         register.cekSO().then((res) => {
