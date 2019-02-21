@@ -39,7 +39,7 @@ export default class Autocomplete extends Vue {
     public showItems: any   =   [];
 
     public selectItem(item: any): void {
-        if (item.qty_available > 0) {
+        if (item.qty_available > 0 || this.protype === 'service') {
             const type = (this.protype === 'service') ? 'servicesSelected' : 'sparepartsSelected';
 
             EventBus.$emit('addItem', {item,type});
