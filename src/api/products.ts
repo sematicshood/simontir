@@ -6,6 +6,13 @@ const searchProduct = async (datas: any) => {
     })
 }
 
+const searchNopol = async (datas: any) => {
+    return await api.get('/simontir/nopol/search', {
+        params: datas
+    })
+}
+
 export default {
+    searchNopol,
     searchProduct,
 }

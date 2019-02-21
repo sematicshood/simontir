@@ -15,14 +15,9 @@
                                         <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
                                     </dir>
                                     <div class="form-group">
-                                        <label for="">No. Polisi</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" v-model="noPolisi" @change="cekNopol">
-                                            <span class="input-group-btn">
-                                            <button v-if="buttonHistory" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
-                                            </span>
-                                        </div>
-                                        <span>*) Wajib diisi</span>
+                                        <nopolAutocomplete 
+                                            :value="noPolisi" 
+                                            :placeholder="'Nomer Polisi Kendaraan'"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Warna Kendaraan</label>
@@ -557,10 +552,11 @@ const { ModelSelect } = ModelSelectSearch;
 import autocomplete from '../components/Autocomplete.vue';
 import SearchAutocomplete from '../components/SearchAutocomplete.vue';
 import board from '@/api/board';
+import nopolAutocomplete from '../components/NopolAutocomplete.vue';
 
 @Component({
     components: {
-        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete
+        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -654,6 +650,17 @@ export default class Register extends Vue {
     public created() {
         EventBus.$on('changeValue', (value: string) => {
             this.warnaKendaraan = value;
+        })
+
+        EventBus.$on('cekNomesin', () => {
+            this.cekNoMesin();
+        })
+
+        EventBus.$on('changeData', (val: any) => {
+            const key: string = Object.keys(val)[0],
+                  value: any  = Object.values(val)[0]
+            
+            this.$data[key] = value
         })
 
         EventBus.$on('addItem', (item: any) => {
@@ -766,27 +773,6 @@ export default class Register extends Vue {
         if(data) return data;
 
         return "";
-    }
-
-    public cekNopol(): void {
-        register.cekNopol({nopol: this.noPolisi.toUpperCase()})
-                .then((res) => {
-                    if (res.data) {
-                        const data = res.data.results[0];
-
-                        this.noMesin        = data.no_mesin;
-                        this.noRangka       = data.no_rangka;
-                        this.tahun          = data.tahun;
-                        this.namaPemilik    = data.nama_pemilik;
-                        this.noTelp         = data.telp_pemilik;
-                        this.email          = data.email_pemilik;
-                        this.sosmed         = data.sosmed;
-
-                        this.histories      = data.history;
-
-                        this.type           = data.tipe_motor;
-                    }
-                });
     }
 
     public cekStok(name: string): boolean {
@@ -972,17 +958,6 @@ export default class Register extends Vue {
         }
 
         this.notFinish     = true;
-    }
-
-    @Watch('noPolisi')
-    public onNoPolisiChanged(val: string) {
-        if (val === '') {
-            this.buttonHistory  = false;
-        } else {
-            this.buttonHistory  = true;
-        }
-
-        this.cekNoMesin();
     }
 
     @Watch('sparepartsSelected')
