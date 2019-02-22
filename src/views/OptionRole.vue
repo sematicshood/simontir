@@ -22,7 +22,7 @@
                                             <td>{{ i += 1 }}</td>
                                             <td>{{ user.name }}</td>
                                             <td>
-                                                <button @click="changeRole(i, rol)" :class="{'btn': true, 'btn-default': true, 'btn-primary': rol == user.job_id.name}" v-for="rol in roles" v-text="rol"></button>
+                                                <button @click="changeRole(i, rol, user.id)" :class="{'btn': true, 'btn-default': true, 'btn-primary': rol == user.role}" v-for="rol in roles" v-text="rol" style="margin-right: 10px;"></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import users from '../api/users';
 
 @Component({
     components: {},
@@ -45,21 +46,25 @@ import { Component, Vue } from 'vue-property-decorator';
 
 export default class OptionRole extends Vue {
     public users: any[]       =   [];
-    public edit: number       =   0;
-    public role: string       =   '';
     public roles: string[]    =   [
-        'Front Desk', 'Mekanik', 'Asisten Mekanik', 'Kepala Mekanik', 'Manager',
+        'Mekanik', 'Cuci'
     ];
 
-    public editUser(id: number): void {
-        this.$data.edit  = id;
-        this.$data.role  = this.$data.users[id - 1].job_id.name;
+    public created() {
+        users.getAsistenMekanik().then((res) => {
+            try {
+                this.users = res.data.results
+                console.log(this.users)
+            } catch (error) {
+                
+            }
+        })
     }
 
-    public changeRole(id: number, role: string): void {
-        this.$data.users[id - 1].job_id.name = role;
+    public changeRole(id: number, role: string, ids: number): void {
+        this.$data.users[id - 1].role = role;
 
-        localStorage.setItem('users', JSON.stringify(this.$data.users));
+        users.updateRoleUser({ids,role})
     }
 }
 </script>

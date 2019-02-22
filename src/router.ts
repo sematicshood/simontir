@@ -119,7 +119,7 @@ const router = new Router({
       component: () => import('./views/ListCuci.vue'),
       meta: {
         requiresAuth: true,
-        role: ['asisten mekanik'],
+        role: ['asisten mekanik', 'cuci'],
         title: 'Daftar Cuci',
         show: true,
       },
