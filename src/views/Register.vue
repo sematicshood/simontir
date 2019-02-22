@@ -731,6 +731,31 @@ export default class Register extends Vue {
                     })
                 }
             })
+
+            register.cekSO().then((res) => {
+                res.data.results[0].tipe_motor.forEach((el: any) => {
+                    this.types.push({
+                        "value": el,
+                        "text": el.name
+                    })
+                })
+
+                this.colors = res.data.colors;
+
+                this.products = res.data.results[0].product;
+
+                this.spareparts = this.products.filter((el: any) => {
+                    return el.product_type !== 'service';
+                });
+
+                this.services = this.products.filter((el: any) => {
+                    return el.product_type === 'service';
+                });
+
+                this.servicesOwn   = this.services.splice(0,10);
+
+                this.sparepartsOwn = this.spareparts.splice(0,10);
+            });
         } else {
             register.cekSO().then((res) => {
                 res.data.results[0].tipe_motor.forEach((el: any) => {
