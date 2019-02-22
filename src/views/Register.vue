@@ -26,16 +26,34 @@
                                     </div>
                                         
                                     <div class="form-group">
-                                        <label for="" class="control-label">Jenis Servis </label>
+                                        <label for="" class="control-label">Jenis Antrian </label>
                                         <br/>
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
                                     </div>
+
+                                    <!-- <div class="form-group">
+                                        <label for="" class="control-label">Jenis Service</label>
+                                        <br/>
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="" class="control-label">Item Service</label>
+                                        <br/>
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
+                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
+                                    </div> -->
+
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
                                         <input disabled type="text" v-model="noUrut" class="form-control" id="" placeholder="">
                                     </div>
+
                                     <div class="form-group">
                                         <label for="">Tgl. Servis</label>
                                         <input type="date" class="form-control" id="date" placeholder="" :value="tglService.toISOString().split('T')[0]" @input="tglService = $event.target.valueAsDate">
