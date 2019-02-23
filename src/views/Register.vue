@@ -33,22 +33,6 @@
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
                                     </div>
 
-                                    <!-- <div class="form-group">
-                                        <label for="" class="control-label">Jenis Service</label>
-                                        <br/>
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="" class="control-label">Item Service</label>
-                                        <br/>
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
-                                        <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
-                                    </div> -->
-
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
                                         <input disabled type="text" v-model="noUrut" class="form-control" id="" placeholder="">
@@ -70,6 +54,7 @@
                                         <label>Type</label>
                                         <model-select :options="types"
                                             v-model="type"
+                                            :selected-options="type"
                                             placeholder="select type"/>
                                         <span>*) Wajib diisi</span>
                                     </div>
@@ -265,7 +250,12 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(service, i) in servicesSelected">
+                                                    <KPB :kpb="kpb"/>
+                                                    <Service :service="service"/>
+                                                    <GantiOli :isGantiOli="isGantiOli"/>
+                                                    <GantiPart :isGantiPart="isGantiPart"/>
+                                                    <TurunMesin :isTurunMesin="isTurunMesin"/>
+                                                    <tr v-for="(service, i) in servicesSelected" :key="i">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
                                                         <td>Rp. {{ convertToRupiah(service.harga) }}</td>
@@ -571,10 +561,15 @@ import autocomplete from '../components/Autocomplete.vue';
 import SearchAutocomplete from '../components/SearchAutocomplete.vue';
 import board from '@/api/board';
 import nopolAutocomplete from '../components/NopolAutocomplete.vue';
+import KPB from '../components/register/KPB.vue';
+import GantiOli from '../components/register/GantiOli.vue';
+import GantiPart from '../components/register/GantiPart.vue';
+import TurunMesin from '../components/register/TurunMesin.vue';
+import Service from '../components/register/Service.vue';
 
 @Component({
     components: {
-        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete
+        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete, KPB, GantiPart, GantiOli, TurunMesin, Service
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -665,7 +660,20 @@ export default class Register extends Vue {
     public searchBarcodeSparepart: string      = "";
     public searchSimiliarSparepart: string     = "";
 
+    public kpb: number                         = 0;
+    public service: string                     = "";
+    public isGantiOli: boolean                 = false;
+    public isGantiPart: boolean                = false;
+    public isTurunMesin: boolean               = false;
+
+    public hargaKPB: number                    = 0;
+    public hargaService: number                = 0;
+
     public created() {
+        EventBus.$on('refresh', () => {
+            this.refreshTotal();
+        })
+
         EventBus.$on('changeValue', (value: string) => {
             this.warnaKendaraan = value;
         })
@@ -700,59 +708,29 @@ export default class Register extends Vue {
             }
         })
 
+        EventBus.$on('removeItem', (datas: any) => {
+            let data = []
+
+            datas.forEach((d: any) => {
+                data = this.servicesSelected.filter(el => {
+                    return el.name.includes(d)
+                })
+
+                const index = this.servicesSelected.indexOf(data[0]);
+            
+                if (index !== -1) {
+                    this.servicesSelected.splice(index, 1)
+                };
+            })
+        })
+
         if(this.$route.params.so) {
             const so: any = this.$route.params.so;
-
-            register.getDetailSo(so).then(res => {
-                const result    =   res.data.results[0]
-
-                if(result) {
-                    this.halaman    =   2
-
-                    const tgl   =   new Date(result.tgl_service)
-
-                    this.noUrut         =   result.no_urut
-                    this.noPolisi       =   this.cekData(result.nopol)
-                    this.jenisService   =   result.antrian_service
-                    this.cuci           =   result.is_wash
-                    this.tglService     =   tgl
-                    this.namaPemilik    =   result.nama_pemilik
-                    this.noTelp         =   this.cekData(result.no_telp)
-                    this.email          =   result.email
-                    this.sosmed         =   result.sosmed
-                    this.keluhanKonsumen    =   result.keluhan_konsumen
-                    this.analisaService     =   this.cekData(result.analisa_service)
-                    this.saranMekanik       =   this.cekData(result.saran_mekanik)
-                    
-                    const motor =   result.motor[0]
-
-                    if(motor) {
-                        this.noMesin    =   motor.no_mesin
-                        this.noRangka   =   motor.no_rangka
-                        this.type       =   motor.type
-                        this.tahun      =   motor.tahun
-                        this.km         =   motor.km
-                    }
-
-                    const pembawa   =   result.pembawa[0]
-
-                    if(pembawa) {
-                        this.namaPembawa    =   pembawa.nama
-                        this.alamat         =   pembawa.alamat
-                    }
-
-                    result.sale_order_line.forEach((el: any) => {
-                        const type  =   el.type
-
-                        if(type == 'product') this.sparepartsSelected.push(el)
-                        if(type == 'service') this.servicesSelected.push(el)
-                    })
-                }
-            })
 
             register.cekSO().then((res) => {
                 res.data.results[0].tipe_motor.forEach((el: any) => {
                     this.types.push({
+                        "id": el.id,
                         "value": el,
                         "text": el.name
                     })
@@ -774,6 +752,63 @@ export default class Register extends Vue {
 
                 this.sparepartsOwn = this.spareparts.splice(0,10);
             });
+
+            register.getDetailSo(so).then(res => {
+                const result    =   res.data.results[0]
+
+                if(result) {
+                    this.halaman    =   2
+
+                    const tgl   =   new Date(result.tgl_service)
+
+                    this.noUrut         =   result.no_urut
+                    this.noPolisi       =   this.cekData(result.nopol)
+                    this.jenisService   =   result.antrian_service
+                    this.cuci           =   result.is_wash
+                    this.tglService     =   tgl
+                    this.namaPemilik    =   result.nama_pemilik
+                    this.noTelp         =   this.cekData(result.no_telp)
+                    this.email          =   result.email
+                    this.sosmed         =   result.sosmed
+                    this.keluhanKonsumen    =   result.keluhan_konsumen
+                    this.analisaService     =   this.cekData(result.analisa_service)
+                    this.saranMekanik       =   this.cekData(result.saran_mekanik)
+                    this.kpb            =   result.kpb
+                    this.isGantiOli     =   result.gantiOli
+                    this.isGantiPart    =   result.gantiPart
+                    this.service        =   result.service
+                    this.isTurunMesin   =   result.turunMesin
+                    
+                    const motor =   result.motor[0]
+
+                    if(motor) {
+                        this.noMesin    =   motor.no_mesin
+                        this.noRangka   =   motor.no_rangka
+                        motor.type.name =   "Honda/" + motor.type.name
+                        this.type       =   {
+                            id: motor.type.id,
+                            text: motor.type.name,
+                            value: motor.type
+                        }
+                        this.tahun      =   motor.tahun
+                        this.km         =   motor.km
+                    }
+
+                    const pembawa   =   result.pembawa[0]
+
+                    if(pembawa) {
+                        this.namaPembawa    =   pembawa.nama
+                        this.alamat         =   pembawa.alamat
+                    }
+
+                    result.sale_order_line.forEach((el: any) => {
+                        const type  =   el.type
+
+                        if(type == 'product') this.sparepartsSelected.push(el)
+                        if(type == 'service') this.servicesSelected.push(el)
+                    })
+                }
+            })
         } else {
             register.cekSO().then((res) => {
                 res.data.results[0].tipe_motor.forEach((el: any) => {
@@ -936,6 +971,10 @@ export default class Register extends Vue {
 
     public refreshTotal(): void {
         this.total = 0;
+
+        this.total += this.hargaKPB;
+        this.total += this.hargaService;
+
         this.sparepartsSelected.forEach((el: any) => {
             this.total += (parseInt(el.harga, 10) * el.qty);
         });
@@ -988,6 +1027,11 @@ export default class Register extends Vue {
             "servicesSelected": this.servicesSelected,
             "cuci": this.cuci,
             "warnaKendaraan": this.warnaKendaraan.toUpperCase(),
+            "kpb": this.kpb,
+            "service": this.service,
+            "gantiOli": this.isGantiOli,
+            "gantiPart": this.isGantiPart,
+            "turunMesin": this.isTurunMesin,
         }).then(() => {
             window.location.reload();
         });
@@ -1034,6 +1078,11 @@ export default class Register extends Vue {
     @Watch('noMesin')
     public onNoMesinChange() {
         this.cekNoMesin();
+    }
+
+    @Watch('type')
+    public ontypeChange() {
+        localStorage.setItem('vehicle', this.type.value.id)
     }
 
     public cekNoMesin(): void {

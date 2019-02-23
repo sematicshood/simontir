@@ -1,0 +1,72 @@
+<template>
+    <tr>
+        <td>
+            -
+        </td>
+        <td>
+            <span>KPB</span>
+            &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="kpb" v-model="values" value="1"> 1 &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="kpb" v-model="values" value="2"> 2 &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="kpb" v-model="values" value="3"> 3 &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="kpb" v-model="values" value="0"> Tidak
+        </td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
+import { EventBus } from '../../event';
+import products from '../../api/products';
+import additional from '../../helpers/additional';
+
+@Component({})
+
+export default class KPB extends Vue {
+    @Prop({})
+    kpb: any;
+
+    public values: any      = this.kpb
+    public type: any        = localStorage.getItem('vehicle')
+    public harga: number    = 0;
+
+    public convertToRupiah(angka: number): string {
+        return additional.convertToRupiah(angka);
+    }
+
+    public created() {
+        EventBus.$on('updateType', (el: any) => {
+            this.type = el
+        })
+    }
+
+    @Watch('values')
+    onKpbChange(values: any) {
+        const params: any = {};
+        this.harga = 0;
+
+        EventBus.$emit('removeItem', ['KPB'])
+
+        params['name']      =   "KPB "  + values;
+        params['type']      =   "service";
+        params['vehicle']   =   this.type;
+
+        products.searchProduct(params).then(res => {
+            EventBus.$emit('changeData', {
+                'kpb': values
+            })
+
+            res.data.results.forEach((el: any) => {
+                this.harga = el.list_price
+
+                EventBus.$emit('addItem', {
+                    item: el,
+                    type: 'servicesSelected'
+                })
+            });
+        });
+    }
+}
+</script>
