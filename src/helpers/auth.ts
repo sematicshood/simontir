@@ -1,4 +1,5 @@
 const cekRoleUrl = (role: string) => {
+    console.log(role)
     if (role.toUpperCase() == 'mekanik'.toUpperCase()) {
         return 'list_mekanik';
     }
@@ -7,11 +8,11 @@ const cekRoleUrl = (role: string) => {
         return 'list_final_check';
     }
 
-    if (role.toUpperCase() == 'asisten mekanik'.toUpperCase()) {
-        return 'list_final_check';
+    if (role.toUpperCase() == 'ass mekanik'.toUpperCase()) {
+        return 'profil';
     }
 
-    if (role.toUpperCase() == 'front desk'.toUpperCase()) {
+    if (role.toUpperCase() == 'staf'.toUpperCase()) {
         return 'register';
     }
 

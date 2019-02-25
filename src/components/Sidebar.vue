@@ -55,7 +55,7 @@ export default class Sidebar extends Vue {
 
         this.routes = this.routes.filter((el: any) => {
             try {
-                if (this.user.job.toUpperCase() != 'manager'.toUpperCase()) {
+                if (this.user.job.toUpperCase() != 'Owner'.toUpperCase()) {
                     let role = '';
 
                     if (el.meta.role) {
@@ -64,7 +64,7 @@ export default class Sidebar extends Vue {
                         role  = el.meta.role;
                     }
 
-                    if (this.user.job.toUpperCase() === 'Asisten Mekanik'.toUpperCase()) {
+                    if (this.user.job.toUpperCase() === 'Ass Mekanik'.toUpperCase()) {
                         return el.meta.show && role.includes(this.user.role.toUpperCase());
                     } else {
                         return el.meta.show && role.includes(this.user.job.toUpperCase());
