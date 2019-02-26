@@ -75,9 +75,9 @@
             result += keys.join(columnDelimiter);
             result += lineDelimiter;
 
-            data.forEach(function(item) {
+            data.forEach(function(item: any) {
                 ctr = 0;
-                keys.forEach(function(key) {
+                keys.forEach(function(key: any) {
                     if (ctr > 0) result += columnDelimiter;
 
                     result += item[key];
