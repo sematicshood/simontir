@@ -28,13 +28,24 @@ const router = new Router({
       },
     },
     {
-      path: '/profii',
+      path: '/profil',
       name: 'profil',
       component: () => import('./views/Profil.vue'),
       meta: {
         requiresAuth: true,
         role: ['staf', 'kepala mekanik', 'ass mekanik', 'mekanik'],
         title: 'Profil',
+        show: true,
+      },
+    },
+    {
+      path: '/file',
+      name: 'file',
+      component: () => import('./views/File.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['staf'],
+        title: 'File',
         show: true,
       },
     },

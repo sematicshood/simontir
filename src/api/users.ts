@@ -16,9 +16,14 @@ const getUsersCuci = async () => {
     return await api.get('/simontir/users/getUsersCuci', {});
 };
 
+const getTotalServiceUser = async (id: number) => {
+    return await api.get(`/simontir/users/getTotalService/${id}`, {})
+};
+
 export default {
     cekUser,
     getAsistenMekanik,
     updateRoleUser,
     getUsersCuci,
+    getTotalServiceUser,
 };
