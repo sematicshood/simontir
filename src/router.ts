@@ -33,7 +33,7 @@ const router = new Router({
       component: () => import('./views/Profil.vue'),
       meta: {
         requiresAuth: true,
-        role: ['staf', 'kepala mekanik', 'ass mekanik', 'mekanik'],
+        role: ['staff', 'kepala mekanik', 'ass mekanik', 'mekanik'],
         title: 'Profil',
         show: true,
       },
@@ -44,7 +44,7 @@ const router = new Router({
       component: () => import('./views/File.vue'),
       meta: {
         requiresAuth: true,
-        role: ['staf'],
+        role: ['staff'],
         title: 'File',
         show: true,
       },
@@ -55,7 +55,7 @@ const router = new Router({
       component: () => import('./views/Register.vue'),
       meta: {
         requiresAuth: true,
-        role: ['staf'],
+        role: ['staff'],
         title: 'Register',
         show: true,
       },
@@ -66,7 +66,7 @@ const router = new Router({
       component: () => import('./views/Register.vue'),
       meta: {
         requiresAuth: true,
-        role: ['staf'],
+        role: ['staff'],
         title: 'Edit Register',
       },
     },
@@ -76,7 +76,7 @@ const router = new Router({
       component: () => import('./views/TabelRegistrasi.vue'),
       meta: {
         requiresAuth: true,
-        role: ['staf'],
+        role: ['staff'],
         title: 'Data Registrasi',
         show: true,
       },
