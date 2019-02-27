@@ -39,13 +39,13 @@ const router = new Router({
       },
     },
     {
-      path: '/file',
-      name: 'file',
+      path: '/wablaster',
+      name: 'wablaster',
       component: () => import('./views/File.vue'),
       meta: {
         requiresAuth: true,
         role: ['staff'],
-        title: 'File',
+        title: 'WA Blaster Template',
         show: true,
       },
     },
