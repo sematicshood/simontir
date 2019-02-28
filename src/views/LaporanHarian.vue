@@ -130,7 +130,7 @@
             })
         }
 
-        public getData(date): void {
+        public getData(date: any): void {
             cash_count.getData(date).then((res: any) => {
                 try {
                     console.log(res.data.results)
