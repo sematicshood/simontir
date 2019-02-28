@@ -50,6 +50,17 @@ const router = new Router({
       },
     },
     {
+      path: '/laporan/harian',
+      name: 'laporan_harian',
+      component: () => import('./views/LaporanHarian.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['staff'],
+        title: 'Laporan Harian',
+        show: true,
+      },
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('./views/Register.vue'),

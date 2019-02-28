@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card col-md-4">
+        <div class="card col-md-12">
             <div class="card-body">
                 <div class="col-md-12">
                     <h4>Follow Up</h4>
