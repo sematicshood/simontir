@@ -63,11 +63,9 @@ export default class Login extends Vue {
 
                   const data = result[0];
 
-                  data.role = 'Manager';
-
                   localStorage.setItem('login', JSON.stringify(data));
 
-                  this.$router.push({ name: auth.cekRoleUrl(data.role) });
+                  this.$router.push({ name: auth.cekRoleUrl(data.job) });
                 } else {
                   alert('Username atau password salah');
                 }

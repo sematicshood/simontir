@@ -1,72 +1,38 @@
 <template>
     <div>
         <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-motorcycle"></i></span>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-aqua"><i class="fa fa-motorcycle"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">CPU Traffic</span>
-              <span class="info-box-number">90<small>%</small></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Total Service Bulan Ini</span>
+                <span class="info-box-number">{{ totalService }}</span>
+              </div>
+              <!-- /.info-box-content -->
             </div>
-            <!-- /.info-box-content -->
+            <!-- /.info-box -->
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Likes</span>
-              <span class="info-box-number">41,410</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-
-        <!-- fix for small devices only -->
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-star"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Sales</span>
-              <span class="info-box-number">760</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-trophy"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">New Members</span>
-              <span class="info-box-number">2,000</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Component, Vue, Watch } from 'vue-property-decorator';
+    import users from '../api/users';
 
     @Component({
         components: {},
     })
 
-    export default class Profil extends Vue {}
+    export default class Profil extends Vue {
+      public user: any            = JSON.parse(localStorage.getItem('login')!);
+      public totalService: number = 0;
+
+      public created() {
+        users.getTotalServiceUser(this.user.id).then(res => {
+          this.totalService = res.data.results
+        })
+      }
+    }
 </script>

@@ -28,13 +28,35 @@ const router = new Router({
       },
     },
     {
-      path: '/profii',
+      path: '/profil',
       name: 'profil',
       component: () => import('./views/Profil.vue'),
       meta: {
         requiresAuth: true,
-        role: ['front desk', 'kepala mekanik', 'asisten mekanik', 'mekanik'],
+        role: ['staff', 'kepala mekanik', 'ass mekanik', 'mekanik'],
         title: 'Profil',
+        show: true,
+      },
+    },
+    {
+      path: '/wablaster',
+      name: 'wablaster',
+      component: () => import('./views/File.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['staff'],
+        title: 'WA Blaster Template',
+        show: true,
+      },
+    },
+    {
+      path: '/laporan/harian',
+      name: 'laporan_harian',
+      component: () => import('./views/LaporanHarian.vue'),
+      meta: {
+        requiresAuth: true,
+        role: ['staff'],
+        title: 'Laporan Harian',
         show: true,
       },
     },
@@ -44,7 +66,7 @@ const router = new Router({
       component: () => import('./views/Register.vue'),
       meta: {
         requiresAuth: true,
-        role: ['front desk'],
+        role: ['staff'],
         title: 'Register',
         show: true,
       },
@@ -55,7 +77,7 @@ const router = new Router({
       component: () => import('./views/Register.vue'),
       meta: {
         requiresAuth: true,
-        role: ['front desk'],
+        role: ['staff'],
         title: 'Edit Register',
       },
     },
@@ -65,7 +87,7 @@ const router = new Router({
       component: () => import('./views/TabelRegistrasi.vue'),
       meta: {
         requiresAuth: true,
-        role: ['front desk'],
+        role: ['staff'],
         title: 'Data Registrasi',
         show: true,
       },
@@ -76,7 +98,7 @@ const router = new Router({
       component: () => import('./views/FinalCheck.vue'),
       meta: {
         requiresAuth: true,
-        role: ['kepala mekanik', 'asisten mekanik'],
+        role: ['kepala mekanik', 'ass mekanik'],
         title: 'Final Check',
       },
     },
@@ -86,7 +108,7 @@ const router = new Router({
       component: () => import('./views/ListFinalCheck.vue'),
       meta: {
         requiresAuth: true,
-        role: ['kepala mekanik', 'asisten mekanik'],
+        role: ['kepala mekanik', 'ass mekanik'],
         title: 'List Final Check',
         show: true,
       },
@@ -119,7 +141,7 @@ const router = new Router({
       component: () => import('./views/ListCuci.vue'),
       meta: {
         requiresAuth: true,
-        role: ['asisten mekanik'],
+        role: ['ass mekanik', 'cuci'],
         title: 'Daftar Cuci',
         show: true,
       },
@@ -151,16 +173,16 @@ router.beforeEach((to, from, next) => {
   document.title = 'Simontir - ' + to.meta.title;
 
   if (to.name === 'login' && login) {
-    next({ name: auth.cekRoleUrl(login.role) });
+    next({ name: auth.cekRoleUrl(login.job) });
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (login) {
-      if (login.role.toUpperCase() !== 'manager'.toUpperCase()) {
+      if (login.job.toUpperCase() !== 'Owner'.toUpperCase()) {
         const role: string[]  = to.meta.role.map((x: string) => {
                                   return x.toUpperCase();
                                 });
-        const nowRole: string   = login.role.toUpperCase();
+        const nowRole: string   = login.job.toUpperCase();
 
         if (role.includes(nowRole) === false) { next({ name: auth.cekRoleUrl(nowRole) }); }
       }

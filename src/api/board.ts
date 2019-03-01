@@ -20,10 +20,15 @@ const unfinishTask = async (id: number) => {
     return await api.post('/simontir/task/unfinish', {id});
 };
 
+const cekNoMesin = async (data: any) => {
+    return await api.post('/simontir/cekNoMesin', data);
+};
+
 export default {
     getSO,
     getTask,
     getCuci,
     finishTask,
     unfinishTask,
+    cekNoMesin
 };

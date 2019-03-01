@@ -9,9 +9,13 @@ import router from './router';
 import store from './modules';
 import './registerServiceWorker';
 
+const CSV = require('vue-json-csv');
+const { JsonCSV } = CSV;
+
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VeeValidate);
+Vue.component('downloadCsv', JsonCSV);
 
 new Vue({
   router,

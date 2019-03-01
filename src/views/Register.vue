@@ -15,14 +15,9 @@
                                         <center><h3 class="box-sub-title"><strong>Data Motor</strong></h3></center>
                                     </dir>
                                     <div class="form-group">
-                                        <label for="">No. Polisi</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" v-model="noPolisi" @change="cekNopol">
-                                            <span class="input-group-btn">
-                                            <button v-if="buttonHistory" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
-                                            </span>
-                                        </div>
-                                        <span>*) Wajib diisi</span>
+                                        <nopolAutocomplete 
+                                            :value="noPolisi" 
+                                            :placeholder="'Nomer Polisi Kendaraan'"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Warna Kendaraan</label>
@@ -31,16 +26,18 @@
                                     </div>
                                         
                                     <div class="form-group">
-                                        <label for="" class="control-label">Jenis Servis </label>
+                                        <label for="" class="control-label">Jenis Antrian </label>
                                         <br/>
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('reguler'), 'btn-danger': isNotJenisSelect('reguler')}" @click="jenisService = 'reguler'">Reguler</button> &nbsp;
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Light Repair'), 'btn-danger': isNotJenisSelect('Light Repair')}" @click="jenisService = 'Light Repair'">Light Repair</button> &nbsp;
                                         <button type="button" :class="{'btn': true, 'btn-sm': 'true', 'btn-primary': isJenisSelect('Booking Service'), 'btn-danger': isNotJenisSelect('Booking Service')}" @click="jenisService = 'Booking Service'">Booking Service</button>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="">No. Urut</label>
                                         <input disabled type="text" v-model="noUrut" class="form-control" id="" placeholder="">
                                     </div>
+
                                     <div class="form-group">
                                         <label for="">Tgl. Servis</label>
                                         <input type="date" class="form-control" id="date" placeholder="" :value="tglService.toISOString().split('T')[0]" @input="tglService = $event.target.valueAsDate">
@@ -57,6 +54,7 @@
                                         <label>Type</label>
                                         <model-select :options="types"
                                             v-model="type"
+                                            :selected-options="type"
                                             placeholder="select type"/>
                                         <span>*) Wajib diisi</span>
                                     </div>
@@ -187,6 +185,22 @@
                                     <div class="border-custom">
                                         <div class="box-sub-header">
                                             <h3 class="box-sub-title"><strong>Pekerjaan / Jasa</strong></h3>
+                                            <SearchAutocomplete 
+                                                    :value="searchNameService" 
+                                                    :type="'name'" 
+                                                    :protype="'service'"
+                                                    :placeholder="'Name Service'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchBarcodeService" 
+                                                    :type="'barcode'"
+                                                    :protype="'service'"
+                                                    :placeholder="'Barcode Service'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchSimiliarService" 
+                                                    :type="'similiar'"
+                                                    :protype="'service'"
+                                                    :placeholder="'Similiar Service'"/>
+
                                             <button type="button" v-b-modal="'jasa'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                         </div>
 
@@ -236,7 +250,12 @@
                                                         <th>Harga</th>
                                                         <th style="width: 40px">Action</th>
                                                     </tr>
-                                                    <tr v-for="(service, i) in servicesSelected">
+                                                    <KPB :kpb="kpb"/>
+                                                    <Service :service="service"/>
+                                                    <GantiOli :isGantiOli="isGantiOli"/>
+                                                    <GantiPart :isGantiPart="isGantiPart"/>
+                                                    <TurunMesin :isTurunMesin="isTurunMesin"/>
+                                                    <tr v-for="(service, i) in servicesSelected" :key="i">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
                                                         <td>Rp. {{ convertToRupiah(service.harga) }}</td>
@@ -253,6 +272,23 @@
                                     <div class="border-custom">
                                         <div class="box-sub-header">
                                             <h3 class="box-sub-title"><strong>Suku Cadang</strong></h3>
+
+                                            <SearchAutocomplete 
+                                                    :value="searchNameSparepart" 
+                                                    :type="'name'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Name Sparepart'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchBarcodeService" 
+                                                    :type="'barcode'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Barcode Sparepart'"/>
+                                            <SearchAutocomplete 
+                                                    :value="searchSimiliarSparepart" 
+                                                    :type="'similiar'"
+                                                    :protype="'product'"
+                                                    :placeholder="'Similiar Sparepart'"/>
+
                                             <button type="button" v-b-modal="'sukuCadang'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                         </div>
 
@@ -522,10 +558,18 @@ import { EventBus } from '../event';
 const ModelSelectSearch = require('vue-search-select');
 const { ModelSelect } = ModelSelectSearch;
 import autocomplete from '../components/Autocomplete.vue';
+import SearchAutocomplete from '../components/SearchAutocomplete.vue';
+import board from '@/api/board';
+import nopolAutocomplete from '../components/NopolAutocomplete.vue';
+import KPB from '../components/register/KPB.vue';
+import GantiOli from '../components/register/GantiOli.vue';
+import GantiPart from '../components/register/GantiPart.vue';
+import TurunMesin from '../components/register/TurunMesin.vue';
+import Service from '../components/register/Service.vue';
 
 @Component({
     components: {
-        printpendaftaran, ModelSelect, autocomplete
+        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete, KPB, GantiPart, GantiOli, TurunMesin, Service
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -606,41 +650,108 @@ export default class Register extends Vue {
     public searchService: string             = "";
     public colors: any                       = [];
     public warnaKendaraan: string            = "";
+    public cekMesin: boolean                 = true;
+
+    public searchNameService: string         = "";
+    public searchBarcodeService: string      = "";
+    public searchSimiliarService: string     = "";
+
+    public searchNameSparepart: string         = "";
+    public searchBarcodeSparepart: string      = "";
+    public searchSimiliarSparepart: string     = "";
+
+    public kpb: number                         = 0;
+    public service: string                     = "";
+    public isGantiOli: boolean                 = false;
+    public isGantiPart: boolean                = false;
+    public isTurunMesin: boolean               = false;
+
+    public hargaKPB: number                    = 0;
+    public hargaService: number                = 0;
 
     public created() {
+        EventBus.$on('refresh', () => {
+            this.refreshTotal();
+        })
+
         EventBus.$on('changeValue', (value: string) => {
             this.warnaKendaraan = value;
         })
 
-        register.cekSO().then((res) => {
-            res.data.results[0].tipe_motor.forEach((el: any) => {
-                this.types.push({
-                    "value": el,
-                    "text": el.name
+        EventBus.$on('cekNomesin', () => {
+            this.cekNoMesin();
+        })
+
+        EventBus.$on('changeData', (val: any) => {
+            const key: string = Object.keys(val)[0],
+                  value: any  = Object.values(val)[0]
+            
+            this.$data[key] = value
+        })
+
+        EventBus.$on('addItem', (item: any) => {
+            const data = {
+                harga: item.item.list_price,
+                id: item.item.id,
+                name: item.item.name,
+                product_type: item.item.type,
+                stok: item.item.qty_available,
+                qty: 1,
+            }
+
+            const cekIfExist = this.$data[item.type].filter((el: any) => {
+                return el.id == item.item.id;
+            }).length
+
+            if (cekIfExist === 0) {
+                this.$data[item.type].push(data)
+            }
+        })
+
+        EventBus.$on('removeItem', (datas: any) => {
+            let data = []
+
+            datas.forEach((d: any) => {
+                data = this.servicesSelected.filter(el => {
+                    return el.name.includes(d)
                 })
+
+                const index = this.servicesSelected.indexOf(data[0]);
+            
+                if (index !== -1) {
+                    this.servicesSelected.splice(index, 1)
+                };
             })
-
-            this.colors = res.data.colors;
-
-            this.noUrut = res.data.results[0].name;
-
-            this.products = res.data.results[0].product;
-
-            this.spareparts = this.products.filter((el: any) => {
-                return el.product_type !== 'service';
-            });
-
-            this.services = this.products.filter((el: any) => {
-                return el.product_type === 'service';
-            });
-
-            this.servicesOwn   = this.services.splice(0,10);
-
-            this.sparepartsOwn = this.spareparts.splice(0,10);
-        });
+        })
 
         if(this.$route.params.so) {
             const so: any = this.$route.params.so;
+
+            register.cekSO().then((res) => {
+                res.data.results[0].tipe_motor.forEach((el: any) => {
+                    this.types.push({
+                        "id": el.id,
+                        "value": el,
+                        "text": el.name
+                    })
+                })
+
+                this.colors = res.data.colors;
+
+                this.products = res.data.results[0].product;
+
+                this.spareparts = this.products.filter((el: any) => {
+                    return el.product_type !== 'service';
+                });
+
+                this.services = this.products.filter((el: any) => {
+                    return el.product_type === 'service';
+                });
+
+                this.servicesOwn   = this.services.splice(0,10);
+
+                this.sparepartsOwn = this.spareparts.splice(0,10);
+            });
 
             register.getDetailSo(so).then(res => {
                 const result    =   res.data.results[0]
@@ -662,13 +773,23 @@ export default class Register extends Vue {
                     this.keluhanKonsumen    =   result.keluhan_konsumen
                     this.analisaService     =   this.cekData(result.analisa_service)
                     this.saranMekanik       =   this.cekData(result.saran_mekanik)
+                    this.kpb            =   result.kpb
+                    this.isGantiOli     =   result.gantiOli
+                    this.isGantiPart    =   result.gantiPart
+                    this.service        =   result.service
+                    this.isTurunMesin   =   result.turunMesin
                     
                     const motor =   result.motor[0]
 
                     if(motor) {
                         this.noMesin    =   motor.no_mesin
                         this.noRangka   =   motor.no_rangka
-                        this.type       =   motor.type
+                        motor.type.name =   "Honda/" + motor.type.name
+                        this.type       =   {
+                            id: motor.type.id,
+                            text: motor.type.name,
+                            value: motor.type
+                        }
                         this.tahun      =   motor.tahun
                         this.km         =   motor.km
                     }
@@ -688,6 +809,33 @@ export default class Register extends Vue {
                     })
                 }
             })
+        } else {
+            register.cekSO().then((res) => {
+                res.data.results[0].tipe_motor.forEach((el: any) => {
+                    this.types.push({
+                        "value": el,
+                        "text": el.name
+                    })
+                })
+
+                this.colors = res.data.colors;
+
+                this.noUrut = res.data.results[0].name;
+
+                this.products = res.data.results[0].product;
+
+                this.spareparts = this.products.filter((el: any) => {
+                    return el.product_type !== 'service';
+                });
+
+                this.services = this.products.filter((el: any) => {
+                    return el.product_type === 'service';
+                });
+
+                this.servicesOwn   = this.services.splice(0,10);
+
+                this.sparepartsOwn = this.spareparts.splice(0,10);
+            });
         }
     }
 
@@ -703,27 +851,6 @@ export default class Register extends Vue {
         if(data) return data;
 
         return "";
-    }
-
-    public cekNopol(): void {
-        register.cekNopol({nopol: this.noPolisi.toUpperCase()})
-                .then((res) => {
-                    if (res.data) {
-                        const data = res.data.results[0];
-
-                        this.noMesin        = data.no_mesin;
-                        this.noRangka       = data.no_rangka;
-                        this.tahun          = data.tahun;
-                        this.namaPemilik    = data.nama_pemilik;
-                        this.noTelp         = data.telp_pemilik;
-                        this.email          = data.email_pemilik;
-                        this.sosmed         = data.sosmed;
-
-                        this.histories      = data.history;
-
-                        this.type           = data.tipe_motor;
-                    }
-                });
     }
 
     public cekStok(name: string): boolean {
@@ -844,6 +971,10 @@ export default class Register extends Vue {
 
     public refreshTotal(): void {
         this.total = 0;
+
+        this.total += this.hargaKPB;
+        this.total += this.hargaService;
+
         this.sparepartsSelected.forEach((el: any) => {
             this.total += (parseInt(el.harga, 10) * el.qty);
         });
@@ -858,12 +989,14 @@ export default class Register extends Vue {
         this.servicesSelected.splice(i - 1, 1);
     }
     public isNext() {
-        if (this.noPolisi === '') { return true; }
-        if (this.tglService === '') { return true; }
-        if (this.noTelp === '') { return true; }
-        if (this.type.length > 0) { return true; }
-        if (this.namaPemilik === '') { return true; }
-        return false;
+        if (this.noPolisi !== '' &&
+            this.tglService !== '' &&
+            this.noTelp !== '' &&
+            this.type &&
+            this.namaPemilik !== '' &&
+            this.cekMesin) { return false; }
+
+        return true;
     }
     public finish(): void {
         EventBus.$emit('finish', this.$data);
@@ -894,6 +1027,11 @@ export default class Register extends Vue {
             "servicesSelected": this.servicesSelected,
             "cuci": this.cuci,
             "warnaKendaraan": this.warnaKendaraan.toUpperCase(),
+            "kpb": this.kpb,
+            "service": this.service,
+            "gantiOli": this.isGantiOli,
+            "gantiPart": this.isGantiPart,
+            "turunMesin": this.isTurunMesin,
         }).then(() => {
             window.location.reload();
         });
@@ -907,15 +1045,6 @@ export default class Register extends Vue {
         }
 
         this.notFinish     = true;
-    }
-
-    @Watch('noPolisi')
-    public onNoPolisiChanged(val: string) {
-        if (val === '') {
-            this.buttonHistory  = false;
-        } else {
-            this.buttonHistory  = true;
-        }
     }
 
     @Watch('sparepartsSelected')
@@ -944,6 +1073,31 @@ export default class Register extends Vue {
         this.servicesOwn = this.products.filter(el => {
             return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
         })
+    }
+
+    @Watch('noMesin')
+    public onNoMesinChange() {
+        this.cekNoMesin();
+    }
+
+    @Watch('type')
+    public ontypeChange() {
+        localStorage.setItem('vehicle', this.type.value.id)
+    }
+
+    public cekNoMesin(): void {
+        if (this.noPolisi !== "" && this.noMesin !== "") {
+            board.cekNoMesin({ nopol: this.noPolisi, nomesin: this.noMesin })
+                 .then((el: any) => {
+                     if (el.data.result === false) {
+                         alert('No mesin telah digunakan');
+
+                         this.cekMesin = false;
+                     } else {
+                         this.cekMesin = true;
+                     };
+                 });
+        }
     }
 }
 </script>

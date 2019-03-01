@@ -49,25 +49,33 @@ export default class Sidebar extends Vue {
   }
 
   public created() {
-      this.routes = (this.$router as any).options.routes.filter((el: any) => {
-          return el.meta;
-      });
+        this.routes = (this.$router as any).options.routes.filter((el: any) => {
+            return el.meta;
+        });
 
-      this.routes = this.routes.filter((el: any) => {
-          if (this.user.role.toUpperCase() != 'manager'.toUpperCase()) {
-              let role = '';
+        this.routes = this.routes.filter((el: any) => {
+            try {
+                if (this.user.job.toUpperCase() != 'Owner'.toUpperCase()) {
+                    let role = '';
 
-              if (el.meta.role) {
-                  role  = el.meta.role.map(function(x: string) { return x.toUpperCase(); });
-              } else {
-                  role  = el.meta.role;
-              }
+                    if (el.meta.role) {
+                        role  = el.meta.role.map(function(x: string) { return x.toUpperCase(); });
+                    } else {
+                        role  = el.meta.role;
+                    }
 
-              return el.meta.show && role.includes(this.user.role.toUpperCase());
-          } else {
-              return el.meta.show;
-          }
-      }).sort((a: any, b: any) => {
+                    if (this.user.job.toUpperCase() === 'Ass Mekanik'.toUpperCase()) {
+                        return el.meta.show && role.includes(this.user.role.toUpperCase());
+                    } else {
+                        return el.meta.show && role.includes(this.user.job.toUpperCase());
+                    }
+                } else {
+                    return el.meta.show;
+                }
+            } catch (error) {
+                return el.meta.show;
+            }
+        }).sort((a: any, b: any) => {
             if(a.meta.title < b.meta.title) { return -1; }
             if(a.meta.title > b.meta.title) { return 1; }
             return 0;

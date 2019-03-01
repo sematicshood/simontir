@@ -106,6 +106,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import mekanik from '../api/mekanik';
+import users from '../api/users';
 
 @Component({
     components: {},
@@ -125,6 +126,14 @@ export default class FinalCheck extends Vue {
 
     public created() {
         this.load();
+
+        users.getUsersCuci().then(res => {
+            try {
+                this.users = res.data.results
+            } catch (error) {
+                
+            }
+        })
     }
 
     public load(): void {
