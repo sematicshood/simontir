@@ -2,7 +2,7 @@
     <div class="searchAuto" style="width:100%;">
         <div class="input-group">
             <label for="">No. Polisi</label>
-            <input type="text" class="form-control" v-model="value" @change="cekNopol" :placeholder="placeholder">
+            <input type="text" class="form-control" v-model="nopol" @change="cekNopol" :placeholder="placeholder">
             <span class="input-group-btn">
                 <button style="margin-top: 25px;" v-if="buttonHistory" type="button" v-b-modal="'myModal'" class="btn btn-success btn-flat">History</button>
             </span>
@@ -35,18 +35,18 @@ export default class NopolAutocomplete extends Vue {
     public isShow: boolean  =   false;
     public showItems: any   =   [];
     public buttonHistory    =   false;
+    public nopol: string    =   this.value
 
     public selectItem(item: any): void {
         this.isShow = false
 
-        EventBus.$emit('changeData', {
+        EventBus.$emit('changeDatas', {
             'noPolisi': item.license_plate
         })
     }
 
     public cekNopol(): void {
-        console.log('halooo')
-        register.cekNopol({nopol: this.value.toUpperCase()})
+        register.cekNopol({nopol: this.nopol.toUpperCase()})
                 .then((res) => {
                     console.log(res)
                     if (res.data) {
@@ -61,17 +61,20 @@ export default class NopolAutocomplete extends Vue {
                             "email"          : data.email_pemilik,
                             "sosmed"         : data.sosmed,
                             "histories"      : data.history,
-                            "type"           : data.tipe_motor,
+                            "type"           : {
+                                text: data.tipe_motor.name,
+                                value: data.tipe_motor
+                            },
                         }
 
-                        EventBus.$emit('changeData', re)
+                        EventBus.$emit('changeDatas', re)
                     }
                 });
     }
 
-    @Watch('value')
+    @Watch('nopol')
     onValueChange(value: string) {
-        EventBus.$emit('changeData', {
+        EventBus.$emit('changeDatas', {
             'noPolisi': value
         })
         if (value === '') {

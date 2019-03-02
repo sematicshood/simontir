@@ -52,6 +52,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>
+                                        <p>Tipe Motor : {{ type.text }}</p>
                                         <model-select :options="types"
                                             v-model="type"
                                             :selected-options="type"
@@ -686,6 +687,14 @@ export default class Register extends Vue {
                   value: any  = Object.values(val)[0]
             
             this.$data[key] = value
+        })
+
+        EventBus.$on('changeDatas', (val: any) => {
+            const key: any = Object.keys(val);
+            
+            key.forEach((el: any) => {
+                this.$data[el] = val[el]
+            })
         })
 
         EventBus.$on('addItem', (item: any) => {
