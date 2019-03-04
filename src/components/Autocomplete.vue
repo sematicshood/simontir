@@ -1,10 +1,10 @@
 <template>
     <div>
         <input type="text" class="form-control" id="" placeholder="" 
-            @focus="isShow = true"
+            @keyup.esc="isShow = false"
             v-model="value"/>
         <div class="list" v-show="isShow">
-            <li v-for="color in showColors" @click="selectColor(color.color)" :key="color.id">{{ color.color }}</li>
+            <li v-for="(color, i) in showColors" @click="selectColor(color.color)" :key="i">{{ color.color }}</li>
         </div>
     </div>
 </template>
@@ -34,6 +34,8 @@ export default class Autocomplete extends Vue {
 
     @Watch('value')
     onValueChange(value: string) {
+        this.isShow = true
+
         this.showColors = this.colors.filter((el: any) => {
             return el.color.toUpperCase().indexOf(value.toUpperCase()) > -1;
         })

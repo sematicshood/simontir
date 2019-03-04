@@ -685,7 +685,7 @@ export default class Register extends Vue {
         EventBus.$on('changeData', (val: any) => {
             const key: string = Object.keys(val)[0],
                   value: any  = Object.values(val)[0]
-            
+                  
             this.$data[key] = value
         })
 
@@ -850,11 +850,7 @@ export default class Register extends Vue {
     getLabel (item: any): string {
         return item.color
     }
-
-    updateItems (text: any): void {
-      console.log(text)
-    }
-
+    
     public cekData(data: any): any {
         if(data) return data;
 

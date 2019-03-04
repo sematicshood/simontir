@@ -2,10 +2,10 @@
     <div class="searchAuto">
         <div class="form-group mx-sm-1 mb-3">
             <input type="text" id="" :placeholder="placeholder" 
-                v-model="value"/>
+                v-model="value" @keyup.esc="isShow = false"/>
         </div>
         <div class="list" v-show="isShow">
-            <li v-for="item in showItems" @click="selectItem(item)" :key="item.id">
+            <li v-for="(item, i) in showItems" @click="selectItem(item)" :key="i">
                 {{ item.name }}
                 <button class="btn btn-sm btn-danger">Barcode : {{ item.barcode }}</button>
                 <button class="btn btn-sm btn-primary">Stok : {{ item.qty_available }}</button>

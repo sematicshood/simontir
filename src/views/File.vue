@@ -128,16 +128,18 @@
         }
 
         public exportTemplate(): void {
-            let typeMotors = '[';
+            let typeMotors: any = null;
 
-            this.typeMotor.forEach((el: any) => {
-                let data = "'" + el + "'"
-                typeMotors += data += ',';
-            })
+            if (this.typeMotor) {
+                typeMotors = '[';
 
-            typeMotors += ']';
+                this.typeMotor.forEach((el: any) => {
+                    let data = "'" + el + "'"
+                    typeMotors += data += ',';
+                })
 
-            console.log(typeMotors)
+                typeMotors += ']';
+            }
 
             const params = {
                 'followUp': this.followUp,
@@ -200,7 +202,7 @@
             result = '';
             result += keys.join(columnDelimiter);
             result += lineDelimiter;
-
+            
             data.forEach(function(item: any) {
                 ctr = 0;
                 keys.forEach(function(key: any) {
@@ -218,10 +220,17 @@
         public downloadCSV(args: any): any {
             var data, filename, link;
 
+
+
             var csv = this.convertArrayOfObjectsToCSV({
                 data: this.json_data
             });
-            if (csv == null) return;
+
+            if (csv == null) {
+                alert('Data tidak ditemukan')
+
+                return
+            };
 
             filename = args.filename || 'export.csv';
 

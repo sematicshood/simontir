@@ -80,7 +80,7 @@
                     <hr/>
                 </div>
 
-                <button class="btn form-control btn-warning" @click="printLaporan()" v-if="isNew === false">
+                <button class="btn form-control btn-warning" @click="printLaporan()">
                     Print Laporan
                 </button>
 
