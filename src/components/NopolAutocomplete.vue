@@ -52,7 +52,7 @@ export default class NopolAutocomplete extends Vue {
                     if (res.data) {
                         const data = res.data.results[0];
 
-                        let re   = {
+                        let re: any   = {
                             "noMesin"        : data.no_mesin,
                             "noRangka"       : data.no_rangka,
                             "tahun"          : data.tahun,
