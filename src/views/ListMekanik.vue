@@ -14,6 +14,24 @@
                     </div>
                     <div class="box-body no-padding">
                         <div class="row">
+                            <div class="col-lg-4">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><strong>Service yang diambil</strong></h3>
+
+                                    <div class="box-tools pull-right">
+                                        <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">{{ own.length }}</span>
+                                    </div>
+                                </div>
+                                <span v-for="o in own" :key="o.name">
+                                    <reguler v-if="o.antrian_service == 'reguler'" :type="'timesheet_mekanik'" :data="o"></reguler>
+                                    <LightRepair v-if="o.antrian_service == 'Light Repair'" :type="'timesheet_mekanik'" :data="o"></LightRepair>
+                                    <BookingOrder v-if="o.antrian_service == 'Booking Service'" :type="'timesheet_mekanik'" :data="o"></BookingOrder>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="box-header with-border">
                                     <h3 class="box-title"><strong>Booking Service</strong></h3>
@@ -73,6 +91,7 @@ export default class ListMekanik extends Vue {
     public bookings: any[] =   [];
     public lights: any[]   =   [];
     public regulars: any[] =   [];
+    public own: any        =   [];
 
     public created() {
         this.loadData();
@@ -84,7 +103,6 @@ export default class ListMekanik extends Vue {
 
     public loadData(): void {
         mekanik.getSO(this.user.id).then((res: any) => {
-            console.log(res)
             if (res.data.results) {
                 this.bookings   = res.data.results.filter((el: any) => {
                     return el.antrian_service === 'Booking Service';
@@ -97,6 +115,10 @@ export default class ListMekanik extends Vue {
                 this.regulars = res.data.results.filter((el: any) => {
                     return el.antrian_service === 'reguler';
                 }).splice(0, 1);
+            }
+
+            if (res.data.own) {
+                this.own     = res.data.own;
             }
         });
     }

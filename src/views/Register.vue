@@ -52,6 +52,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Type</label>
+                                        <p>Tipe Motor : {{ type.text }}</p>
                                         <model-select :options="types"
                                             v-model="type"
                                             :selected-options="type"
@@ -555,8 +556,7 @@ import register from '../api/register';
 import axios from 'axios';
 import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
-const ModelSelectSearch = require('vue-search-select');
-const { ModelSelect } = ModelSelectSearch;
+import {ModelSelect} from 'vue-search-select';
 import autocomplete from '../components/Autocomplete.vue';
 import SearchAutocomplete from '../components/SearchAutocomplete.vue';
 import board from '@/api/board';
@@ -685,8 +685,16 @@ export default class Register extends Vue {
         EventBus.$on('changeData', (val: any) => {
             const key: string = Object.keys(val)[0],
                   value: any  = Object.values(val)[0]
-            
+                  
             this.$data[key] = value
+        })
+
+        EventBus.$on('changeDatas', (val: any) => {
+            const key: any = Object.keys(val);
+            
+            key.forEach((el: any) => {
+                this.$data[el] = val[el]
+            })
         })
 
         EventBus.$on('addItem', (item: any) => {
@@ -842,11 +850,7 @@ export default class Register extends Vue {
     getLabel (item: any): string {
         return item.color
     }
-
-    updateItems (text: any): void {
-      console.log(text)
-    }
-
+    
     public cekData(data: any): any {
         if(data) return data;
 

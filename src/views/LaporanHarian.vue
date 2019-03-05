@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card col-md-12">
+        <div class="card col-md-12" id="LaporanHarian">
             <div class="card-body">
                 <div class="col-md-12">
                     <h4>Tanggal</h4>
@@ -80,10 +80,20 @@
                     <hr/>
                 </div>
 
+                <button class="btn form-control btn-warning" @click="printLaporan()">
+                    Print Laporan
+                </button>
+
+                <br><br>
+
                 <button class="btn form-control btn-primary" @click="submitData()">
                     {{ (isNew === true) ? 'Buat Laporan' : 'Update Laporan' }}
                 </button>
             </div>
+        </div>
+
+        <div v-if="isNew === false">
+            <TemplateLaporanHarian/>
         </div>
     </div>
 </template>
@@ -91,12 +101,15 @@
 <script lang="ts">
     import { Component, Vue, Watch } from 'vue-property-decorator';
     import cash_count from '../api/cash_count';
+    import laporan from '../api/laporan';
+    import TemplateLaporanHarian from '../templates/TemplateLaporanHarian.vue';
+    import { EventBus } from '../event';
     
     import VueNumeric from 'vue-numeric';
 
     @Component({
         components: {
-            VueNumeric,
+            VueNumeric, TemplateLaporanHarian,
         }
     })
 
@@ -183,6 +196,20 @@
 
         public countSelisi(): void {
             this.selisih = this.total_cash - this.saldo_aplikasi
+        }
+
+        public printLaporan(): void {
+            laporan.getReportToday({date: this.date}).then((res: any) => {
+                try {
+                    let data        = res.data.results;
+
+                    data['date']    =   this.date;
+
+                    EventBus.$emit('printReport', data);
+                } catch (error) {
+                    
+                }
+            })
         }
 
         @Watch('total_cash')

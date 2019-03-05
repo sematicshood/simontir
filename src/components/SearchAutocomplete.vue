@@ -2,10 +2,10 @@
     <div class="searchAuto">
         <div class="form-group mx-sm-1 mb-3">
             <input type="text" id="" :placeholder="placeholder" 
-                v-model="value"/>
+                v-model="value" @keyup.esc="isShow = false"/>
         </div>
         <div class="list" v-show="isShow">
-            <li v-for="item in showItems" @click="selectItem(item)" :key="item.id">
+            <li v-for="(item, i) in showItems" @click="selectItem(item)" :key="i">
                 {{ item.name }}
                 <button class="btn btn-sm btn-danger">Barcode : {{ item.barcode }}</button>
                 <button class="btn btn-sm btn-primary">Stok : {{ item.qty_available }}</button>
@@ -37,6 +37,7 @@ export default class Autocomplete extends Vue {
 
     public isShow: boolean  =   false;
     public showItems: any   =   [];
+    public prev: string     =   '';
 
     public selectItem(item: any): void {
         if (item.qty_available > 0 || this.protype === 'service') {
@@ -52,11 +53,13 @@ export default class Autocomplete extends Vue {
 
     @Watch('value')
     onValueChange(value: string) {
-        this.isShow = true;
-
         if (value === '') {
             this.isShow = false;
+
+            return
         }
+
+        this.isShow = true;
 
         setTimeout(() => {
             const params: any = {};
