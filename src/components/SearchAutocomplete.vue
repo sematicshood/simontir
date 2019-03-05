@@ -37,6 +37,7 @@ export default class Autocomplete extends Vue {
 
     public isShow: boolean  =   false;
     public showItems: any   =   [];
+    public prev: string     =   '';
 
     public selectItem(item: any): void {
         if (item.qty_available > 0 || this.protype === 'service') {
@@ -52,11 +53,13 @@ export default class Autocomplete extends Vue {
 
     @Watch('value')
     onValueChange(value: string) {
-        this.isShow = true;
-
         if (value === '') {
             this.isShow = false;
+
+            return
         }
+
+        this.isShow = true;
 
         setTimeout(() => {
             const params: any = {};

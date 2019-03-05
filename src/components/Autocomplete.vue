@@ -25,15 +25,23 @@ export default class Autocomplete extends Vue {
 
     public isShow: boolean  =   false;
     public showColors: any  =   this.colors;
+    public prev: any        =   '';
 
     public selectColor(color: string): void {
         this.value = color;
+        this.prev  = color;
 
         this.isShow = false;
     }
 
     @Watch('value')
     onValueChange(value: string) {
+        if (value === this.prev) {
+            this.isShow = false
+
+            return
+        }
+
         this.isShow = true
 
         this.showColors = this.colors.filter((el: any) => {

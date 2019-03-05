@@ -36,14 +36,18 @@ export default class NopolAutocomplete extends Vue {
     public showItems: any   =   [];
     public buttonHistory    =   false;
     public nopol: string    =   this.value
+    public prev: string     =   ''
 
     public selectItem(item: any): void {
         this.isShow = false
         this.nopol  = item.license_plate
+        this.prev   = item.license_plate
 
         EventBus.$emit('changeData', {
             'noPolisi': item.license_plate
         })
+
+        this.cekNopol()
     }
 
     public cekNopol(): void {
@@ -73,10 +77,18 @@ export default class NopolAutocomplete extends Vue {
                         EventBus.$emit('changeDatas', re)
                     }
                 });
+        
+        EventBus.$emit('cekNomesin');
     }
 
     @Watch('nopol')
     onValueChange(value: string) {
+        if (value === this.prev) {
+            this.isShow = false;
+
+            return
+        }
+
         EventBus.$emit('changeDatas', {
             'noPolisi': value
         })
@@ -95,8 +107,6 @@ export default class NopolAutocomplete extends Vue {
                     }
                 })
         }
-
-        EventBus.$emit('cekNomesin');
     }
 }
 </script>
