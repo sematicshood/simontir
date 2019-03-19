@@ -103,16 +103,8 @@
                                 <div class="col-lg-12">
                                     <dir class="box-sub-header">
                                         <h3 class="box-sub-title"><strong>Keluhan Konsumen</strong></h3>
-                                        <button type="button" v-b-modal="'keluhan'" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
+                                        <button type="button" @click="formKeluhan = true" class="btn btn-danger btn-sm pull-right" style="height: 29px; padding: 2px 11px; margin-top: -5px;"><i class="fa fa-plus"></i></button>
                                     </dir>
-
-                                    <!-- Modal keluhan -->
-                                    <b-modal @ok="addKeluhan" id="keluhan">
-                                        <div class="form-group">
-                                            <label for="">Keluhan</label>
-                                            <input type="text" v-model="keluhanInput" class="form-control" id="" placeholder="">
-                                        </div>
-                                    </b-modal>
 
                                     <div class="form-group">
                                         <table class="table table-hover">
@@ -140,7 +132,20 @@
                                                         <button type="button" @click="saveKeluhan(i)" class="btn btn-default btn-sm"><i class="fa fa-save"></i></button>
                                                     </div>
                                                 </td>
-                                            </tr>                
+                                            </tr>
+                                            <tr v-if="formKeluhan">
+                                                <td>-</td>
+                                                <td>
+                                                    <input type="text" class="form-control" v-model="keluhanInput">
+                                                </td>
+                                                <td><input disabled type="checkbox"></td>
+                                                <td>
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" @click="addKeluhan()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i></button>
+                                                    </div>
+                                                    <button type="button" @click="formKeluhan = false" class="btn btn-warning btn-sm">x</button>
+                                                </td>
+                                            </tr>            
                                         </tbody></table>
                                     </div>   
                                 </div>
@@ -669,6 +674,8 @@ export default class Register extends Vue {
     public hargaKPB: number                    = 0;
     public hargaService: number                = 0;
 
+    public formKeluhan: boolean                = false;
+
     public created() {
         EventBus.$on('refresh', () => {
             this.refreshTotal();
@@ -927,8 +934,23 @@ export default class Register extends Vue {
         return additional.convertToRupiah(angka);
     }
     public addKeluhan(): void {
+        this.$toasted.global.info();
+
+        const count: number = this.keluhanKonsumen.filter((kel: any) => {
+            return kel.nama === this.keluhanInput;
+        }).length;
+
+        if (count > 0) {
+            this.$toasted.global.error({message: 'Keluhan sudah ada'});
+
+            return;
+        }
+
         this.keluhanKonsumen.push({ nama: this.keluhanInput });
         this.keluhanInput = '';
+        this.formKeluhan  = false;
+
+        this.$toasted.global.success({message: 'Keluhan berhasil ditambah'});
     }
     public deleteKeluhan(i: any): void {
         this.keluhanKonsumen.splice(i - 1, 1);

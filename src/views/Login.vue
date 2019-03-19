@@ -50,6 +50,7 @@ export default class Login extends Vue {
   public error: string[]       = [];
 
   public cekLogin(): void {
+    this.$toasted.global.info({message: 'Loading authentication....'});
     this.$data.error             = [];
 
     const payload: any             = this.$data;
@@ -58,21 +59,29 @@ export default class Login extends Vue {
       if (result) {
         users.cekUser(payload)
              .then((res: any) => {
-                if (res.data.result) {
-                  const result = JSON.parse(res.data.result);
+                try {
+                  if (res.data.result) {
+                    this.$toasted.global.success({message: 'Login success! Welcome back'});
+                    
+                    const result = JSON.parse(res.data.result);
 
-                  const data = result[0];
+                    const data = result[0];
 
-                  localStorage.setItem('login', JSON.stringify(data));
+                    localStorage.setItem('login', JSON.stringify(data));
 
-                  this.$router.push({ name: auth.cekRoleUrl(data.job) });
-                } else {
-                  alert('Username atau password salah');
+                    this.$router.push({ name: auth.cekRoleUrl(data.job) });
+                  } else {
+                    this.$toasted.global.error({message: 'Username atau password salah'});
+                  }
+                } catch (error) {
+                  this.$toasted.global.error({message: 'Username atau password salah'});
                 }
              });
 
         return true;
       }
+
+      this.$toasted.global.error({message: 'Isi form dengan benar'});
 
       this.$validator.errors.items.forEach((el) => {
         this.$data.error.push(el.msg);
