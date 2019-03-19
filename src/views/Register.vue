@@ -388,6 +388,42 @@
                                             </table>
                                         </div>                                
                                     </div>
+
+                                     <div class="border-custom">
+                                        <div class="box-sub-header">
+                                            <h3 class="box-sub-title"><strong>History</strong></h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table table-hover table-responsive" style="height:200px !important; overflow: auto !important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tanggal</th>
+                                                        <th>KM</th>
+                                                        <th>Jasa</th>
+                                                        <th>Part</th>
+                                                        <th>Mekanik</th>
+                                                        <th>Front Desk</th>
+                                                        <th>Biaya</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="history in histories">
+                                                        <td v-text="history.tanggal"></td>
+                                                        <td v-text="history.km"></td>
+                                                        <td>
+                                                            <ul>
+                                                                <li v-for="jasa in history.jasa" v-text="jasa.description"></li>
+                                                            </ul>
+                                                        </td>
+                                                        <td></td>
+                                                        <td v-text="history.mekanik"></td>
+                                                        <td v-text="history.frontdesk"></td>
+                                                        <td>Rp. {{convertToRupiah(history.biaya)}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-4">
