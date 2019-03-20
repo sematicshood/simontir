@@ -25,7 +25,7 @@ export default class GantiOli extends Vue {
     @Prop({})
     isGantiOli: any;
 
-    public value: any = this.isGantiOli;
+    public value: any       = this.isGantiOli;
     public type: any        = localStorage.getItem('vehicle')
 
     @Watch('value')
@@ -37,6 +37,7 @@ export default class GantiOli extends Vue {
         })
 
         if (data) {
+            this.$toasted.info('Loading...');
             let params: any     =   {};
 
             params['name']      =   "Ganti Oli";
@@ -44,12 +45,19 @@ export default class GantiOli extends Vue {
             params['vehicle']   =   this.type;
 
             products.searchProduct(params).then(res => {
-                res.data.results.forEach((el: any) => {
-                    EventBus.$emit('addItem', {
-                        item: el,
-                        type: 'servicesSelected'
-                    })
-                });
+                if (res.data.results.length > 0) {
+                    res.data.results.forEach((el: any) => {
+                        EventBus.$emit('addItem', {
+                            item: el,
+                            type: 'servicesSelected'
+                        })
+                    });
+
+                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                } else {
+                    this.value = false;
+                    this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                }
             });
         } else {
             EventBus.$emit('removeItem', 'Ganti Oli')

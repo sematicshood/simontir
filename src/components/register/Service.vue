@@ -27,8 +27,8 @@ export default class Service extends Vue {
     @Prop({})
     service: any;
     
-    public values: any      = this.service
-    public type: any        = localStorage.getItem('vehicle')
+    public values: any      = this.service || '';
+    public type: any        = localStorage.getItem('vehicle');
     public harga: number    = 0;
 
     public convertToRupiah(angka: number): string {
@@ -53,19 +53,28 @@ export default class Service extends Vue {
         })
 
         if (values !== '') {
+            this.$toasted.info('Loading...');
+
             params['name']      =   "Service " + values;
             params['type']      =   "service";
             params['vehicle']   =   this.type;
 
             products.searchProduct(params).then(res => {
-                res.data.results.forEach((el: any) => {
-                    this.harga = el.list_price;
+                if (res.data.results.length > 0) {
+                    res.data.results.forEach((el: any) => {
+                        this.harga = el.list_price;
 
-                    EventBus.$emit('addItem', {
-                        item: el,
-                        type: 'servicesSelected'
-                    })
-                });
+                        EventBus.$emit('addItem', {
+                            item: el,
+                            type: 'servicesSelected'
+                        })
+                    });
+
+                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                } else {
+                    this.values = '';
+                    this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                }
             });
         }
     }

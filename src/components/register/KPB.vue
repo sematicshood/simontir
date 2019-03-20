@@ -29,7 +29,7 @@ export default class KPB extends Vue {
     @Prop({})
     kpb: any;
 
-    public values: any      = this.kpb
+    public values: any      = this.kpb || 0;
     public type: any        = localStorage.getItem('vehicle')
     public harga: number    = 0;
 
@@ -54,20 +54,31 @@ export default class KPB extends Vue {
         params['type']      =   "service";
         params['vehicle']   =   this.type;
 
-        products.searchProduct(params).then(res => {
-            EventBus.$emit('changeData', {
-                'kpb': values
-            })
+        if (values !== 0) {
+            this.$toasted.info('Loading...');
 
-            res.data.results.forEach((el: any) => {
-                this.harga = el.list_price
+            products.searchProduct(params).then(res => {
+                if (res.data.results.length > 0) {
+                        EventBus.$emit('changeData', {
+                        'kpb': values
+                    });
 
-                EventBus.$emit('addItem', {
-                    item: el,
-                    type: 'servicesSelected'
-                })
+                    res.data.results.forEach((el: any) => {
+                        this.harga = el.list_price
+
+                        EventBus.$emit('addItem', {
+                            item: el,
+                            type: 'servicesSelected'
+                        })
+                    });
+                    
+                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                } else {
+                    this.values = 0;
+                    this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                }
             });
-        });
+        }
     }
 }
 </script>

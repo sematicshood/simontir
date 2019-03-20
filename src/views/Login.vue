@@ -50,7 +50,7 @@ export default class Login extends Vue {
   public error: string[]       = [];
 
   public cekLogin(): void {
-    this.$toasted.global.info({message: 'Loading authentication....'});
+    this.$toasted.info('Loading authentication....', {duration:3000});
     this.$data.error             = [];
 
     const payload: any             = this.$data;
@@ -61,7 +61,7 @@ export default class Login extends Vue {
              .then((res: any) => {
                 try {
                   if (res.data.result) {
-                    this.$toasted.global.success({message: 'Login success! Welcome back'});
+                    this.$toasted.success('Login success! Welcome back', {duration:3000});
                     
                     const result = JSON.parse(res.data.result);
 
@@ -71,17 +71,17 @@ export default class Login extends Vue {
 
                     this.$router.push({ name: auth.cekRoleUrl(data.job) });
                   } else {
-                    this.$toasted.global.error({message: 'Username atau password salah'});
+                    this.$toasted.error('Username atau password salah', {duration:3000});
                   }
                 } catch (error) {
-                  this.$toasted.global.error({message: 'Username atau password salah'});
+                  this.$toasted.error('Username atau password salah', {duration:3000});
                 }
              });
 
         return true;
       }
 
-      this.$toasted.global.error({message: 'Isi form dengan benar'});
+      this.$toasted.error('Isi form dengan benar', {duration:3000});
 
       this.$validator.errors.items.forEach((el) => {
         this.$data.error.push(el.msg);

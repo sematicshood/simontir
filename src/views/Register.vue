@@ -970,14 +970,14 @@ export default class Register extends Vue {
         return additional.convertToRupiah(angka);
     }
     public addKeluhan(): void {
-        this.$toasted.global.info();
+        this.$toasted.info("Loading...");
 
         const count: number = this.keluhanKonsumen.filter((kel: any) => {
             return kel.nama === this.keluhanInput;
         }).length;
 
         if (count > 0) {
-            this.$toasted.global.error({message: 'Keluhan sudah ada'});
+            this.$toasted.error('Keluhan sudah ada', {duration:3000});
 
             return;
         }
@@ -986,7 +986,7 @@ export default class Register extends Vue {
         this.keluhanInput = '';
         this.formKeluhan  = false;
 
-        this.$toasted.global.success({message: 'Keluhan berhasil ditambah'});
+        this.$toasted.success('Keluhan berhasil ditambah', {duration:3000});
     }
     public deleteKeluhan(i: any): void {
         this.keluhanKonsumen.splice(i - 1, 1);

@@ -38,6 +38,7 @@ export default class Autocomplete extends Vue {
     public isShow: boolean  =   false;
     public showItems: any   =   [];
     public prev: string     =   '';
+    public kendaraan: any   =   localStorage.getItem('vehicle');
 
     public selectItem(item: any): void {
         if (item.qty_available > 0 || this.protype === 'service') {
@@ -66,6 +67,7 @@ export default class Autocomplete extends Vue {
 
             params[this.type]   =   value;
             params['type']      =   this.protype;
+            params['vehicle']   =   this.kendaraan;
             this.showItems      =   [];
 
             products.searchProduct(params).then(res => {
