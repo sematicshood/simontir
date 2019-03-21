@@ -475,11 +475,11 @@
                                                 <th>Status</th>
                                             </tr>
 
-                                            <tr :class="{'item-tr-center': km >= ser.km, 'sparepartSelect': cekServiceExist(ser) == false}" v-for="ser in listServices" @click="addServicesSelected(ser)">
-                                                <td>{{ ser.km }}</td>
+                                            <tr :class="{'item-tr-center': km >= ser.minimal_km, 'sparepartSelect': ser.qty_available > 0}" v-for="ser in saranService" @click="addServicesSelected(ser)">
+                                                <td>{{ ser.minimal_km }}</td>
                                                 <td>{{ ser.name }}</td>
                                                 <td>
-                                                    <span v-if="cekStatus(ser.name)" class="label label-success">Tersedia</span>
+                                                    <span v-if="ser.qty_available > 0" class="label label-success">Tersedia</span>
                                                     <span v-else class="label label-warning">Tidak Tersedia</span>
                                                 </td>
                                             </tr>           
@@ -732,6 +732,11 @@ export default class Register extends Vue {
     public pageSaranSparepart: number          = 1;
     public saranSparepart: any                 = [];
 
+    public nextSaranService: boolean         = false;
+    public prevSaranService: boolean         = false;
+    public pageSaranService: number          = 1;
+    public saranService: any                 = [];
+
     public hargaKPB: number                    = 0;
     public hargaService: number                = 0;
 
@@ -943,11 +948,15 @@ export default class Register extends Vue {
         return this.cekServiceSelect(this.findIndexService(i));
     }
     public addServicesSelected(ser: any): void {
-        const index: number = this.findIndexService(ser);
+        if (ser.qty_available > 0) {
+            const count: number = this.servicesSelected.filter((service: any) => {
+                return service.name === ser.name;
+            }).length
+            
+            if (count === 0) {
+                ser['qty']    =   1;
 
-        if (index > 0) {
-            if (this.cekServiceSelect(index)) {
-                this.servicesSelected.push(this.services[index]);
+                this.servicesSelected.push(ser);
             }
         }
     }
@@ -1172,6 +1181,7 @@ export default class Register extends Vue {
         this.getServiceFromServer();
         this.getSparepartFromServer();
         this.getSparepartFromServer(null, true);
+        this.getServiceFromServer(null, true);
     }
 
     public getSparepartFromServer(type: any = null, register: boolean = false): void {
@@ -1198,7 +1208,7 @@ export default class Register extends Vue {
         }
 
         const sparepart: any      = {
-            // vehicle: this.type.value.id,
+            vehicle: this.type.value.id,
             type: 'product',
             page: this.pageSparepart,
         };
@@ -1260,17 +1270,27 @@ export default class Register extends Vue {
         }, 1000)
     }
 
-    public getServiceFromServer(type = null): void {
-        if (type === "next") {
-            this.pageService++;    
-        }
-        
-        if (type === 'prev') {
-            this.pageService--;
-        }
+    public getServiceFromServer(type = null, register: boolean = false): void {
+        if (register) {
+            if (type === "next") {
+                this.pageSaranService++;    
+            }
+            
+            if (type === 'prev') {
+                this.pageSaranService--;
+            }
+        } else {
+            if (type === "next") {
+                this.pageService++;    
+            }
+            
+            if (type === 'prev') {
+                this.pageService--;
+            }
 
-        if (type === 'search') {
-            this.pageService = 1;
+            if (type === 'search') {
+                this.pageService = 1;
+            }
         }
 
         const service: any      = {
@@ -1279,30 +1299,57 @@ export default class Register extends Vue {
             page: this.pageService,
         };
 
+        if (register === true) {
+            service['register']   =   true;
+        }
+
         if (this.searchService !== '') {
             service['name']  =   this.searchService;
         };
 
         setTimeout(() => {
             products.searchProduct(service).then(res => {
-                this.servicesOwn = [];
+                if (register) {
+                    this.saranService = [];
+                } else {
+                    this.servicesOwn = [];
+                }
 
                 res.data.results.forEach((el: any) => {
                     el['harga'] = el['list_price'];
-                    this.servicesOwn.push(el);
-
-                    const total: any = res.data.count / 10;
                     
-                    if (this.pageService < total || this.pageService === 1) {
-                        this.nextService = true;
-                    } else {
-                        this.nextService = false;
-                    }
+                    if (register) {
+                        this.saranService.push(el);
 
-                    if (this.pageService > total || this.pageService > 1) {
-                        this.prevService = true;
+                        const total: any = res.data.count / 10;
+                        
+                        if (this.pageSaranService < total || this.pageSaranService === 1) {
+                            this.nextSaranService = true;
+                        } else {
+                            this.nextSaranService = false;
+                        }
+
+                        if (this.pageSaranService > total || this.pageSaranService > 1) {
+                            this.prevSaranService = true;
+                        } else {
+                            this.prevSaranService = false;
+                        }
                     } else {
-                        this.prevService = false;
+                        this.servicesOwn.push(el);
+
+                        const total: any = res.data.count / 10;
+                        
+                        if (this.pageService < total || this.pageService === 1) {
+                            this.nextService = true;
+                        } else {
+                            this.nextService = false;
+                        }
+
+                        if (this.pageService > total || this.pageService > 1) {
+                            this.prevService = true;
+                        } else {
+                            this.prevService = false;
+                        }
                     }
                 });
             });
