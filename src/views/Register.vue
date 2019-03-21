@@ -240,7 +240,14 @@
                                                             <input type="checkbox" v-model="multipleService" :value="service">
                                                         </td>
                                                     </tr>                
-                                                </tbody></table>
+                                                </tbody>
+                                                </table>
+                                                <div v-if="nextService || prevService">
+                                                    <br>
+                                                    <br>
+                                                    <button class="btn btn-warning pull-left" :disabled="!prevService" @click.prevent="getServiceFromServer('prev')">Previous</button>
+                                                    <button class="btn btn-primary pull-right" :disabled="!nextService" @click.prevent="getServiceFromServer('next')">Next</button>
+                                                </div>
                                                     </div>
                                                     <!-- /.box-body -->
                                                 </div>
@@ -329,6 +336,12 @@
                                                         </td>
                                                     </tr>                
                                                 </tbody></table>
+                                                <div v-if="prevSparepart || nextSparepart">
+                                                    <br>
+                                                    <br>
+                                                    <button class="btn btn-warning pull-left" :disabled="!prevSparepart" @click.prevent="getSparepartFromServer('prev')">Previous</button>
+                                                    <button class="btn btn-primary pull-right" :disabled="!nextSparepart" @click.prevent="getSparepartFromServer('next')">Next</button>
+                                                </div>
                                                     </div>
                                                     <!-- /.box-body -->
                                                 </div>
@@ -439,11 +452,11 @@
                                                 <th>Sparepart</th>
                                                 <th>Stok</th>
                                             </tr>
-                                            <tr :class="{'item-tr-center': km >= spare.km, 'sparepartSelect': cekSparepartExist(spare) == false}" v-for="(spare, i) in listSpareparts" @click="addSparepart(spare)">
-                                                <td>{{ spare.km }}</td>
+                                            <tr :class="{'item-tr-center': km >= spare.minimal_km, 'sparepartSelect': qty_available > 0}" v-for="(spare, i) in saranSparepart" @click="addSparepart(spare)">
+                                                <td>{{ spare.minimal_km }}</td>
                                                 <td>{{ spare.name }}</td>
                                                 <td>
-                                                    <span v-if="cekStok(spare.name)" class="label label-success">Ada</span>
+                                                    <span v-if="spare.qty_available > 0" class="label label-success">Ada</span>
                                                     <span v-else class="label label-warning">Habis</span>
                                                 </td>
                                             </tr>        
@@ -595,6 +608,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import additional from '../helpers/additional';
 import register from '../api/register';
 import axios from 'axios';
+import products from '../api/products';
 import printpendaftaran from './PrintPendaftaran.vue';
 import { EventBus } from '../event';
 import {ModelSelect} from 'vue-search-select';
@@ -706,6 +720,17 @@ export default class Register extends Vue {
     public isGantiOli: boolean                 = false;
     public isGantiPart: boolean                = false;
     public isTurunMesin: boolean               = false;
+    public nextService: boolean                = false;
+    public prevService: boolean                = false;
+    public pageService: number                 = 1;
+    public nextSparepart: boolean              = false;
+    public prevSparepart: boolean              = false;
+    public pageSparepart: number               = 1;
+
+    public nextSaranSparepart: boolean         = false;
+    public prevSaranSparepart: boolean         = false;
+    public pageSaranSparepart: number          = 1;
+    public saranSparepart: any                 = [];
 
     public hargaKPB: number                    = 0;
     public hargaService: number                = 0;
@@ -788,20 +813,6 @@ export default class Register extends Vue {
                 })
 
                 this.colors = res.data.colors;
-
-                this.products = res.data.results[0].product;
-
-                this.spareparts = this.products.filter((el: any) => {
-                    return el.product_type !== 'service';
-                });
-
-                this.services = this.products.filter((el: any) => {
-                    return el.product_type === 'service';
-                });
-
-                this.servicesOwn   = this.services.splice(0,10);
-
-                this.sparepartsOwn = this.spareparts.splice(0,10);
             });
 
             register.getDetailSo(so).then(res => {
@@ -872,20 +883,6 @@ export default class Register extends Vue {
                 this.colors = res.data.colors;
 
                 this.noUrut = res.data.results[0].name;
-
-                this.products = res.data.results[0].product;
-
-                this.spareparts = this.products.filter((el: any) => {
-                    return el.product_type !== 'service';
-                });
-
-                this.services = this.products.filter((el: any) => {
-                    return el.product_type === 'service';
-                });
-
-                this.servicesOwn   = this.services.splice(0,10);
-
-                this.sparepartsOwn = this.spareparts.splice(0,10);
             });
         }
     }
@@ -925,9 +922,7 @@ export default class Register extends Vue {
         if (pro[0]) { return true; }
         return false;
     }
-    public cekSparepartSelect(index: number): boolean {
-        return this.sparepartsSelected.indexOf(this.spareparts[index]) < 0;
-    }
+    
     public cekServiceSelect(index: number): boolean {
         return this.servicesSelected.indexOf(this.services[index]) < 0;
     }
@@ -956,16 +951,24 @@ export default class Register extends Vue {
             }
         }
     }
-    public addSparepart(i: any): any {
-        if (this.cekStok(i.name)) {
-            const index: number = this.findIndexSparepart(i);
-            if (this.cekSparepartSelect(index)) {
-                this.spareparts[index].push({qty: 1});
+    public addSparepart(spare: any): any {
+        if (spare.qty_available > 0) {
+            const count: number = this.sparepartsSelected.filter((sparepart: any) => {
+                return sparepart.name === spare.name;
+            }).length
+            
+            if (count === 0) {
+                spare['qty']    =   1;
 
-                this.sparepartsSelected.push(this.spareparts[index]);
+                this.sparepartsSelected.push(spare);
             }
         }
     }
+
+    public cekSparepartSelect(index: number): boolean {
+        return this.sparepartsSelected.indexOf(this.spareparts[index]) < 0;
+    }
+
     public convertToRupiah(angka: number): string {
         return additional.convertToRupiah(angka);
     }
@@ -1125,16 +1128,12 @@ export default class Register extends Vue {
 
     @Watch('searchSparepart')
     public onSearchSparepart(val: string) {
-        this.sparepartsOwn = this.products.filter(el => {
-            return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
-        })
+        this.getSparepartFromServer('search');
     }
 
     @Watch('searchService')
     public onSearchService(val: string) {
-        this.servicesOwn = this.products.filter(el => {
-            return el.name.toUpperCase().indexOf(val.toUpperCase()) > -1;
-        })
+        this.getServiceFromServer('search');
     }
 
     @Watch('noMesin')
@@ -1145,6 +1144,13 @@ export default class Register extends Vue {
     @Watch('type')
     public ontypeChange() {
         localStorage.setItem('vehicle', this.type.value.id)
+    }
+
+    @Watch('halaman')
+    public onChangeHalaman(value: number) {
+        if (value == 2) {
+            this.loadProduct();
+        }
     }
 
     public cekNoMesin(): void {
@@ -1160,6 +1166,147 @@ export default class Register extends Vue {
                      };
                  });
         }
+    }
+
+    public loadProduct(): void {
+        this.getServiceFromServer();
+        this.getSparepartFromServer();
+        this.getSparepartFromServer(null, true);
+    }
+
+    public getSparepartFromServer(type: any = null, register: boolean = false): void {
+        if (register) {
+            if (type === "next") {
+                this.pageSaranSparepart++;    
+            }
+            
+            if (type === 'prev') {
+                this.pageSaranSparepart--;
+            }
+        } else {
+            if (type === "next") {
+                this.pageSparepart++;    
+            }
+            
+            if (type === 'prev') {
+                this.pageSparepart--;
+            }
+
+            if (type === 'search') {
+                this.pageSparepart = 1;
+            }
+        }
+
+        const sparepart: any      = {
+            // vehicle: this.type.value.id,
+            type: 'product',
+            page: this.pageSparepart,
+        };
+
+        if (register === true) {
+            sparepart['register']   =   true;
+        }
+
+        if (this.searchSparepart !== '') {
+            sparepart['name']  =   this.searchSparepart;
+        };
+
+        setTimeout(() => {
+            products.searchProduct(sparepart).then(res => {
+                if (register) {
+                    this.saranSparepart = [];
+                } else {
+                    this.sparepartsOwn = [];
+                }
+
+                res.data.results.forEach((el: any) => {
+                    el['harga'] = el['list_price'];
+                    
+                    if (register) {
+                        this.saranSparepart.push(el);
+
+                        const total: any = res.data.count / 10;
+                        
+                        if (this.pageSaranSparepart < total || this.pageSaranSparepart === 1) {
+                            this.nextSaranSparepart = true;
+                        } else {
+                            this.nextSaranSparepart = false;
+                        }
+
+                        if (this.pageSaranSparepart > 1) {
+                            this.prevSaranSparepart = true;
+                        } else {
+                            this.prevSaranSparepart = false;
+                        }
+                    } else {
+                        this.sparepartsOwn.push(el);
+
+                        const total: any = res.data.count / 10;
+                        
+                        if (this.pageSparepart < total || this.pageSparepart === 1) {
+                            this.nextSparepart = true;
+                        } else {
+                            this.nextSparepart = false;
+                        }
+
+                        if (this.pageSparepart > 1) {
+                            this.prevSparepart = true;
+                        } else {
+                            this.prevSparepart = false;
+                        }
+                    }
+                });
+            });
+        }, 1000)
+    }
+
+    public getServiceFromServer(type = null): void {
+        if (type === "next") {
+            this.pageService++;    
+        }
+        
+        if (type === 'prev') {
+            this.pageService--;
+        }
+
+        if (type === 'search') {
+            this.pageService = 1;
+        }
+
+        const service: any      = {
+            vehicle: this.type.value.id,
+            type: 'service',
+            page: this.pageService,
+        };
+
+        if (this.searchService !== '') {
+            service['name']  =   this.searchService;
+        };
+
+        setTimeout(() => {
+            products.searchProduct(service).then(res => {
+                this.servicesOwn = [];
+
+                res.data.results.forEach((el: any) => {
+                    el['harga'] = el['list_price'];
+                    this.servicesOwn.push(el);
+
+                    const total: any = res.data.count / 10;
+                    
+                    if (this.pageService < total || this.pageService === 1) {
+                        this.nextService = true;
+                    } else {
+                        this.nextService = false;
+                    }
+
+                    if (this.pageService > total || this.pageService > 1) {
+                        this.prevService = true;
+                    } else {
+                        this.prevService = false;
+                    }
+                });
+            });
+        }, 1000)
     }
 }
 </script>
