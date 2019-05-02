@@ -1140,10 +1140,10 @@ export default class Register extends Vue {
         this.getSparepartFromServer('search');
     }
 
-    @Watch('searchService')
-    public onSearchService(val: string) {
-        this.getServiceFromServer('search');
-    }
+    // @Watch('searchService')
+    // public onSearchService(val: string) {
+    //     this.getServiceFromServer('search');
+    // }
 
     @Watch('noMesin')
     public onNoMesinChange() {
