@@ -1,106 +1,103 @@
 <template>
-    <div class="searchAuto">
-        <div class="form-group mx-sm-1 mb-3">
-            <input type="text" id="" :placeholder="placeholder" 
-                v-model="value" @keyup.esc="isShow = false"/>
-        </div>
-        <div class="list" v-show="isShow">
-            <li v-for="(item, i) in showItems" @click="selectItem(item)" :key="i">
-                {{ item.name }}
-                <button class="btn btn-sm btn-danger">Barcode : {{ item.barcode }}</button>
-                <button class="btn btn-sm btn-primary">Stok : {{ item.qty_available }}</button>
-            </li>
-        </div>
+  <div class="searchAuto">
+    <div class="form-group mx-sm-1 mb-3">
+      <input type="text" id :placeholder="placeholder" v-model="value" @keyup.esc="isShow = false">
     </div>
+    <div class="list" v-show="isShow">
+      <li v-for="(item, i) in showItems" @click="selectItem(item)" :key="i">
+        {{ item.name }}
+        <button class="btn btn-sm btn-danger">Barcode : {{ item.barcode }}</button>
+        <button class="btn btn-sm btn-primary">Stok : {{ item.qty_available }}</button>
+      </li>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import auth from '../helpers/auth';
-import { EventBus } from '../event';
-import products from '../api/products';
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
+import auth from "../helpers/auth";
+import { EventBus } from "../event";
+import products from "../api/products";
 
 @Component({})
-
 export default class Autocomplete extends Vue {
-    @Prop({})
-    value: any;
+  @Prop({})
+  value: any;
 
-    @Prop({})
-    type: any;
+  @Prop({})
+  type: any;
 
-    @Prop({})
-    placeholder: any;
+  @Prop({})
+  placeholder: any;
 
-    @Prop({})
-    protype: any;
+  @Prop({})
+  protype: any;
 
-    public isShow: boolean  =   false;
-    public showItems: any   =   [];
-    public prev: string     =   '';
-    public kendaraan: any   =   localStorage.getItem('vehicle');
+  public isShow: boolean = false;
+  public showItems: any = [];
+  public prev: string = "";
+  public kendaraan: any = localStorage.getItem("vehicle");
 
-    public selectItem(item: any): void {
-        if (item.qty_available > 0 || this.protype === 'service') {
-            const type = (this.protype === 'service') ? 'servicesSelected' : 'sparepartsSelected';
+  public selectItem(item: any): void {
+    if (item.qty_available > 0 || this.protype === "service") {
+      const type =
+        this.protype === "service" ? "servicesSelected" : "sparepartsSelected";
 
-            EventBus.$emit('addItem', {item,type});
+      EventBus.$emit("addItem", { item, type });
 
-            this.isShow = false;
-        } else {
-            alert('Stok habis!')
-        }
+      this.isShow = false;
+    } else {
+      alert("Stok habis!");
+    }
+  }
+
+  @Watch("value")
+  onValueChange(value: string) {
+    if (value === "") {
+      this.isShow = false;
+
+      return;
     }
 
-    @Watch('value')
-    onValueChange(value: string) {
-        if (value === '') {
-            this.isShow = false;
+    this.isShow = true;
 
-            return
-        }
+    setTimeout(() => {
+      const params: any = {};
 
-        this.isShow = true;
+      params[this.type] = value;
+      params["type"] = this.protype;
+      params["vehicle"] = this.kendaraan;
+      this.showItems = [];
 
-        setTimeout(() => {
-            const params: any = {};
+      products.searchProduct(params).then(res => {
+        this.showItems = res.data.results;
+      });
+    }, 1000);
 
-            params[this.type]   =   value;
-            params['type']      =   this.protype;
-            params['vehicle']   =   this.kendaraan;
-            this.showItems      =   [];
-
-            products.searchProduct(params).then(res => {
-                res.data.results.forEach((el: any) => {
-                    this.showItems.push(el);
-                });
-            });
-        }, 1000);
-
-        EventBus.$emit('changeValue', value);
-    }
+    EventBus.$emit("changeValue", value);
+  }
 }
 </script>
 
 <style>
-    .list li {
-        padding: 10px;
-        list-style: none;
-        cursor: pointer;
-    }
+.list li {
+  padding: 10px;
+  list-style: none;
+  cursor: pointer;
+}
 
-    .searchAuto {
-        display: inline-block;
-    }
+.searchAuto {
+  display: inline-block;
+}
 
-    .searchAuto input {
-        padding: 3px 6px;
-        width: 140px;
-    }
+.searchAuto input {
+  padding: 3px 6px;
+  width: 140px;
+}
 
-    .list {
-        position: absolute;
-        background: wheat;
-        z-index: 99999;
-    }
+.list {
+  position: absolute;
+  background: wheat;
+  z-index: 99999;
+}
 </style>
