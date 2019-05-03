@@ -741,6 +741,7 @@ export default class Register extends Vue {
     public hargaService: number                = 0;
 
     public formKeluhan: boolean                = false;
+    public keluhanDelete: any                  = [];
 
     public created() {
         EventBus.$on('refresh', () => {
@@ -778,6 +779,7 @@ export default class Register extends Vue {
                 product_type: item.item.type,
                 stok: item.item.qty_available,
                 qty: 1,
+                product_tmpl_id: item.item.product_tmpl_id[0]
             }
 
             const cekIfExist = this.$data[item.type].filter((el: any) => {
@@ -826,20 +828,20 @@ export default class Register extends Vue {
                 if(result) {
                     this.halaman    =   2
 
-                    const tgl   =   new Date(result.tgl_service)
+                    const tgl   =   new Date(result.tglService)
 
-                    this.noUrut         =   result.no_urut
+                    this.noUrut         =   result.noUrut
                     this.noPolisi       =   this.cekData(result.nopol)
-                    this.jenisService   =   result.antrian_service
-                    this.cuci           =   result.is_wash
+                    this.jenisService   =   result.antrianService
+                    this.cuci           =   result.isWash
                     this.tglService     =   tgl
-                    this.namaPemilik    =   result.nama_pemilik
-                    this.noTelp         =   this.cekData(result.no_telp)
+                    this.namaPemilik    =   result.namaPemilik
+                    this.noTelp         =   this.cekData(result.noTelp)
                     this.email          =   result.email
                     this.sosmed         =   result.sosmed
                     this.keluhanKonsumen    =   result.keluhan_konsumen
-                    this.analisaService     =   this.cekData(result.analisa_service)
-                    this.saranMekanik       =   this.cekData(result.saran_mekanik)
+                    this.analisaService     =   this.cekData(result.analisaService)
+                    this.saranMekanik       =   this.cekData(result.saranMekanik)
                     this.kpb            =   result.kpb
                     this.isGantiOli     =   result.gantiOli
                     this.isGantiPart    =   result.gantiPart
@@ -849,8 +851,8 @@ export default class Register extends Vue {
                     const motor =   result.motor[0]
 
                     if(motor) {
-                        this.noMesin    =   motor.no_mesin
-                        this.noRangka   =   motor.no_rangka
+                        this.noMesin    =   motor.noMesin
+                        this.noRangka   =   motor.noRangka
                         motor.type.name =   "Honda/" + motor.type.name
                         this.type       =   {
                             id: motor.type.id,
@@ -1001,6 +1003,12 @@ export default class Register extends Vue {
         this.$toasted.success('Keluhan berhasil ditambah', {duration:3000});
     }
     public deleteKeluhan(i: any): void {
+        const keluhan = this.keluhanKonsumen[i]
+
+        if ('id' in keluhan) {
+            this.keluhanDelete.push(keluhan['id']);
+        }
+
         this.keluhanKonsumen.splice(i - 1, 1);
     }
     public updateKeluhan(i: any): void {
@@ -1106,6 +1114,7 @@ export default class Register extends Vue {
             "gantiOli": this.isGantiOli,
             "gantiPart": this.isGantiPart,
             "turunMesin": this.isTurunMesin,
+            "keluhanDelete": this.keluhanDelete
         }).then(() => {
             window.location.reload();
         });
