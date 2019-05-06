@@ -1031,6 +1031,7 @@ export default class Register extends Vue {
         this.multipleSparepart.forEach((el: any) => {
             if (this.sparepartsSelected.indexOf(el) < 0) {
                 el.qty = 1;
+                el.product_tmpl_id = el.product_tmpl_id[0]
 
                 this.sparepartsSelected.push(el);
             }
