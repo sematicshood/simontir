@@ -20,6 +20,14 @@ const getFinalSO = async (noRef: any) => {
     return await api.get('/simontir/get_final_detail/' + noRef, {});
 };
 
+const countTotalFinal = async (id: any) => {
+    return await api.get('/simontir/count_final/' + id, {})
+}
+
+const pickFinal = async (data: any) => {
+    return await api.post('/simontir/pick_final', data)
+}
+
 const getLastSO = async () => {
     return await api.get('/simontir/getso_finalcheck', {});
 };
@@ -51,4 +59,6 @@ export default {
     reject,
     finishFinal,
     getusers,
+    countTotalFinal,
+    pickFinal
 };
