@@ -285,9 +285,7 @@ export default class LaporanHarian extends Vue {
   public getData(date: any): void {
     cash_count.getData(date).then((res: any) => {
       try {
-        console.log(res.data.results);
         this.setData(res.data.results);
-        console.lo(res.data.count);
 
         if (res.data.count > 0) {
           this.isNew = false;

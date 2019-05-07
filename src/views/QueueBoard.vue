@@ -231,7 +231,7 @@ export default class QueueBoard extends Vue {
   public filterBooking: string[] = [];
   public filterLight: string[] = [];
   public filterRegular: string[] = [];
-  public datetime: date = "";
+  public datetime: string = "";
 
   public created() {
     setInterval(() => {
@@ -246,7 +246,7 @@ export default class QueueBoard extends Vue {
     this.getData();
   }
 
-  public convertDate(date): string {
+  public convertDate(date: any): string {
     return date
       .split(" ")[0]
       .split("-")
