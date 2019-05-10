@@ -472,16 +472,11 @@
                                             <tr style="text-align: center;">
                                                 <th>Periode Ganti (Km)</th>
                                                 <th>Service</th>
-                                                <th>Status</th>
                                             </tr>
 
                                             <tr :class="{'item-tr-center': km >= ser.minimal_km, 'sparepartSelect': ser.qty_available > 0}" v-for="ser in saranService" @click="addServicesSelected(ser)">
                                                 <td>{{ ser.minimal_km }}</td>
                                                 <td>{{ ser.name }}</td>
-                                                <td>
-                                                    <span v-if="ser.qty_available > 0" class="label label-success">Tersedia</span>
-                                                    <span v-else class="label label-warning">Tidak Tersedia</span>
-                                                </td>
                                             </tr>           
                                         </tbody></table>
                                     </div>
@@ -950,16 +945,15 @@ export default class Register extends Vue {
         return this.cekServiceSelect(this.findIndexService(i));
     }
     public addServicesSelected(ser: any): void {
-        if (ser.qty_available > 0) {
-            const count: number = this.servicesSelected.filter((service: any) => {
-                return service.name === ser.name;
-            }).length
-            
-            if (count === 0) {
-                ser['qty']    =   1;
+        const count: number = this.servicesSelected.filter((service: any) => {
+            return service.name === ser.name;
+        }).length
+        
+        if (count === 0) {
+            ser['qty']    =   1;
+            ser['product_tmpl_id'] = ser['product_tmpl_id'][0];
 
-                this.servicesSelected.push(ser);
-            }
+            this.servicesSelected.push(ser);
         }
     }
     public addSparepart(spare: any): any {
