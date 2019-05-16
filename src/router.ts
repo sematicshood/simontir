@@ -20,6 +20,15 @@ const router = new Router({
       },
     },
     {
+      path: '/board-mekanik',
+      name: 'board-mekanik',
+      component: () => import('./views/BoardMekanik.vue'),
+      meta: {
+        title: 'Board Mekanik',
+        show: true,
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue'),
@@ -179,10 +188,10 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (login) {
       if (login.job.toUpperCase() !== 'Owner'.toUpperCase()) {
-        const role: string[]  = to.meta.role.map((x: string) => {
-                                  return x.toUpperCase();
-                                });
-        const nowRole: string   = login.job.toUpperCase();
+        const role: string[] = to.meta.role.map((x: string) => {
+          return x.toUpperCase();
+        });
+        const nowRole: string = login.job.toUpperCase();
 
         if (role.includes(nowRole) === false) { next({ name: auth.cekRoleUrl(nowRole) }); }
       }
