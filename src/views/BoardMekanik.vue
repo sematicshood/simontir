@@ -2,11 +2,16 @@
   <div>
     <div class="card">
       <div class="card-header">
-        <h4
-          class="text-center"
-        >Board Mekanik Kinerja {{ date.getUTCDay() }} {{ months[date.getUTCMonth()] }} {{ date.getUTCFullYear() }}</h4>
+        <h4 class="text-center">Board Mekanik Kinerja {{ getDate() }}</h4>
       </div>
       <div class="card-body">
+        <div class="form-group text-center">
+          <div class="col-md-12" style="display: flex; justify-content: center;">
+            <input style="width: 300px" type="date" class="form-control" v-model="date">
+          </div>
+        </div>
+        <br>
+        <br>
         <table class="table table-hover table-bordered">
           <tr>
             <th>#</th>
@@ -54,15 +59,44 @@ export default {
     };
   },
 
-  created() {
-    const date = this.date
-      .toISOString()
-      .split("T")[0]
-      .split("-");
+  watch: {
+    date() {
+      this.getData();
+    }
+  },
 
-    board_mekanik.mekaniks(date[2], date[1], date[0]).then(res => {
-      this.mekaniks = res.data.results;
-    });
+  methods: {
+    getDate() {
+      try {
+        return `${this.date.getUTCDate()} ${
+          this.months[this.date.getUTCMonth()]
+        } ${this.date.getUTCFullYear()}`;
+      } catch (error) {
+        const date = this.date.split("-");
+
+        return `${date[2]} ${this.months[parseInt(date[1])]} ${date[0]}`;
+      }
+    },
+
+    getData() {
+      let date = "";
+      try {
+        date = this.date
+          .toISOString()
+          .split("T")[0]
+          .split("-");
+      } catch (error) {
+        date = this.date.split("-");
+      }
+
+      board_mekanik.mekaniks(date[2], date[1], date[0]).then(res => {
+        this.mekaniks = res.data.results;
+      });
+    }
+  },
+
+  created() {
+    this.getData();
   }
 };
 </script>
