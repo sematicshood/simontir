@@ -3,15 +3,9 @@
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="info-box">
-          <!-- <span class="info-box-icon bg-aqua">
-            <i class="fa fa-motorcycle"></i>
-          </span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Total Service Bulan Ini</span>
-            <span class="info-box-number">{{ totalService }}</span>
-          </div>-->
-          <ProfileOwner/>
+          <ProfileOwner v-if="user.job === 'Owner'"/>
+          <ProfileStaff :id="user.id" v-else-if="user.job === 'Staff'"/>
+          <ProfileServiceAdvisor :id="user.id" v-if="user.job === 'Service Advisor'"/>
         </div>
       </div>
     </div>
@@ -22,10 +16,14 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import users from "../api/users";
 import ProfileOwner from "../components/ProfileOwner";
+import ProfileStaff from "../components/ProfileStaff";
+import ProfileServiceAdvisor from "../components/ProfileServiceAdvisor";
 
 @Component({
   components: {
-    ProfileOwner
+    ProfileOwner,
+    ProfileStaff,
+    ProfileServiceAdvisor
   }
 })
 export default class Profil extends Vue {
