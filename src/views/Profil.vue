@@ -3,9 +3,10 @@
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="info-box">
-          <ProfileOwner v-if="user.job === 'Owner'"/>
+          <!-- <ProfileOwner v-if="user.job === 'Owner'"/>
           <ProfileStaff :id="user.id" v-else-if="user.job === 'Staff'"/>
-          <ProfileServiceAdvisor :id="user.id" v-if="user.job === 'Service Advisor'"/>
+          <ProfileServiceAdvisor :id="user.id" v-if="user.job === 'Service Advisor'"/>-->
+          <ProfileMekanik :id="user.id"/>
         </div>
       </div>
     </div>
@@ -18,12 +19,14 @@ import users from "../api/users";
 import ProfileOwner from "../components/ProfileOwner";
 import ProfileStaff from "../components/ProfileStaff";
 import ProfileServiceAdvisor from "../components/ProfileServiceAdvisor";
+import ProfileMekanik from "../components/ProfileMekanik";
 
 @Component({
   components: {
     ProfileOwner,
     ProfileStaff,
-    ProfileServiceAdvisor
+    ProfileServiceAdvisor,
+    ProfileMekanik
   }
 })
 export default class Profil extends Vue {
