@@ -3,10 +3,10 @@
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="info-box">
-          <!-- <ProfileOwner v-if="user.job === 'Owner'"/>
+          <ProfileOwner v-if="user.job === 'Owner'"/>
           <ProfileStaff :id="user.id" v-else-if="user.job === 'Staff'"/>
-          <ProfileServiceAdvisor :id="user.id" v-if="user.job === 'Service Advisor'"/>-->
-          <ProfileMekanik :id="user.id"/>
+          <ProfileServiceAdvisor :id="user.id" v-if="user.job === 'Service Advisor'"/>
+          <ProfileMekanik :id="user.id" v-if="user.job === 'Mekanik'"/>
         </div>
       </div>
     </div>
