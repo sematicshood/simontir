@@ -16,8 +16,8 @@ const finishTask = async (data: any) => {
     return await api.post('/simontir/task/finish', data);
 };
 
-const unfinishTask = async (id: number) => {
-    return await api.post('/simontir/task/unfinish', {id});
+const unfinishTask = async (data: number) => {
+    return await api.post('/simontir/task/unfinish', data);
 };
 
 const cekNoMesin = async (data: any) => {

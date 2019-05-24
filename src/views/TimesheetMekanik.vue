@@ -58,7 +58,10 @@
               >Finish</button>
             </td>
             <td v-else>
-              <button class="btn btn-sm btn-primary" @click="unfinishTask(service.id)">Unfinish</button>
+              <button
+                class="btn btn-sm btn-primary"
+                @click="unfinishTask({id: service.id})"
+              >Unfinish</button>
             </td>
           </tr>
         </table>
@@ -99,7 +102,10 @@
               >Finish</button>
             </td>
             <td v-else>
-              <button class="btn btn-sm btn-primary" @click="unfinishTask(sparepart.id)">Unfinish</button>
+              <button
+                class="btn btn-sm btn-primary"
+                @click="unfinishTask({id: sparepart.id})"
+              >Unfinish</button>
             </td>
           </tr>
         </table>
@@ -140,7 +146,7 @@
               >Finish</button>
             </td>
             <td v-else>
-              <button class="btn btn-sm btn-primary" @click="unfinishTask(kel.id)">Unfinish</button>
+              <button class="btn btn-sm btn-primary" @click="unfinishTask({id: kel.id})">Unfinish</button>
             </td>
           </tr>
         </table>
@@ -192,18 +198,19 @@ export default class TimesheetMekanik extends Vue {
   public done: number = 0;
   public isDone: boolean = false;
   public warnaKendaraan: string = "";
+  public user: any = JSON.parse(localStorage.getItem("login")!);
 
   public finishTask(data: any): void {
     this.start = "";
     this.waktu = 0;
     this.done = 0;
+    data.user_id = this.user.id;
     board.finishTask(data).then(() => this.getData());
   }
 
-  public unfinishTask(id: number): void {
-    this.waktu = 0;
-    this.done = 0;
-    board.unfinishTask(id).then(() => this.getData());
+  public unfinishTask(data: any): void {
+    data.user_id = this.user.id;
+    board.unfinishTask(data).then(() => this.getData());
   }
 
   public setDuration(type: string, el: any, i: number): void {
