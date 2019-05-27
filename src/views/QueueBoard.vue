@@ -232,6 +232,20 @@ export default class QueueBoard extends Vue {
   public filterLight: string[] = [];
   public filterRegular: string[] = [];
   public datetime: string = "";
+  public months: any = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
   public created() {
     setInterval(() => {
@@ -240,7 +254,10 @@ export default class QueueBoard extends Vue {
 
     setInterval(() => {
       const date = new Date();
-      this.datetime = `${date.getUTCDay()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}`;
+
+      this.datetime = `${date.getUTCDate()} ${
+        this.months[date.getUTCMonth()]
+      } ${date.getUTCFullYear()}`;
     }, 1000);
 
     this.getData();

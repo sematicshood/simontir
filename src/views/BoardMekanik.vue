@@ -74,7 +74,7 @@ export default {
       } catch (error) {
         const date = this.date.split("-");
 
-        return `${date[2]} ${this.months[parseInt(date[1])]} ${date[0]}`;
+        return `${date[2]} ${this.months[parseInt(date[1]) - 1]} ${date[0]}`;
       }
     },
 
