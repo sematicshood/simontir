@@ -128,7 +128,7 @@ const router = new Router({
       component: () => import('./views/ListMekanik.vue'),
       meta: {
         requiresAuth: true,
-        role: ['mekanik'],
+        role: ['ass mekanik', 'mekanik'],
         title: 'List Mekanik',
         show: true,
       },
