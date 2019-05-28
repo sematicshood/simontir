@@ -85,6 +85,11 @@ export default {
           invoice: this.data.name,
           user_id: this.$data.user.id
         });
+
+        this.$router.push({
+          name: this.type,
+          params: { id: this.data.name }
+        });
       }
     }
   }
