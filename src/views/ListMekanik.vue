@@ -18,7 +18,7 @@
           </div>
           <div class="box-body no-padding">
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-lg-12">
                 <div class="box-header with-border">
                   <h3 class="box-title">
                     <strong>Service yang diambil</strong>
@@ -33,7 +33,7 @@
                     >{{ own.length }}</span>
                   </div>
                 </div>
-                <span v-for="o in own" :key="o.name">
+                <div v-for="o in own" :key="o.name" style="display: inline-block;">
                   <reguler
                     v-if="o.antrian_service == 'reguler'"
                     :type="'timesheet_mekanik'"
@@ -49,7 +49,7 @@
                     :type="'timesheet_mekanik'"
                     :data="o"
                   ></BookingOrder>
-                </span>
+                </div>
               </div>
             </div>
           </div>

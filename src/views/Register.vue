@@ -1111,7 +1111,7 @@ export default class Register extends Vue {
             "turunMesin": this.isTurunMesin,
             "keluhanDelete": this.keluhanDelete
         }).then(() => {
-            // window.location.reload();
+            window.location.reload();
         });
     }
 
