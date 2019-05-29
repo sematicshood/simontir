@@ -51,7 +51,7 @@ export default class Autocomplete extends Vue {
     }
   }
 
-  public toRupiah(value) {
+  public toRupiah(value: any): any {
     try {
       let number_string = value
           .toString()
