@@ -644,6 +644,7 @@ export default class Register extends Vue {
     public noTelp: string               = '';
     public email: string                = '';
     public sosmed: string               = '';
+    public user: any = JSON.parse(localStorage.getItem("login")!);
 
     public namaPemilik: string          = '';
     public alamat: string               = '';
@@ -1109,7 +1110,8 @@ export default class Register extends Vue {
             "gantiOli": this.isGantiOli,
             "gantiPart": this.isGantiPart,
             "turunMesin": this.isTurunMesin,
-            "keluhanDelete": this.keluhanDelete
+            "keluhanDelete": this.keluhanDelete,
+            "user_id": this.user.id
         }).then(() => {
             window.location.reload();
         });

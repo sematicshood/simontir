@@ -1,6 +1,6 @@
 <template>
   <div id="BookingOrder">
-    <div @click.native="pick">
+    <div @click="pick">
       <div class="box no-border-top">
         <div class="box-body">
           <div class="small-box bg-red">

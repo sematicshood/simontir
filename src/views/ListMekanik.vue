@@ -55,7 +55,7 @@
           </div>
           <div class="box-body no-padding">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6" v-if="checking()">
                 <div class="box-header with-border">
                   <h3 class="box-title">
                     <strong>Booking Service</strong>
@@ -76,7 +76,7 @@
                   v-for="booking in bookings"
                 ></BookingOrder>
               </div>
-              <div class="col-lg-6">
+              <div :class="{'col-lg-6': checking(), 'col-lg-12': !checking()}">
                 <div class="box-header with-border">
                   <h3 class="box-title">
                     <strong>Light Repair</strong>
@@ -94,7 +94,7 @@
                 <LightRepair :type="'timesheet_mekanik'" :data="light" v-for="light in lights"></LightRepair>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="checking()">
               <div class="col-lg-12">
                 <div class="box-header with-border">
                   <h3 class="box-title">
@@ -148,6 +148,10 @@ export default class ListMekanik extends Vue {
     setInterval(() => {
       this.loadData();
     }, 5000);
+  }
+
+  public checking(): any {
+    return this.user.job.toUpperCase() !== "ass mekanik".toUpperCase();
   }
 
   public loadData(): void {

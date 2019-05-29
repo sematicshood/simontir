@@ -4,11 +4,11 @@
       <input type="text" id :placeholder="placeholder" v-model="value" @keyup.esc="isShow = false">
     </div>
     <div class="list" v-show="isShow">
-      <li v-for="(item, i) in showItems" @click="selectItem(item)" :key="i">
-        {{ item.name }}
-        <button class="btn btn-sm btn-danger">Barcode : {{ item.barcode }}</button>
-        <button class="btn btn-sm btn-primary">Stok : {{ item.qty_available }}</button>
-      </li>
+      <li
+        v-for="(item, i) in showItems"
+        @click="selectItem(item)"
+        :key="i"
+      >{{ item.name }} | {{ item.barcode }} | {{ item.qty_available }} | Rp. {{ toRupiah(item.list_price) }}</li>
     </div>
   </div>
 </template>
@@ -48,6 +48,29 @@ export default class Autocomplete extends Vue {
       this.isShow = false;
     } else {
       alert("Stok habis!");
+    }
+  }
+
+  public toRupiah(value) {
+    try {
+      let number_string = value
+          .toString()
+          .replace(/[^,\d]/g, "")
+          .toString(),
+        split = number_string.split(","),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+      if (ribuan) {
+        let separator = sisa ? "." : "";
+        rupiah += separator + ribuan.join(".");
+      }
+
+      rupiah = split[1] != undefined ? rupiah + "." + split[1] : rupiah;
+      return rupiah ? rupiah : 0;
+    } catch (error) {
+      return 0;
     }
   }
 
