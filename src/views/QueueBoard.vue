@@ -279,8 +279,11 @@ export default class QueueBoard extends Vue {
         });
 
         this.dikerjakan = res.data.results.filter((el: any) => {
+          console.log(el.status);
           return el.status === "sale" && el.invoice === "no";
         });
+
+        console.log(this.dikerjakan);
 
         this.selesai = res.data.results.filter((el: any) => {
           return el.invoice === "to invoice";

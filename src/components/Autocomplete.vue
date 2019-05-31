@@ -49,7 +49,7 @@ export default class Autocomplete extends Vue {
         return el.color.toUpperCase().indexOf(v.toUpperCase()) > -1;
       });
 
-      EventBus.$emit("changeValue", v);
+      EventBus.$emit("changeColor", v);
     }
   }
 }

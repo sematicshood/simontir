@@ -744,7 +744,7 @@ export default class Register extends Vue {
             this.refreshTotal();
         })
 
-        EventBus.$on('changeValue', (value: string) => {
+        EventBus.$on('changeColor', (value: string) => {
             this.warnaKendaraan = value;
         })
 
@@ -1113,7 +1113,7 @@ export default class Register extends Vue {
             "keluhanDelete": this.keluhanDelete,
             "user_id": this.user.id
         }).then(() => {
-            window.location.reload();
+            // window.location.reload();
         });
     }
 
@@ -1146,10 +1146,10 @@ export default class Register extends Vue {
         this.getSparepartFromServer('search');
     }
 
-    // @Watch('searchService')
-    // public onSearchService(val: string) {
-    //     this.getServiceFromServer('search');
-    // }
+    @Watch('searchService')
+    public onSearchService(val: string) {
+        this.getServiceFromServer('search');
+    }
 
     @Watch('noMesin')
     public onNoMesinChange() {
