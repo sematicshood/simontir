@@ -220,3 +220,12 @@
 .row {
     padding: 0 !important;
 }
+
+.disabled
+{
+  cursor: progress;
+
+  /* for "disabled" effect */
+  opacity: 0.5;
+  background: #CCC;
+}

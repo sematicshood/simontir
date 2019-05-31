@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'disabled': loading}">
     <div class="row">
       <div class="col-lg-12">
         <div class="box box-widget widget-user-2">
@@ -141,6 +141,8 @@ export default class ListMekanik extends Vue {
   public lights: any[] = [];
   public regulars: any[] = [];
   public own: any = [];
+  public loading: any = false;
+  public loadDatas: any = false;
 
   public created() {
     this.loadData();
@@ -155,6 +157,10 @@ export default class ListMekanik extends Vue {
   }
 
   public loadData(): void {
+    if (!this.loadDatas) {
+      this.loading = true;
+    }
+
     mekanik.getSO(this.user.id).then((res: any) => {
       if (res.data.results) {
         this.bookings = res.data.results
@@ -179,6 +185,9 @@ export default class ListMekanik extends Vue {
       if (res.data.own) {
         this.own = res.data.own;
       }
+
+      this.loading = false;
+      this.loadDatas = true;
     });
   }
 }

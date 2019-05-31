@@ -1,5 +1,5 @@
 <template>
-  <div id="BookingOrder">
+  <div id="BookingOrder" :class="{'disabled': loading}">
     <div @click="pick">
       <div class="box no-border-top">
         <div class="box-body">
@@ -38,7 +38,8 @@ export default {
 
   data() {
     return {
-      user: []
+      user: [],
+      loading: false
     };
   },
 
@@ -64,6 +65,8 @@ export default {
     },
 
     pick() {
+      this.loading = true;
+
       if (this.type == "timesheet_mekanik") {
         mekanik
           .pick({ invoice: this.data.name, user_id: this.$data.user.id })

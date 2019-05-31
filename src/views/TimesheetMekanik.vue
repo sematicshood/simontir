@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'disabled': loading}">
     <div class="row">
       <div class="col-lg-12">
         <div class="title-timesheet">
@@ -198,6 +198,8 @@ export default class TimesheetMekanik extends Vue {
   public done: number = 0;
   public isDone: boolean = false;
   public warnaKendaraan: string = "";
+  public loading: any = false;
+  public loadData: any = false;
   public user: any = JSON.parse(localStorage.getItem("login")!);
 
   public finishTask(data: any): void {
@@ -230,6 +232,10 @@ export default class TimesheetMekanik extends Vue {
 
   public getData(): void {
     this.ids = this.$route.params.id;
+
+    if (!this.loadData) {
+      this.loading = true;
+    }
 
     board.getTask(this.ids).then(res => {
       if (res.data.results) {
@@ -285,6 +291,9 @@ export default class TimesheetMekanik extends Vue {
           ":" +
           additional.exact(this.seconds);
       }
+
+      this.loading = false;
+      this.loadData = true;
     });
   }
 

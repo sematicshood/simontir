@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'disabled': loading}">
     <div class="row">
       <div class="col-lg-12">
         <div class="box box-widget widget-user-2">
@@ -56,6 +56,8 @@ export default class LastFinalCheck extends Vue {
   public lights: any[] = [];
   public regulars: any[] = [];
   public total: any = 0;
+  public loading: any = false;
+  public loadDatas: any = false;
 
   public created() {
     this.loadData();
@@ -66,6 +68,10 @@ export default class LastFinalCheck extends Vue {
   }
 
   public loadData(): void {
+    if (!this.loadDatas) {
+      this.loading = true;
+    }
+
     mekanik.countTotalFinal(this.user.id).then((res: any) => {
       this.total = res.data.count;
     });
@@ -90,6 +96,9 @@ export default class LastFinalCheck extends Vue {
           })
           .splice(0, 1);
       }
+
+      this.loading = false;
+      this.loadDatas = true;
     });
   }
 }

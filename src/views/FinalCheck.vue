@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'disabled': loading}">
     <div class="row">
       <div class="col-lg-12">
         <div class="title-timesheet">
@@ -175,6 +175,7 @@ export default class FinalCheck extends Vue {
   public user: any = JSON.parse(localStorage.getItem("login")!);
   public users: any[] = [];
   public userWash: number = 0;
+  public loading: any = false;
 
   public created() {
     this.load();
@@ -187,6 +188,8 @@ export default class FinalCheck extends Vue {
   }
 
   public load(): void {
+    this.loading = true;
+
     mekanik.getusers().then(res => {
       if (res.data.results) {
         this.users = res.data.results;
@@ -210,6 +213,8 @@ export default class FinalCheck extends Vue {
       this.sparepart = res.data.results.tasks.filter((el: any) => {
         return el.name.split(":")[0].split(" ")[1] === "sparepart";
       });
+
+      this.loading = false;
     });
   }
 
