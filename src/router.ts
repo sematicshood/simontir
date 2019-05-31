@@ -107,7 +107,7 @@ const router = new Router({
       component: () => import('./views/FinalCheck.vue'),
       meta: {
         requiresAuth: true,
-        role: ['kepala mekanik', 'ass mekanik'],
+        role: ['kepala mekanik'],
         title: 'Final Check',
       },
     },
@@ -117,7 +117,7 @@ const router = new Router({
       component: () => import('./views/ListFinalCheck.vue'),
       meta: {
         requiresAuth: true,
-        role: ['kepala mekanik', 'ass mekanik'],
+        role: ['kepala mekanik'],
         title: 'List Final Check',
         show: true,
       },
@@ -161,7 +161,7 @@ const router = new Router({
       component: () => import('./views/TimesheetMekanik.vue'),
       meta: {
         requiresAuth: true,
-        role: ['mekanik'],
+        role: ['mekanik', 'ass mekanik'],
         title: 'Timesheet Mekanik',
       },
     },
