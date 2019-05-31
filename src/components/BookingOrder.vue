@@ -81,10 +81,24 @@ export default {
             });
           });
       } else {
-        mekanik.pickFinal({
-          invoice: this.data.name,
-          user_id: this.$data.user.id
-        });
+        mekanik
+          .pickFinal({
+            invoice: this.data.name,
+            user_id: this.$data.user.id
+          })
+          .then(res => {
+            try {
+              if (res.data.result._status_code === 400) {
+                alert(res.data.result.response.error_description);
+                return false;
+              }
+            } catch (error) {}
+
+            this.$router.push({
+              name: this.type,
+              params: { id: this.data.name }
+            });
+          });
       }
     }
   }
