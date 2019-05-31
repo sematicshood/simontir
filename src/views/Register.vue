@@ -783,7 +783,9 @@ export default class Register extends Vue {
             }).length
 
             if (cekIfExist === 0) {
-                this.$data[item.type].push(data)
+                if(!this.cekExist(this.$data[item.type], data, 'product_tmpl_id')) {
+                    this.$data[item.type].push(data)
+                }
             }
         })
 
@@ -950,7 +952,7 @@ export default class Register extends Vue {
             return service.name === ser.name;
         }).length
         
-        if (count === 0) {
+        if (count === 0 ) {
             ser['qty']    =   1;
             ser['product_tmpl_id'] = ser['product_tmpl_id'][0];
 
@@ -1113,7 +1115,7 @@ export default class Register extends Vue {
             "keluhanDelete": this.keluhanDelete,
             "user_id": this.user.id
         }).then(() => {
-            // window.location.reload();
+            window.location.reload();
         });
     }
 
@@ -1276,6 +1278,18 @@ export default class Register extends Vue {
         }, 1000)
     }
 
+    public cekExist(data: any, check: any, field: any): boolean {
+        const result = data.filter((d: any) => {
+            if(check[field].length > 1) {
+                return d[field][0] == check[field][0];
+            } else {
+                return d[field] == check[field];
+            }
+        });
+
+        return result.length > 0;
+    }
+
     public getServiceFromServer(type = null, register: boolean = false): void {
         if (register) {
             if (type === "next") {
@@ -1325,7 +1339,9 @@ export default class Register extends Vue {
                     el['harga'] = el['list_price'];
                     
                     if (register) {
-                        this.saranService.push(el);
+                        if(!this.cekExist(this.saranService, el, 'product_tmpl_id')) {
+                            this.saranService.push(el);
+                        }
 
                         const total: any = res.data.count / 10;
                         
