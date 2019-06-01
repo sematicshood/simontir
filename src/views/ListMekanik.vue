@@ -146,10 +146,11 @@ export default class ListMekanik extends Vue {
 
   public created() {
     this.loadData();
-
+    /*
     setInterval(() => {
       this.loadData();
     }, 5000);
+    */
   }
 
   public checking(): any {

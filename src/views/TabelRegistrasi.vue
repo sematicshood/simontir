@@ -76,10 +76,11 @@ export default class TabelRegistrasi extends Vue {
   public listRegister: string[]  = [];
 
   public created() {
+    /*
     setInterval(() => {
       this.getData()
     }, 3000)
-
+    */
     this.getData()
   }
 

@@ -248,6 +248,7 @@ export default class QueueBoard extends Vue {
   ];
 
   public created() {
+    /*
     setInterval(() => {
       this.getData();
     }, 5000);
@@ -259,7 +260,7 @@ export default class QueueBoard extends Vue {
         this.months[date.getUTCMonth()]
       } ${date.getUTCFullYear()}`;
     }, 1000);
-
+    */
     this.getData();
   }
 

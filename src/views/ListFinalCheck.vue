@@ -61,10 +61,11 @@ export default class LastFinalCheck extends Vue {
 
   public created() {
     this.loadData();
-
+    /*
     setInterval(() => {
       this.loadData();
     }, 5000);
+    */
   }
 
   public loadData(): void {

@@ -65,10 +65,11 @@ export default class TabelRegistrasi extends Vue {
   public user: any   = JSON.parse(localStorage.getItem('login')!);
 
   public created() {
+    /*
     setInterval(() => {
       this.getData()
     }, 3000)
-
+    */
     this.getData()
   }
 
