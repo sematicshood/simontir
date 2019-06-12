@@ -4,7 +4,7 @@
             <div class="row">
             <div class="col-lg-12">
                 <div class="box box-danger box-solid">
-                    <form @submit.prevent="finish">
+                    <form>
                         <div class="box-header">
                             <center><h2 class="box-title"><strong>Pendaftaran Servis Advisor</strong></h2></center>
                         </div>
@@ -70,32 +70,32 @@
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPemilik">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPemilik" @keyup.enter="$refs.noTelp.focus" ref="namaPemilik">
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="">No. Telp/HP</label>
-                                        <input type="number" class="form-control" id="" placeholder="" v-model="noTelp">
+                                        <input type="number" class="form-control" id="" placeholder="" v-model="noTelp" ref="noTelp" @keyup.enter="$refs.email.focus">
                                         <span>*) Wajib diisi</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input type="mail" class="form-control" id="" placeholder="" v-model="email">
+                                        <input type="mail" class="form-control" id="" placeholder="" v-model="email" ref="email" @keyup.enter="$refs.sosmed.focus">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Sosmed</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="sosmed">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="sosmed" ref="sosmed" @keyup.enter="$refs.namaPembawa.focus">
                                     </div>
                                     <dir class="box-sub-header" style="margin-top: 30px !important;">
                                         <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
                                     </dir>
                                     <div class="form-group">
                                         <label for="">Nama</label>
-                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPembawa">
+                                        <input type="text" class="form-control" id="" placeholder="" v-model="namaPembawa" ref="namaPembawa" @keyup.enter="$refs.alamat.focus">
                                     </div>
                                     <div class="form-group">
                                         <label>Alamat</label>
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="alamat"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="alamat" ref="alamat" @keyup.enter="$refs.analisaService.focus"></textarea>
                                     </div>                                
                                 </dir>
                             </dir>
@@ -156,7 +156,7 @@
                                         <h3 class="box-sub-title"><strong>Analisa Service Advisor</strong></h3>
                                     </dir>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisaService"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="analisaService" ref="analisaService" @keyup.enter="$refs.saranMekanik.focus"></textarea>
                                     </div>   
                                 </div>
                             </dir>
@@ -166,7 +166,7 @@
                                         <h3 class="box-sub-title"><strong>Saran Mekanik</strong></h3>
                                     </dir>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saranMekanik"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Enter ..." v-model="saranMekanik" ref="saranMekanik"></textarea>
                                     </div>   
                                 </div>
                             </dir>
@@ -549,7 +549,7 @@
                     </div>
                     <div class="box-footer" v-if="halaman == 2">
                         <button @click.prevent="halaman = 1" class="btn btn-danger pull-left">Previous</button>
-                        <button type="submit" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
+                        <button @click.prevent="finish" :disabled="notFinish" class="btn btn-primary pull-right">Finish</button>                        
                         <div class="pull-right" style="margin: 3px 0px 0px 15px;">
                             <label>
                                 <input v-model="isPrint" type="checkbox"> Print    &nbsp; &nbsp;
@@ -738,6 +738,35 @@ export default class Register extends Vue {
 
     public formKeluhan: boolean                = false;
     public keluhanDelete: any                  = [];
+    public noOfFocusableControls: any          = 2;
+
+    public mounted() {
+        document.addEventListener("keypress", this.switchFocus);
+    }
+
+    public switchFocus(e: any): any {
+        var key = e.which || e.keyCode;
+        if (key === 13) {
+            var id = parseInt(e.target.id);
+            if (id == this.noOfFocusableControls) {
+                id = 0;
+            }
+            id = id + 1;
+            var focus = this.setFocus(id);
+        }
+    };
+
+    public setFocus(id: any): any {
+        var foused = false;
+        for (var ref in this.$refs) {
+            if (ref == id) {
+                this.$refs[ref].focus();
+                foused = true;
+                break;
+            }
+        }
+        return foused;
+    };
 
     public created() {
         EventBus.$on('refresh', () => {
