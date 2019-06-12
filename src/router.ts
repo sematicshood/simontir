@@ -25,6 +25,8 @@ const router = new Router({
       component: () => import('./views/BoardMekanik.vue'),
       meta: {
         title: 'Board Mekanik',
+        requiresAuth: true,
+        role: ['mekanik'],
         show: true,
       },
     },

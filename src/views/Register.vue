@@ -1144,7 +1144,7 @@ export default class Register extends Vue {
             "keluhanDelete": this.keluhanDelete,
             "user_id": this.user.id
         }).then(() => {
-            window.location.reload();
+            // window.location.reload();
         });
     }
 
