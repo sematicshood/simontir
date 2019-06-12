@@ -740,34 +740,6 @@ export default class Register extends Vue {
     public keluhanDelete: any                  = [];
     public noOfFocusableControls: any          = 2;
 
-    public mounted() {
-        document.addEventListener("keypress", this.switchFocus);
-    }
-
-    public switchFocus(e: any): any {
-        var key = e.which || e.keyCode;
-        if (key === 13) {
-            var id = parseInt(e.target.id);
-            if (id == this.noOfFocusableControls) {
-                id = 0;
-            }
-            id = id + 1;
-            var focus = this.setFocus(id);
-        }
-    };
-
-    public setFocus(id: any): any {
-        var foused = false;
-        for (var ref in this.$refs) {
-            if (ref == id) {
-                this.$refs[ref].focus();
-                foused = true;
-                break;
-            }
-        }
-        return foused;
-    };
-
     public created() {
         EventBus.$on('refresh', () => {
             this.refreshTotal();
