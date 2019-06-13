@@ -31,6 +31,17 @@ const router = new Router({
       },
     },
     {
+      path: '/list-unit-entri',
+      name: 'list-unit-entri',
+      component: () => import('./views/ListUnitEntri.vue'),
+      meta: {
+        title: 'List Unit Entri',
+        requiresAuth: true,
+        role: ['mekanik'],
+        show: true,
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue'),
