@@ -20,6 +20,16 @@ const router = new Router({
       },
     },
     {
+      path: '/payroll',
+      name: 'payroll',
+      component: () => import('./views/Payroll.vue'),
+      meta: {
+        title: 'Payroll',
+        requiresAuth: true,
+        show: true,
+      },
+    },
+    {
       path: '/board-mekanik',
       name: 'board-mekanik',
       component: () => import('./views/BoardMekanik.vue'),

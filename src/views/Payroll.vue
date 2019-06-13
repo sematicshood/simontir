@@ -10,21 +10,32 @@
               <div class="form-group">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="bulanan" v-model="type">
-                    <label class="form-check-label" for="inlineRadio1">Rekap Bulanan</label>
+                    <label class="form-check-label" for="inlineRadio1">Bulanan</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="harian" v-model="type">
                     <label class="form-check-label" for="inlineRadio2">Harian</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="range" v-model="type">
+                    <label class="form-check-label" for="inlineRadio3">Range</label>
                 </div>
             </div>
           </div>
           <div class="col-md-12" style="display: flex; justify-content: center;">
             <input
               :type="(type === 'bulanan') ? 'month' : 'date'"
-              style="width: 300px"
               :value="date"
-              class="form-control col-md-6 col-sm-12"
+              class="form-control col-md-5 col-sm-12"
               @change="dateChange($event.target.value)"
+            >
+
+            <input
+              :type="(type === 'bulanan') ? 'month' : 'date'"
+              v-if="type === 'range'"
+              :value="dateUntil"
+              class="form-control col-md-5 col-sm-12"
+              @change="dateUntilChange($event.target.value)"
             >
           </div>
         </div>
@@ -36,21 +47,23 @@
             <div class="col-md-12 col-sm-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="text-center" style="text-transform: capitalize;">List unit entri {{ type }}</h4>
+                  <h4 class="text-center" style="text-transform: capitalize;">Total Intensif Mekanik</h4>
                 </div>
                 <div class="card-body">
-                  <table class="table table-hover table-bordered" v-if="type === 'bulanan'">
+                  <table class="table table-hover table-bordered">
                       <tr>
-                          <th>Tanggal</th>
-                          <th>Unit Entri</th>
-                          <th>Part</th>
-                          <th>Jasa</th>
+                          <th>Nama</th>
+                          <th>Point</th>
+                          <th>Bonus</th>
+                          <th>Action</th>
                       </tr>
                       <tr v-for="d in data" :key="d.date_order">
                           <td>{{ convertDate(d.date_order) }}</td>
                           <td>{{ d.total_order }}</td>
                           <td>{{ d.product }}</td>
-                          <td>{{ d.service }}</td>
+                          <td>
+                              <b-button v-b-modal.modal-xl variant="primary">Detail</b-button>
+                          </td>
                       </tr>
                       <tr>
                           <td>Total ({{ data.length }}HK)</td>
@@ -59,35 +72,23 @@
                           <td>{{ total_service }}</td>
                       </tr>
                   </table>
-                  <table class="table table-hover table-bordered" v-else>
-                      <tr>
-                          <th>Unit</th>
-                          <th>JS</th>
-                          <th>PT</th>
-                          <th>SI</th>
-                          <th>CR</th>
-                      </tr>
-                      <tr v-for="d in data" :key="d.x_nopol">
-                          <td>{{ d.x_nopol }}</td>
-                          <td>{{ d.service }}</td>
-                          <td>{{ d.product }}</td>
-                          <td>{{ d.si }}</td>
-                          <td>{{ d.cr }}</td>
-                      </tr>
-                      <tr>
-                          <td>Total ({{ data.length }}UE)</td>
-                          <td>{{ total_service }}</td>
-                          <td>{{ total_product }}</td>
-                          <td>{{ total_si }}</td>
-                          <td>{{ total_cr }}</td>
-                      </tr>
-                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+        <b-modal id="modal-xl" centered size="xl" title="Detail Pekerjaan Mekanik">
+            <b-col md="12" class="text-center">
+                <b-row>
+                    <div class="col-md-12">
+                        <h3>John Doe</h3>
+                        <p>Periode {{ getDate() }}</p>
+                    </div>
+                </b-row>
+            </b-col>
+        </b-modal>
     </div>
   </div>
 </template>
@@ -107,6 +108,7 @@ export default {
         .split("-")
         .splice(0, 2)
         .join("-"),
+      dateUntil: date.toISOString().split('T')[0],
       months: [
         "January",
         "February",
@@ -128,7 +130,7 @@ export default {
       total_product: 0,
       total_service: 0,
       total_si: 0,
-      total_cr: 0
+      total_cr: 0,
     };
   },
 
@@ -139,7 +141,7 @@ export default {
 
     type(value) {
         const date = new Date();;
-        if (value === 'harian') {
+        if (value === 'harian' || value === 'range') {
             this.date = date.toISOString().split('T')[0];
         } else {
             this.date = date
@@ -167,6 +169,7 @@ export default {
 
     getDate() {
         const date = this.date.split("-");
+        const date_until = this.dateUntil.split("-");
 
         switch (this.type) {
             case 'bulanan':
@@ -180,6 +183,9 @@ export default {
                     date[0]
                 }`;
                 break;
+
+            case 'range':
+                return `${date[2]} ${this.months[parseInt(date[1]) - 1]} ${date[0]} sampai ${date_until[2]} ${this.months[parseInt(date_until[1]) - 1]} ${date_until[0]}`;
         
             default:
                 break;
@@ -247,3 +253,13 @@ export default {
   }
 };
 </script>
+
+<style>
+    .fade {
+        opacity: 1;
+    }
+
+    h3 {
+        margin: 0;
+    }
+</style>
