@@ -4,10 +4,10 @@
             -
         </td>
         <td>
-            <span>Ganti Oli dan Part</span>
+            <span>Job Return</span>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="part" v-model="value" value="true"> Iya &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="part" v-model="value" value="false"> Tidak
+            <input type="radio" name="jobReturn" v-model="value" value="true"> Iya &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="jobReturn" v-model="value" value="false"> Tidak
         </td>
         <td>-</td>
         <td>-</td>
@@ -20,18 +20,18 @@ import { EventBus } from '../../event';
 
 @Component({})
 
-export default class GantiPart extends Vue {
+export default class JobReturn extends Vue {
     @Prop({})
-    isGantiPart: any;
+    jobReturn: any;
 
-    public value: any = this.isGantiPart;
+    public value: any = this.jobReturn;
 
     @Watch('value')
-    onisGantiPartChange(value: any) {
+    onjobReturnChange(value: any) {
         const data = (value === 'true') ? true : false;
 
         EventBus.$emit('changeData', {
-            isGantiPart: data
+            jobReturn: data
         })
     }
 }

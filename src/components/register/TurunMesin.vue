@@ -4,7 +4,7 @@
             -
         </td>
         <td>
-            <span>Turun Mesin</span>
+            <span>Heavy Repair</span>
             &nbsp;&nbsp;&nbsp;
             <input type="radio" name="mesin" v-model="value" value="true"> Iya &nbsp;&nbsp;&nbsp;
             <input type="radio" name="mesin" v-model="value" value="false"> Tidak

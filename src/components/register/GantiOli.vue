@@ -4,7 +4,7 @@
             -
         </td>
         <td>
-            <span>Ganti Oli Mesin</span>
+            <span>Ganti Oli</span>
             &nbsp;&nbsp;&nbsp;
         <input type="radio" name="oli" v-model="value" value="true"> Iya &nbsp;&nbsp;&nbsp;
         <input type="radio" name="oli" v-model="value" value="false"> Tidak
@@ -40,9 +40,10 @@ export default class GantiOli extends Vue {
             this.$toasted.info('Loading...');
             let params: any     =   {};
 
-            params['name']      =   "Ganti Oli Mesin";
+            params['name']      =   "Ganti Oli";
             params['type']      =   "service";
             params['vehicle']   =   this.type;
+            params['equel']     =   '=';
 
             products.searchProduct(params).then(res => {
                 if (res.data.results.length > 0) {

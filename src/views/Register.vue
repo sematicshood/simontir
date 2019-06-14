@@ -268,6 +268,11 @@
                                                     <GantiOli :isGantiOli="isGantiOli"/>
                                                     <GantiPart :isGantiPart="isGantiPart"/>
                                                     <TurunMesin :isTurunMesin="isTurunMesin"/>
+                                                    <Claim :claim="claim"/>
+                                                    <JobReturn :jobReturn="jobReturn"/>
+                                                    <ServiceKunjungan :serviceKunjungan="serviceKunjungan"/>
+                                                    <OtherJob :otherJob="otherJob"/>
+                                                    <SpesialProgram :spesialProgram="spesialProgram"/>
                                                     <tr v-for="(service, i) in servicesSelected" :key="i">
                                                         <td>{{ i += 1 }}</td>
                                                         <td>{{ service.name }}</td>
@@ -616,10 +621,15 @@ import GantiOli from '../components/register/GantiOli.vue';
 import GantiPart from '../components/register/GantiPart.vue';
 import TurunMesin from '../components/register/TurunMesin.vue';
 import Service from '../components/register/Service.vue';
+import Claim from '../components/register/Claim.vue';
+import JobReturn from '../components/register/JobReturn.vue';
+import ServiceKunjungan from '../components/register/ServiceKunjungan.vue';
+import OtherJob from '../components/register/OtherJob.vue';
+import SpesialProgram from '../components/register/SpesialProgram.vue';
 
 @Component({
     components: {
-        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete, KPB, GantiPart, GantiOli, TurunMesin, Service
+        printpendaftaran, ModelSelect, autocomplete, SearchAutocomplete, nopolAutocomplete, KPB, GantiPart, GantiOli, TurunMesin, Service, Claim, JobReturn, ServiceKunjungan, OtherJob, SpesialProgram
     },
     beforeRouteLeave(to, from , next) {
     const answer = window.confirm('Yakin ingin keluar dari halaman ini? perubahan tidak akan tersimpan');
@@ -740,6 +750,12 @@ export default class Register extends Vue {
     public keluhanDelete: any                  = [];
     public noOfFocusableControls: any          = 2;
 
+    public claim: boolean                      = false;
+    public jobReturn: boolean                  = false;
+    public serviceKunjungan: boolean           = false;
+    public otherJob: boolean                   = false;
+    public spesialProgram: boolean             = false;
+
     public created() {
         EventBus.$on('refresh', () => {
             this.refreshTotal();
@@ -846,6 +862,12 @@ export default class Register extends Vue {
                     this.isGantiPart    =   result.gantiPart
                     this.service        =   result.service
                     this.isTurunMesin   =   result.turunMesin
+
+                    this.claim                  =   result.claim
+                    this.jobReturn              =   result.jobReturn
+                    this.serviceKunjungan       =   result.serviceKunjungan
+                    this.otherJob               =   result.otherJob
+                    this.spesialProgram         =   result.spesialProgram
                     
                     const motor =   result.motor[0]
 
@@ -1114,9 +1136,14 @@ export default class Register extends Vue {
             "gantiPart": this.isGantiPart,
             "turunMesin": this.isTurunMesin,
             "keluhanDelete": this.keluhanDelete,
-            "user_id": this.user.id
+            "user_id": this.user.id,
+            "claim": this.claim,
+            "jobReturn": this.jobReturn,
+            "serviceKunjungan": this.serviceKunjungan,
+            "otherJob": this.otherJob,
+            "spesialProgram": this.spesialProgram,
         }).then(() => {
-            window.location.reload();
+            // window.location.reload();
         });
     }
 
