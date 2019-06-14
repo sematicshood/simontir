@@ -43,7 +43,7 @@ export default class GantiOli extends Vue {
             params['name']      =   "Ganti Oli";
             params['type']      =   "service";
             params['vehicle']   =   this.type;
-            params['equel']     =   '=';
+            params['equal']     =   '=';
 
             products.searchProduct(params).then(res => {
                 if (res.data.results.length > 0) {

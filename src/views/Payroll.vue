@@ -83,7 +83,7 @@
             <b-col md="12" class="text-center">
                 <b-row>
                     <div class="col-md-12">
-                        <h3>John Doe</h3>
+                        <h3>{{ data[select].nama }}</h3>
                         <p>Periode {{ getDate() }}</p>
                     </div>
 

@@ -27,6 +27,7 @@ const router = new Router({
         title: 'Payroll',
         requiresAuth: true,
         show: true,
+        role: ['mekanik', 'staff', 'ass mekanik'],
       },
     },
     {
