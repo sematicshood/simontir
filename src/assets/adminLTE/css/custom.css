@@ -114,7 +114,7 @@
 .item-tr-center {
     text-align: center;
     color: white;
-    background-color: #dd4c39d8;
+    background-color: #dd4c39d8 !important;
 }
 
 .item-tr-center-default {
@@ -228,4 +228,9 @@
   /* for "disabled" effect */
   opacity: 0.5;
   background: #CCC;
+}
+
+.unselect {
+    background: gray;
+    color: white;
 }

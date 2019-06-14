@@ -452,7 +452,7 @@
                                                 <th>Sparepart</th>
                                                 <th>Stok</th>
                                             </tr>
-                                            <tr :class="{'item-tr-center': km >= spare.minimal_km, 'sparepartSelect': qty_available > 0}" v-for="(spare, i) in saranSparepart" @click="addSparepart(spare)">
+                                            <tr :class="{'item-tr-center': km >= spare.minimal_km, 'sparepartSelect': qty_available > 0, 'unselect': true}" v-for="(spare, i) in saranSparepart" @click="addSparepart(spare)">
                                                 <td>{{ spare.minimal_km }}</td>
                                                 <td>{{ spare.name }}</td>
                                                 <td>
@@ -474,7 +474,7 @@
                                                 <th>Service</th>
                                             </tr>
 
-                                            <tr :class="{'item-tr-center': km >= ser.minimal_km, 'sparepartSelect': ser.qty_available > 0}" v-for="ser in saranService" @click="addServicesSelected(ser)">
+                                            <tr :class="{'item-tr-center': km >= ser.minimal_km, 'sparepartSelect': ser.qty_available > 0, 'unselect': true}" v-for="ser in saranService" @click="addServicesSelected(ser)">
                                                 <td>{{ ser.minimal_km }}</td>
                                                 <td>{{ ser.name }}</td>
                                             </tr>           
