@@ -11,8 +11,6 @@
             <td><input type="radio" name="services" v-model="values" value=""> Tidak </td>
             <td></td>
             <td></td>
-        <td>-</td>
-        <td>-</td>
     </tr>
 </template>
 
