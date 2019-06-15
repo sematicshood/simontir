@@ -5,10 +5,12 @@
         </td>
         <td>
             <span>Ganti Oli dan Part</span>
-            &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="part" v-model="value" value="true"> Iya &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="part" v-model="value" value="false"> Tidak
-        </td>
+        </td><td>
+            <input type="radio" name="part" v-model="value" value="true"> Iya </td>
+            <td><input type="radio" name="part" v-model="value" value="false"> Tidak </td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>-</td>
         <td>-</td>
     </tr>
