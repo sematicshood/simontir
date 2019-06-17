@@ -5,13 +5,12 @@
         </td>
         <td>
             <span>Service</span>
-            &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="services" v-model="values" value="Ringan"> Ringan &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="services" v-model="values" value="Lengkap"> Lengkap &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="services" v-model="values" value=""> Tidak
-        </td>
-        <td>-</td>
-        <td>-</td>
+        </td><td>
+            <input type="radio" name="services" v-model="values" value="Ringan"> Ringan </td>
+            <td><input type="radio" name="services" v-model="values" value="Lengkap"> Lengkap </td>
+            <td><input type="radio" name="services" v-model="values" value=""> Tidak </td>
+            <td></td>
+            <td></td>
     </tr>
 </template>
 

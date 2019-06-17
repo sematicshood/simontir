@@ -1145,7 +1145,7 @@ export default class Register extends Vue {
             "otherJob": this.otherJob,
             "spesialProgram": this.spesialProgram,
         }).then(() => {
-            // window.location.reload();
+             window.location.reload();
         });
     }
 

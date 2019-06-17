@@ -5,12 +5,12 @@
         </td>
         <td>
             <span>KPB</span>
-            &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="kpb" v-model="values" value="1"> 1 &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="kpb" v-model="values" value="2"> 2 &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="kpb" v-model="values" value="3"> 3 &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="kpb" v-model="values" value="4"> 4 &nbsp;&nbsp;&nbsp;
-            <input type="radio" name="kpb" v-model="values" value="0"> Tidak
+        </td><td>
+             <input type="radio" name="kpb" v-model="values" value="1"> 1 </td>
+            <td><input type="radio" name="kpb" v-model="values" value="2"> 2 </td>
+            <td><input type="radio" name="kpb" v-model="values" value="3"> 3 </td>
+            <td><input type="radio" name="kpb" v-model="values" value="4"> 4 </td>
+            <td><input type="radio" name="kpb" v-model="values" value="0"> Tidak
         </td>
         <td>-</td>
         <td>-</td>
