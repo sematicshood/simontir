@@ -1062,6 +1062,8 @@ export default class Register extends Vue {
         if(event.target.value >= 0) {
             this.sparepartsSelected[i - 1].qty = event.target.value;
         }
+
+        this.refreshTotal();
     }
 
     public isJenisSelect(service: string): boolean {
