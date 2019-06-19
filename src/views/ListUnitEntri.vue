@@ -133,10 +133,6 @@ export default {
   },
 
   watch: {
-    date() {
-      this.getData();
-    },
-
     type(value) {
         const date = new Date();;
         if (value === 'harian') {
@@ -212,10 +208,10 @@ export default {
           type = 'staff'
           break;
       }
+      this.reset();
+      console.log('asa')
 
       if (this.type == 'harian') {
-        this.reset();
-
         profile_staff.getDay(date[2], date[1], date[0], this.user.id, type).then(res => {
           this.data = res.data.results;
           
@@ -227,8 +223,6 @@ export default {
           })
         });
       } else {
-        this.reset();
-
         profile_staff.getMonth(date[1], date[0], this.user.id, type).then(res => {
           this.data = res.data.results;
           
