@@ -54,7 +54,7 @@ export default class KPB extends Vue {
         params['type']      =   "service";
         params['vehicle']   =   this.type;
 
-        if (values !== 0) {
+        if (parseInt(values) !== 0) {
             this.$toasted.info('Loading...');
 
             products.searchProduct(params).then(res => {
