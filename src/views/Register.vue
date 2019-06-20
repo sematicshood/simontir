@@ -90,7 +90,9 @@
                                         <center><h3 class="box-sub-title"><strong>Data Pembawa</strong></h3></center>
                                     </dir>
                                     <div class="form-group">
-                                        <label for="">Nama</label>
+                                        <label for="">Nama</label> &nbsp;
+                                        <button type="button" class="btn btn-primary btn-sm" @click="namaPembawa = namaPemilik">Copy</button>
+                                        <br>
                                         <input type="text" class="form-control" id="" placeholder="" v-model="namaPembawa" ref="namaPembawa" @keyup.enter="$refs.alamat.focus">
                                     </div>
                                     <div class="form-group">
