@@ -32,6 +32,17 @@ const router = new Router({
       },
     },
     {
+      path: '/assignment-menu',
+      name: 'assignment-menu',
+      component: () => import('./views/AssignMenu.vue'),
+      meta: {
+        title: 'Assign Menu',
+        requiresAuth: true,
+        show: true,
+        role: ['owner'],
+      },
+    },
+    {
       path: '/board-mekanik',
       name: 'board-mekanik',
       component: () => import('./views/BoardMekanik.vue'),
