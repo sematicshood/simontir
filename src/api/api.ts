@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const user = JSON.parse(localStorage.getItem("login")!);
+
 const axiosOptions: any    =   {
     withCredentials: false,
+    params: {
+        company_id: user.company_id[0] || null,
+    },
 };
 
 if (process.env.VUE_APP_BASE_URL) { axiosOptions.baseURL = process.env.VUE_APP_BASE_URL; }
