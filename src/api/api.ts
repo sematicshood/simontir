@@ -5,7 +5,7 @@ const user = JSON.parse(localStorage.getItem("login")!);
 const axiosOptions: any    =   {
     withCredentials: false,
     params: {
-        company_id: user.company_id[0] || null,
+        company_id: (user) ? user.company_id[0] : null,
     },
 };
 
