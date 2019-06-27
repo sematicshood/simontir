@@ -234,3 +234,18 @@
     background: gray;
     color: white;
 }
+
+.light {
+    background: yellow;
+    color: black;
+}
+
+.booking {
+    background: red;
+    color: white;
+}
+
+.reguler {
+    background: green;
+    color: white;
+}

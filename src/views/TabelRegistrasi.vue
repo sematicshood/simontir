@@ -24,19 +24,25 @@
                     <th>#</th>
                     <th>Tanggal</th>
                     <th>Nomer SO</th>
-                    <th>Jenis Antrian</th>
                     <th>Customer</th>
+                    <th>Status</th>
                     <th>No Polisi</th>
+                    <th>Gross Amount</th>
                     <th>Tipe Kenadaraan</th>
                     <th>Action</th>
                   </tr>
                   <tr v-for="(reg, i) in listRegister" :key="i" :class="{ 'red': reg.invoice == 'to invoice' }">
                     <td>{{ i += 1 }}</td>
-                    <td>{{ reg.date }}</td>
-                    <td>{{ reg.name }}</td>
-                    <td>{{ reg.antrian_service }}</td>
+                    <td>{{ reg.date.split(' ')[0] }}</td>
+                    <td :class="{
+                      'light': reg.antrian_service === 'Light Repair',
+                      'reguler': reg.antrian_service === 'reguler',
+                      'booking': reg.antrian_service === '	Booking Service',
+                    }">{{ reg.name }}</td>
                     <td>{{ reg.customer }}</td>
+                    <td>{{ reg.status }}</td>
                     <td>{{ reg.no_polisi }}</td>
+                    <td>{{ reg.gross_amount | rupiah }}</td>
                     <td>{{ reg.tipe_kenadaraan }}</td>
                     <td>
                         <div class="btn-group">
@@ -70,6 +76,33 @@ import board from '../api/board';
 
 @Component({
     components: {},
+    filters: {
+      rupiah(angka: any) {
+        try {
+          const prefix = "Rp. ";
+
+          var number_string = angka
+              .toString()
+              .replace(/[^,\d]/g, "")
+              .toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+          // tambahkan titik jika yang di input sudah menjadi angka ribuan
+          if (ribuan) {
+            const separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+          }
+
+          rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+          return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+        } catch (error) {
+          return angka;
+        }
+      }
+    },
 })
 
 export default class TabelRegistrasi extends Vue {
@@ -89,6 +122,8 @@ export default class TabelRegistrasi extends Vue {
       this.listRegister  = res.data.results;
     });
   }
+
+  
 }
 </script>
 
