@@ -153,6 +153,7 @@ export default {
   methods: {
     dateChange(value) {
       this.date = value;
+      this.getData();
     },
 
     convertDate(date) {
@@ -209,7 +210,6 @@ export default {
           break;
       }
       this.reset();
-      console.log('asa')
 
       if (this.type == 'harian') {
         profile_staff.getDay(date[2], date[1], date[0], this.user.id, type).then(res => {
@@ -241,3 +241,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .form-check-label {
+      margin-bottom: 0;
+      color: black !important;
+  }
+</style>

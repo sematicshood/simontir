@@ -1,7 +1,11 @@
 import api from './api';
 
-const getSO = async (userId: number) => {
-    return await api.get('/simontir/getso_mekanik/' + userId, {});
+const getSO = async (userId: number, date: any) => {
+    return await api.get('/simontir/getso_mekanik/' + userId, {
+        params: {
+            date,
+        },
+    });
 };
 
 const pick = async (data: any) => {
@@ -28,8 +32,12 @@ const pickFinal = async (data: any) => {
     return await api.post('/simontir/pick_final', data)
 }
 
-const getLastSO = async () => {
-    return await api.get('/simontir/getso_finalcheck', {});
+const getLastSO = async (date: any) => {
+    return await api.get('/simontir/getso_finalcheck', {
+        params: {
+            date,
+        },
+    });
 };
 
 const accept = async (data: any) => {

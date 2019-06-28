@@ -8,7 +8,7 @@
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control btn-search pull-right" placeholder="Search">
+                  <input type="text" name="table_search" class="form-control btn-search pull-right" placeholder="Search" v-model="search" @keyup="searching()">
 
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -22,13 +22,13 @@
                 <tbody>
                   <tr>
                     <th>#</th>
-                    <th>Tanggal</th>
-                    <th>Nomer SO</th>
-                    <th>Customer</th>
-                    <th>Status</th>
-                    <th>No Polisi</th>
-                    <th>Gross Amount</th>
-                    <th>Tipe Kenadaraan</th>
+                    <th @click="sort('date')">Tanggal</th>
+                    <th @click="sort('name')">Nomer SO</th>
+                    <th @click="sort('customer')">Customer</th>
+                    <th @click="sort('status')">Status</th>
+                    <th @click="sort('no_polisi')">No Polisi</th>
+                    <th @click="sort('gross_amount')">Gross Amount</th>
+                    <th @click="sort('tipe_kendaraan')">Tipe Kenadaraan</th>
                     <th>Action</th>
                   </tr>
                   <tr v-for="(reg, i) in listRegister" :key="i" :class="{ 'red': reg.invoice == 'to invoice' }">
@@ -107,6 +107,9 @@ import board from '../api/board';
 
 export default class TabelRegistrasi extends Vue {
   public listRegister: string[]  = [];
+  public search: any = '';
+  public raw: any[] = [];
+  public isSort: any = '';
 
   public created() {
     /*
@@ -120,10 +123,33 @@ export default class TabelRegistrasi extends Vue {
   public getData(): void {
     board.getSO().then((res) => {
       this.listRegister  = res.data.results;
+      this.raw  = res.data.results;
     });
   }
 
-  
+  public searching(): any {
+    const orders = this.raw.filter((l: any) => {
+      return l.name.indexOf(this.search) > -1;
+    })
+
+    this.listRegister = orders;
+  }
+
+  public sort(value: any): any {
+    let orders: any = [];
+
+    if (this.isSort === '') {
+      orders = this.listRegister.sort((a, b) => (a[value] > b [value]) ? 1 : -1)
+
+      this.isSort = value;
+    } else {
+      orders = this.listRegister.sort((a, b) => (a[value] < b [value]) ? 1 : -1)
+
+      this.isSort = '';
+    }
+
+    this.listRegister = orders;
+  }
 }
 </script>
 

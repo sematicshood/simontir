@@ -18,6 +18,10 @@
           </div>
           <div class="box-body no-padding">
             <div class="row">
+              <b-col md="12" style="display: flex; justify-content: center; margin-bottom: 25px;">
+                  <b-form-input type="date" :value="date" style="width: 40%;" @change="loadData()"></b-form-input>
+              </b-col>
+
               <div class="col-lg-12">
                 <div class="box-header with-border">
                   <h3 class="box-title">
@@ -125,14 +129,16 @@ import BookingOrder from "../components/BookingOrder.vue";
 import LightRepair from "../components/LightRepair.vue";
 import reguler from "../components/Reguler.vue";
 import mekanik from "../api/mekanik";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+
+const d = new Date();
 
 @Component({
   components: {
     BookingOrder,
     LightRepair,
     reguler
-  }
+  },
 })
 export default class ListMekanik extends Vue {
   public user: any = JSON.parse(localStorage.getItem("login")!);
@@ -143,6 +149,7 @@ export default class ListMekanik extends Vue {
   public own: any = [];
   public loading: any = false;
   public loadDatas: any = false;
+  public date: any = d.toISOString().split("T")[0].split("-").join("-")
 
   public created() {
     this.loadData();
@@ -162,7 +169,7 @@ export default class ListMekanik extends Vue {
       this.loading = true;
     }
 
-    mekanik.getSO(this.user.id).then((res: any) => {
+    mekanik.getSO(this.user.id, this.date).then((res: any) => {
       if (res.data.results) {
         this.bookings = res.data.results
           .filter((el: any) => {
