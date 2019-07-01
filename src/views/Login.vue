@@ -87,6 +87,12 @@ export default class Login extends Vue {
 
               localStorage.setItem("login", JSON.stringify(data));
 
+              const company = data.companies.filter((c: any) => {
+                return c.id === data.company_id[0];
+              })[0];
+
+              localStorage.setItem("select_company", JSON.stringify(company));
+
               this.$router.push({ name: auth.cekRoleUrl(data.job) });
             } else {
               this.$toasted.error("Username atau password salah", {

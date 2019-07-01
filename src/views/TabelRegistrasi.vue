@@ -129,7 +129,7 @@ export default class TabelRegistrasi extends Vue {
 
   public searching(): any {
     const orders = this.raw.filter((l: any) => {
-      return l.name.indexOf(this.search) > -1;
+      return l.name.indexOf(this.search) > -1 || l.customer.indexOf(this.search) > -1;
     })
 
     this.listRegister = orders;

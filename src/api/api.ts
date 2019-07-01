@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const user = JSON.parse(localStorage.getItem("login")!);
+const company = JSON.parse(localStorage.getItem("select_company")!);
 
 const axiosOptions: any    =   {
     withCredentials: false,
     params: {
-        company_id: (user) ? user.company_id[0] : null,
+        company_id: (company) ? company.id : null,
     },
 };
 
