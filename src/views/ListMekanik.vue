@@ -19,7 +19,7 @@
           <div class="box-body no-padding">
             <div class="row">
               <b-col md="12" style="display: flex; justify-content: center; margin-bottom: 25px;">
-                  <b-form-input type="date" :value="date" style="width: 40%;" @change="loadData()"></b-form-input>
+                  <b-form-input type="date" :value="date" style="width: 40%;" @change="changeData($event)"></b-form-input>
               </b-col>
 
               <div class="col-lg-12">
@@ -162,6 +162,12 @@ export default class ListMekanik extends Vue {
 
   public checking(): any {
     return this.user.job.toUpperCase() !== "ass mekanik".toUpperCase();
+  }
+
+  public changeData(e: any): void {
+    this.date = e;
+
+    this.loadData();
   }
 
   public loadData(): void {
