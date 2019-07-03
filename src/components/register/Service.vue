@@ -59,19 +59,23 @@ export default class Service extends Vue {
             params['vehicle']   =   this.type;
 
             products.searchProduct(params).then(res => {
-                if (res.data.results.length > 0) {
-                    res.data.results.forEach((el: any) => {
-                        this.harga = el.list_price;
+                try {
+                    if (res.data.results.length > 0) {
+                        res.data.results.forEach((el: any) => {
+                            this.harga = el.list_price;
 
-                        EventBus.$emit('addItem', {
-                            item: el,
-                            type: 'servicesSelected'
-                        })
-                    });
+                            EventBus.$emit('addItem', {
+                                item: el,
+                                type: 'servicesSelected'
+                            })
+                        });
 
-                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
-                } else {
-                    this.values = '';
+                        this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                    } else {
+                        this.values = '';
+                        this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                    }
+                } catch (error) {
                     this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
                 }
             });

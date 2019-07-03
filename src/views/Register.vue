@@ -809,19 +809,28 @@ export default class Register extends Vue {
         })
 
         EventBus.$on('removeItem', (datas: any) => {
-            let data = []
+            try {
+                let data = []
 
-            datas.forEach((d: any) => {
-                data = this.servicesSelected.filter(el => {
-                    return el.name.includes(d)
+                datas.forEach((d: any) => {
+                    const keys = Object.keys(this.servicesSelected);
+                    const servicesSelected = this.servicesSelected;
+
+                    this.servicesSelected.forEach((s: any, i: any) => {
+                        servicesSelected[i]['name'] = s.name.toUpperCase();
+                    });
+
+                    data = servicesSelected.filter((el: any) => {
+                        return el.name.includes(d.toUpperCase())
+                    })
+
+                    const index = this.servicesSelected.indexOf(data[0]);
+                
+                    if (index !== -1) {
+                        this.servicesSelected.splice(index, 1)
+                    };
                 })
-
-                const index = this.servicesSelected.indexOf(data[0]);
-            
-                if (index !== -1) {
-                    this.servicesSelected.splice(index, 1)
-                };
-            })
+            } catch(err) {}
         })
 
         if(this.$route.params.so) {
@@ -1262,51 +1271,55 @@ export default class Register extends Vue {
         };
 
         setTimeout(() => {
-            products.searchProduct(sparepart).then(res => {
-                if (register) {
-                    this.saranSparepart = [];
-                } else {
-                    this.sparepartsOwn = [];
-                }
-
-                res.data.results.forEach((el: any) => {
-                    el['harga'] = el['list_price'];
-                    
+            try {
+                products.searchProduct(sparepart).then(res => {
                     if (register) {
-                        this.saranSparepart.push(el);
-
-                        const total: any = res.data.count / 10;
-                        
-                        if (this.pageSaranSparepart < total || this.pageSaranSparepart === 1) {
-                            this.nextSaranSparepart = true;
-                        } else {
-                            this.nextSaranSparepart = false;
-                        }
-
-                        if (this.pageSaranSparepart > 1) {
-                            this.prevSaranSparepart = true;
-                        } else {
-                            this.prevSaranSparepart = false;
-                        }
+                        this.saranSparepart = [];
                     } else {
-                        this.sparepartsOwn.push(el);
-
-                        const total: any = res.data.count / 10;
-                        
-                        if (this.pageSparepart < total || this.pageSparepart === 1) {
-                            this.nextSparepart = true;
-                        } else {
-                            this.nextSparepart = false;
-                        }
-
-                        if (this.pageSparepart > 1) {
-                            this.prevSparepart = true;
-                        } else {
-                            this.prevSparepart = false;
-                        }
+                        this.sparepartsOwn = [];
                     }
+
+                    res.data.results.forEach((el: any) => {
+                        el['harga'] = el['list_price'];
+                        
+                        if (register) {
+                            this.saranSparepart.push(el);
+
+                            const total: any = res.data.count / 10;
+                            
+                            if (this.pageSaranSparepart < total || this.pageSaranSparepart === 1) {
+                                this.nextSaranSparepart = true;
+                            } else {
+                                this.nextSaranSparepart = false;
+                            }
+
+                            if (this.pageSaranSparepart > 1) {
+                                this.prevSaranSparepart = true;
+                            } else {
+                                this.prevSaranSparepart = false;
+                            }
+                        } else {
+                            this.sparepartsOwn.push(el);
+
+                            const total: any = res.data.count / 10;
+                            
+                            if (this.pageSparepart < total || this.pageSparepart === 1) {
+                                this.nextSparepart = true;
+                            } else {
+                                this.nextSparepart = false;
+                            }
+
+                            if (this.pageSparepart > 1) {
+                                this.prevSparepart = true;
+                            } else {
+                                this.prevSparepart = false;
+                            }
+                        }
+                    });
                 });
-            });
+            } catch (error) {
+                
+            }
         }, 1000)
     }
 
@@ -1360,53 +1373,57 @@ export default class Register extends Vue {
         };
 
         setTimeout(() => {
-            products.searchProduct(service).then(res => {
-                if (register) {
-                    this.saranService = [];
-                } else {
-                    this.servicesOwn = [];
-                }
-
-                res.data.results.forEach((el: any) => {
-                    el['harga'] = el['list_price'];
-                    
+            try {
+                products.searchProduct(service).then(res => {
                     if (register) {
-                        if(!this.cekExist(this.saranService, el, 'product_tmpl_id')) {
-                            this.saranService.push(el);
-                        }
-
-                        const total: any = res.data.count / 10;
-                        
-                        if (this.pageSaranService < total || this.pageSaranService === 1) {
-                            this.nextSaranService = true;
-                        } else {
-                            this.nextSaranService = false;
-                        }
-
-                        if (this.pageSaranService > total || this.pageSaranService > 1) {
-                            this.prevSaranService = true;
-                        } else {
-                            this.prevSaranService = false;
-                        }
+                        this.saranService = [];
                     } else {
-                        this.servicesOwn.push(el);
-
-                        const total: any = res.data.count / 10;
-                        
-                        if (this.pageService < total || this.pageService === 1) {
-                            this.nextService = true;
-                        } else {
-                            this.nextService = false;
-                        }
-
-                        if (this.pageService > total || this.pageService > 1) {
-                            this.prevService = true;
-                        } else {
-                            this.prevService = false;
-                        }
+                        this.servicesOwn = [];
                     }
+
+                    res.data.results.forEach((el: any) => {
+                        el['harga'] = el['list_price'];
+                        
+                        if (register) {
+                            if(!this.cekExist(this.saranService, el, 'product_tmpl_id')) {
+                                this.saranService.push(el);
+                            }
+
+                            const total: any = res.data.count / 10;
+                            
+                            if (this.pageSaranService < total || this.pageSaranService === 1) {
+                                this.nextSaranService = true;
+                            } else {
+                                this.nextSaranService = false;
+                            }
+
+                            if (this.pageSaranService > total || this.pageSaranService > 1) {
+                                this.prevSaranService = true;
+                            } else {
+                                this.prevSaranService = false;
+                            }
+                        } else {
+                            this.servicesOwn.push(el);
+
+                            const total: any = res.data.count / 10;
+                            
+                            if (this.pageService < total || this.pageService === 1) {
+                                this.nextService = true;
+                            } else {
+                                this.nextService = false;
+                            }
+
+                            if (this.pageService > total || this.pageService > 1) {
+                                this.prevService = true;
+                            } else {
+                                this.prevService = false;
+                            }
+                        }
+                    });
                 });
-            });
+            } catch (error) {
+                
+            }
         }, 1000)
     }
 }
