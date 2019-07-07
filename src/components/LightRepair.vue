@@ -45,6 +45,8 @@ export default {
 
   created() {
     this.$data.user = JSON.parse(localStorage.getItem("login"));
+    //Test tambah data company disini
+    this.$data.company = JSON.parse(localStorage.getItem("select_company"));
   },
 
   methods: {
@@ -69,7 +71,7 @@ export default {
 
       if (this.type == "timesheet_mekanik") {
         mekanik
-          .pick({ invoice: this.data.name, user_id: this.$data.user.id })
+          .pick({ invoice: this.data.name, user_id: this.$data.user.id,company_id: this.$data.company.id })
           .then(res => {
             try {
               if (res.data.result._status_code === 400) {
