@@ -19,7 +19,7 @@
           <div class="box-body no-padding">
             <div class="row">
               <b-col md="12" style="display: flex; justify-content: center; margin-bottom: 25px;">
-                  <b-form-input type="date" :value="date" style="width: 40%;" @change="changeData($event)"></b-form-input>
+                  <b-form-input type="date" :value="tanggal" style="width: 40%;" @change="changeData($event)"></b-form-input>
               </b-col>
 
               <div class="col-lg-12">
@@ -149,7 +149,7 @@ export default class ListMekanik extends Vue {
   public own: any = [];
   public loading: any = false;
   public loadDatas: any = false;
-  public date: any = d.toISOString().split("T")[0].split("-").join("-")
+  public tanggal: any = d.toISOString().split("T")[0].split("-").join("-")
 
   public created() {
     this.loadData();
@@ -165,7 +165,7 @@ export default class ListMekanik extends Vue {
   }
 
   public changeData(e: any): void {
-    this.date = e;
+    this.tanggal = e;
 
     this.loadData();
   }
@@ -175,7 +175,7 @@ export default class ListMekanik extends Vue {
       this.loading = true;
     }
 
-    mekanik.getSO(this.user.id, this.date).then((res: any) => {
+    mekanik.getSO(this.user.id, this.tanggal).then((res: any) => {
       if (res.data.results) {
         this.bookings = res.data.results
           .filter((el: any) => {

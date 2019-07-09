@@ -45,6 +45,8 @@ export default {
 
   created() {
     this.$data.user = JSON.parse(localStorage.getItem("login"));
+    //Test tambah data company disini
+    this.$data.company = JSON.parse(localStorage.getItem("select_company"));
   },
 
   methods: {
