@@ -46,17 +46,21 @@ export default class GantiOli extends Vue {
             params['equal']     =   '=';
 
             products.searchProduct(params).then(res => {
-                if (res.data.results.length > 0) {
-                    res.data.results.forEach((el: any) => {
-                        EventBus.$emit('addItem', {
-                            item: el,
-                            type: 'servicesSelected'
-                        })
-                    });
+                try {
+                    if (res.data.results.length > 0) {
+                        res.data.results.forEach((el: any) => {
+                            EventBus.$emit('addItem', {
+                                item: el,
+                                type: 'servicesSelected'
+                            })
+                        });
 
-                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
-                } else {
-                    this.value = false;
+                        this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                    } else {
+                        this.value = false;
+                        this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                    }
+                } catch (error) {
                     this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
                 }
             });

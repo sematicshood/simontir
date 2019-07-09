@@ -58,23 +58,27 @@ export default class KPB extends Vue {
             this.$toasted.info('Loading...');
 
             products.searchProduct(params).then(res => {
-                if (res.data.results.length > 0) {
-                        EventBus.$emit('changeData', {
-                        'kpb': values
-                    });
+                try {
+                    if (res.data.results.length > 0) {
+                            EventBus.$emit('changeData', {
+                            'kpb': values
+                        });
 
-                    res.data.results.forEach((el: any) => {
-                        this.harga = el.list_price
+                        res.data.results.forEach((el: any) => {
+                            this.harga = el.list_price
 
-                        EventBus.$emit('addItem', {
-                            item: el,
-                            type: 'servicesSelected'
-                        })
-                    });
-                    
-                    this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
-                } else {
-                    this.values = 0;
+                            EventBus.$emit('addItem', {
+                                item: el,
+                                type: 'servicesSelected'
+                            })
+                        });
+                        
+                        this.$toasted.success(`${ params['name'] } berhasil ditambahkan`, {duration:3000});
+                    } else {
+                        this.values = 0;
+                        this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
+                    }
+                } catch (error) {
                     this.$toasted.error(`${ params['name'] } tidak ditemukan`, {duration:3000});
                 }
             });

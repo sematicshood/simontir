@@ -1119,6 +1119,8 @@ export default class Register extends Vue {
 
         if (this.isPrint) { window.print(); }
 
+        const company: any = JSON.parse(localStorage.getItem("select_company")!);
+
         register.createRegister({
             "tglService": this.tglService,
             "noPolisi": this.noPolisi,
@@ -1155,6 +1157,7 @@ export default class Register extends Vue {
             "serviceKunjungan": this.serviceKunjungan,
             "otherJob": this.otherJob,
             "spesialProgram": this.spesialProgram,
+            "company_id": company.id
         }).then(() => {
              window.location.reload();
         });

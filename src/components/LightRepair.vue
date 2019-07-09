@@ -66,10 +66,11 @@ export default {
 
     pick() {
       this.loading = true;
+      const company = JSON.parse(localStorage.getItem("select_company"));
 
       if (this.type == "timesheet_mekanik") {
         mekanik
-          .pick({ invoice: this.data.name, user_id: this.$data.user.id })
+          .pick({ invoice: this.data.name, user_id: this.$data.user.id, company_id: company.id })
           .then(res => {
             try {
               if (res.data.result._status_code === 400) {
@@ -87,7 +88,8 @@ export default {
         mekanik
           .pickFinal({
             invoice: this.data.name,
-            user_id: this.$data.user.id
+            user_id: this.$data.user.id,
+            company_id: company.id
           })
           .then(res => {
             try {
