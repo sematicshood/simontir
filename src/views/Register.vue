@@ -1159,7 +1159,7 @@ export default class Register extends Vue {
             "spesialProgram": this.spesialProgram,
             "company_id": company.id
         }).then(() => {
-             //window.location.reload();
+             window.location.reload();
         });
     }
 
